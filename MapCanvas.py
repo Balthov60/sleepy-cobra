@@ -67,7 +67,7 @@ class MapCanvas(Widget):
                 texture = self.get_texture(rgb)
                 x_position = (x * self.tile_size) + padding_left
                 # y + 1 car avec y == 0 cela ne s'afficherait pas
-                y_position = window_height - ((y + 1) * self.tile_size - padding_top)
+                y_position = window_height - ((y + 1) * self.tile_size) - padding_top
                 position = (x_position, y_position)
                 tile_size = [self.tile_size] * 2
                 self.canvas.add(Rectangle(size=tile_size, texture=texture, pos=position))
