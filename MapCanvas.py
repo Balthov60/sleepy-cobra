@@ -8,6 +8,7 @@ from kivy.logger import Logger
 import datetime
 import Image
 import os
+import re
 
 
 class MapCanvas(Widget):
@@ -78,30 +79,39 @@ class MapCanvas(Widget):
 
     def parse_pipe_delimited_file(self, map_file_path):
 
-        pipe = '|'
+        pipe = "|"
+        comment = re.compile(r'#.*', re.UNICODE)
 
         map_file = open(map_file_path)
-        self.map_width = map_file.readline().count(pipe) + 1
-        map_file.seek(0)  # Revient a la premiere ligne du fichier.
-        self.map_height = sum(1 for line in map_file if line)
-        self.map_size = (self.map_width, self.map_height)
+        try:
 
-        if self.map_width <= 0 or self.map_height <= 0:
-            raise ValueError("Pipe delimited file given is not valid for use.")
+            self.map_matrix = []
 
-        self.map_matrix = [[0 for _ in range(0, self.map_width)] for _ in range(0, self.map_height)]
+            map_file.seek(0)
+            y = 0
+            for line in map_file:
+                cleaned_line = comment.sub('', line).strip()
+                if cleaned_line:
+                    self.map_matrix.append([])
+                    x_values = cleaned_line.split(pipe)
+                    x = 0
+                    for x_value in x_values:
+                        texture = self.get_texture(x_value)
+                        self.map_matrix[y].append(texture)
+                        x += 1
+                    self.map_width = x
+                    y += 1
+                    if x > self.map_width:
+                        self.map_width = x
 
-        map_file.seek(0)                # Get to the first line of file.
+            self.map_height = y
 
-        y_index = 0
-        for line in map_file:
-            x_values = line.split(pipe)
-            x_index = 0
-            for x_value in x_values:
-                texture = self.get_texture(x_value.strip())
-                self.map_matrix[y_index][x_index] = texture
-                x_index += 1
-            y_index += 1
+            self.map_size = (self.map_width, self.map_height)
+
+            if self.map_width <= 0 or self.map_height <= 0:
+                raise ValueError("Pipe delimited file given is not valid for use.")
+        finally:
+            map_file.close()
 
     def update_drawing_instructions(self, *args):
         """
@@ -111,12 +121,13 @@ class MapCanvas(Widget):
         Logger.info("Adding drawing instructions")
         window_width, window_height = Window.size
         min_window_size = min(Window.size)
-        min_map_size = min(self.map_size)
-        size_needed = min_map_size * self.textures_size
-        scaling_factor = size_needed / min_window_size
+        size_needed_width = self.map_width * self.textures_size
+        size_needed_height = self.map_height * self.textures_size
+        size_needed_max = max(size_needed_width, size_needed_height)
+        scaling_factor = size_needed_max / min_window_size
         tile_size = self.textures_size / scaling_factor
-        padding_left = (window_width - size_needed / scaling_factor) / 2
-        padding_top = (window_height - size_needed / scaling_factor) / 2
+        padding_left = (window_width - size_needed_width / scaling_factor) / 2
+        padding_top = (window_height - size_needed_height / scaling_factor) / 2
 
         self.canvas.clear()
 
