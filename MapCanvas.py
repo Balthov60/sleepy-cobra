@@ -79,11 +79,12 @@ class MapCanvas(Widget):
 
     def parse_pipe_delimited_file(self, map_file_path):
 
-        pipe = "|"
-        comment = re.compile(r'#.*', re.UNICODE)
-
-        map_file = open(map_file_path)
+        map_file = None
         try:
+            map_file = open(map_file_path)
+
+            pipe = "|"
+            comment = re.compile(r'#.*', re.UNICODE)
 
             self.map_matrix = []
 
