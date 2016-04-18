@@ -27,6 +27,9 @@ class MapCanvas(Widget):
         self.map_matrix = None
         self.textures = textures
         self.textures_size = 256
+        self.window = Window
+
+        self.tile_size = None
 
         is_file = os.path.isfile(map_file_path)
         if not is_file:
@@ -126,7 +129,7 @@ class MapCanvas(Widget):
         size_needed_height = self.map_height * self.textures_size
         size_needed_max = max(size_needed_width, size_needed_height)
         scaling_factor = size_needed_max / min_window_size
-        tile_size = self.textures_size / scaling_factor
+        self.tile_size = self.textures_size / scaling_factor
         padding_left = (window_width - size_needed_width / scaling_factor) / 2
         padding_top = (window_height - size_needed_height / scaling_factor) / 2
 
@@ -136,11 +139,11 @@ class MapCanvas(Widget):
 
         for y in range(0, len(self.map_matrix)):
             for x in range(0, len(self.map_matrix[y])):
-                x_position = (x * tile_size) + padding_left
+                x_position = (x * self.tile_size) + padding_left
                 # y + 1 car avec y == 0 cela ne s'afficherait pas
-                y_position = window_height - ((y + 1) * tile_size) - padding_top
+                y_position = window_height - ((y + 1) * self.tile_size) - padding_top
                 position = (x_position, y_position)
-                tile_size_tuple = [tile_size] * 2
+                tile_size_tuple = [self.tile_size] * 2
                 texture = self.map_matrix[y][x]
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
 
