@@ -67,15 +67,19 @@ class MapCanvas(Widget):
         if self.map_width <= 0 or self.map_height <= 0:
             raise ValueError("Image given is not valid for use.")
 
-        self.map_matrix = [[0 for _ in range(0, self.map_width)] for _ in range(0, self.map_height)]
+        self.map_matrix = []
 
         pixels_matrix = map_file.load()
 
         for y in range(0, self.map_width):
+            self.map_matrix.append([])
             for x in range(0, self.map_width):
                 rgb = pixels_matrix[x, y]
                 texture = self.get_texture(rgb)
-                self.map_matrix[y][x] = texture
+                self.map_matrix[y].append({
+                    'texture': texture,
+                    'type': self.textures.get_other_keys(rgb)[0]
+                })
 
     def parse_pipe_delimited_file(self, map_file_path):
 
@@ -98,7 +102,7 @@ class MapCanvas(Widget):
                     x = 0
                     for x_value in x_values:
                         texture = self.get_texture(x_value)
-                        self.map_matrix[y].append(texture)
+                        self.map_matrix[y].append({'texture': texture, 'type': x_value})
                         x += 1
                     self.map_width = x
                     y += 1
@@ -141,7 +145,7 @@ class MapCanvas(Widget):
                 y_position = window_height - ((y + 1) * tile_size) - padding_top
                 position = (x_position, y_position)
                 tile_size_tuple = [tile_size] * 2
-                texture = self.map_matrix[y][x]
+                texture = self.map_matrix[y][x]['texture']
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
 
         end_time = datetime.datetime.now()
