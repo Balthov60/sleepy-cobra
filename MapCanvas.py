@@ -27,11 +27,6 @@ class MapCanvas(Widget):
         self.map_matrix = None
         self.textures = textures
         self.textures_size = 256
-        self.window = Window
-
-        self.tile_size = None
-        self.vectical_padding = None
-        self.horizontal_padding = None
 
         is_file = os.path.isfile(map_file_path)
         if not is_file:
@@ -72,15 +67,19 @@ class MapCanvas(Widget):
         if self.map_width <= 0 or self.map_height <= 0:
             raise ValueError("Image given is not valid for use.")
 
-        self.map_matrix = [[0 for _ in range(0, self.map_width)] for _ in range(0, self.map_height)]
+        self.map_matrix = []
 
         pixels_matrix = map_file.load()
 
         for y in range(0, self.map_width):
+            self.map_matrix.append([])
             for x in range(0, self.map_width):
                 rgb = pixels_matrix[x, y]
                 texture = self.get_texture(rgb)
-                self.map_matrix[y][x] = texture
+                self.map_matrix[y].append({
+                    'texture': texture,
+                    'type': self.textures.get_other_keys(rgb)[0]
+                })
 
     def parse_pipe_delimited_file(self, map_file_path):
 
@@ -103,7 +102,7 @@ class MapCanvas(Widget):
                     x = 0
                     for x_value in x_values:
                         texture = self.get_texture(x_value)
-                        self.map_matrix[y].append(texture)
+                        self.map_matrix[y].append({'texture': texture, 'type': x_value})
                         x += 1
                     self.map_width = x
                     y += 1
@@ -131,9 +130,9 @@ class MapCanvas(Widget):
         size_needed_height = self.map_height * self.textures_size
         size_needed_max = max(size_needed_width, size_needed_height)
         scaling_factor = size_needed_max / min_window_size
-        self.tile_size = self.textures_size / scaling_factor
-        self.vectical_padding = (window_width - size_needed_width / scaling_factor) / 2
-        self.horizontal_padding = (window_height - size_needed_height / scaling_factor) / 2
+        tile_size = self.textures_size / scaling_factor
+        padding_left = (window_width - size_needed_width / scaling_factor) / 2
+        padding_top = (window_height - size_needed_height / scaling_factor) / 2
 
         self.canvas.clear()
 
@@ -141,16 +140,15 @@ class MapCanvas(Widget):
 
         for y in range(0, len(self.map_matrix)):
             for x in range(0, len(self.map_matrix[y])):
-                x_position = (x * self.tile_size) + self.vectical_padding
+                x_position = (x * tile_size) + padding_left
                 # y + 1 car avec y == 0 cela ne s'afficherait pas
-                y_position = window_height - ((y + 1) * self.tile_size) - self.horizontal_padding
+                y_position = window_height - ((y + 1) * tile_size) - padding_top
                 position = (x_position, y_position)
-                tile_size_tuple = [self.tile_size] * 2
-                texture = self.map_matrix[y][x]
+                tile_size_tuple = [tile_size] * 2
+                texture = self.map_matrix[y][x]['texture']
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
 
         end_time = datetime.datetime.now()
         duration = end_time - start_time
         duration_seconds = duration.microseconds * 10**-6
-
         Logger.info("Drawing instruction added in %fs" % duration_seconds)
