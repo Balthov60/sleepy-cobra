@@ -27,6 +27,7 @@ class MapCanvas(Widget):
         self.map_matrix = None
         self.textures = textures
         self.textures_size = 256
+        self.window = Window
 
         self.tile_size = None
         self.vectical_padding = None
@@ -75,12 +76,12 @@ class MapCanvas(Widget):
 
         pixels_matrix = map_file.load()
 
-        for y in range(0, self.map_width):
+        for x in range(0, self.map_width):
             self.map_matrix.append([])
-            for x in range(0, self.map_width):
-                rgb = pixels_matrix[x, y]
+            for y in range(0, self.map_width):
+                rgb = pixels_matrix[y, x]
                 texture = self.get_texture(rgb)
-                self.map_matrix[y].append({
+                self.map_matrix[x].append({
                     'texture': texture,
                     'type': self.textures.get_other_keys(rgb)[0]
                 })
