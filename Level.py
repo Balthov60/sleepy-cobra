@@ -35,6 +35,11 @@ class Level(FloatLayout):
 
         self.define_level_properties()
 
+        # load level victory path
+        self.player_path = []
+        self.win_path = []
+        self.get_win_conditions()
+
     """
     level properties for initialisation
     """
@@ -78,6 +83,7 @@ class Level(FloatLayout):
         if tile_type == "A":
             return True
         elif tile_type == "W":
+            self.player_path = []
             return False
 
     def get_tile_properties(self):
@@ -91,13 +97,31 @@ class Level(FloatLayout):
                 vertical_location = self.matrix[indy][indx][1] >= self.point[1] > self.matrix[indy][indx][3]
                 if horizontal_location and vertical_location:
                     tile_type = self.map_canvas.map_matrix[indy][indx]['type']
+                    self.player_path.append([indx, indy])
                     return tile_type
+
+    """"
+    win methods
+    """""
+
+    def get_win_conditions(self):
+        """
+        get wins path and conditions
+        :type: void
+        """
+        for indx in range(self.ymax):
+            for indy in range(self.xmax):
+                if self.map_canvas.map_matrix[indy][indx]['type'] == 'A':
+                    self.win_path.append([indx, indy])
 
     def test_win_conditions(self):
         """
         test if players win
         :rtype: boolean
         """
+        for entry in self.win_path:
+            if entry not in self.player_path:
+                return False
         return True
 
     """"
@@ -110,6 +134,7 @@ class Level(FloatLayout):
         ud = touch.ud
         ud['identifier'] = str(touch.uid)
         self.point = [touch.x, touch.y]
+        self.player_path = []
 
         # dessine le point si l'emplacement est valide sinon supprime le dessin.
         tile_type = self.get_tile_properties()
@@ -174,11 +199,12 @@ class Level(FloatLayout):
         if touch.grab_current is not self:
             return
 
-        if self.test_win_conditions():
+        if self.test_win_conditions:
             print("win")
             return;
 
-        # supprime le touch UD en question
+        # supprime le touch UD en question si loose
+        print("loose")
         touch.ungrab(self)
         ud = touch.ud
         self.canvas.remove_group(ud['identifier'])
