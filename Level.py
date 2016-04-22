@@ -1,5 +1,3 @@
-# coding: utf8
-
 from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Color, Point
 from MapCanvas import MapCanvas
@@ -8,26 +6,25 @@ from MapCanvas import MapCanvas
 class Level(FloatLayout):
     def __init__(self, map_file_path, textures, **kwargs):
         """
-        Charge la carte dans un layout.
-        Charge les données et la matrix de tile et de touch
-        :param map_file_path: Chemin de la carte
-        :param textures: dictionnaire de textures
-        :param kwargs: Argumens du layout
+        Load map in a layout and load level and touch properties.
+        :param map_file_path: path to the map
+        :param textures: textures dictionnary
+        :param kwargs: layout's args
         """
         super(Level, self).__init__(**kwargs)
         self.map_canvas = MapCanvas(map_file_path, textures)
         self.add_widget(self.map_canvas)
 
-        # charge les informations de touch et de tile
+        # Load tile and touch properties.
         self.touch_width = int
         self.touch_scaling_factor = 6
 
         self.level_size = list
         self.tile_size = list
 
-        self.xmax = int
-        self.ymax = int
-        self.matrix = None
+        self.x_max = int
+        self.y_max = int
+        self.touch_matrix = None
 
         self.color = (1, 1, 1)
         self.old_point = list
@@ -35,7 +32,7 @@ class Level(FloatLayout):
 
         self.define_level_properties()
 
-        # load level victory path
+        # Load level victory path.
         self.player_path = []
         self.win_path = []
         self.get_win_conditions()
@@ -45,27 +42,30 @@ class Level(FloatLayout):
     """
 
     def define_level_properties(self):
-        # defini l'épaisseur de trait de touch
+        """
+        :rtype void
+        """
+        # Define touch width.
         self.touch_width = self.map_canvas.tile_size / self.touch_scaling_factor
 
-        # defini la taille reel des tile
+        # Define real tile size.
         self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vectical_padding * 2,
                            self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding * 2]
         self.tile_size = [self.level_size[0] / self.map_canvas.map_size[0],
                           self.level_size[1] / self.map_canvas.map_size[1]]
 
-        # initialise la matrice
-        self.xmax = self.map_canvas.map_size[0]
-        self.ymax = self.map_canvas.map_size[1]
-        self.matrix = [[0 for _ in xrange(self.xmax)] for _ in xrange(self.ymax)]
+        # Initialise matrix.
+        self.x_max = self.map_canvas.map_size[0]
+        self.y_max = self.map_canvas.map_size[1]
+        self.touch_matrix = [[0 for _ in xrange(self.x_max)] for _ in xrange(self.y_max)]
 
-        # rempli la matrice avec les coordonnées
+        # Fill matrix.
         x = self.map_canvas.vectical_padding
         y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
 
-        for indx in range(self.ymax):
-            for indy in range(self.xmax):
-                self.matrix[indy][indx] = [x, y, x + self.tile_size[0], y - self.tile_size[1]]
+        for index_x in range(self.x_max):
+            for index_y in range(self.y_max):
+                self.touch_matrix[index_y][index_x] = [x, y, x + self.tile_size[0], y - self.tile_size[1]]
                 y -= self.tile_size[1]
             x += self.tile_size[0]
             y = self.map_canvas.window.size[1]
@@ -74,31 +74,34 @@ class Level(FloatLayout):
     Tiles methods
     """
 
-    def get_touch_auth(self, tile_type):
+    def is_authorised(self, tile_type):
         """
-        test the current tile to get authorizations
+        Test the current tile to get authorizations.
         :param tile_type: string (key of the texture)
-        :rtype: boolean
+        :rtype boolean
         """
         if tile_type == "A":
             return True
-        elif tile_type == "W":
+        else:
             self.player_path = []
             return False
 
     def get_tile_properties(self):
         """
-        find the current tile
-        :rtype: string (key of the texture)
+        Find the current tile properties.
+        :rtype string (key of the texture)
         """
-        for indx in range(self.ymax):
-            for indy in range(self.xmax):
-                horizontal_location = self.matrix[indy][indx][0] <= self.point[0] < self.matrix[indy][indx][2]
-                vertical_location = self.matrix[indy][indx][1] >= self.point[1] > self.matrix[indy][indx][3]
+        for index_x in range(self.y_max):
+            for index_y in range(self.x_max):
+                horizontal_location = self.touch_matrix[index_y][index_x][0] <= self.point[0] < self.touch_matrix[index_y][index_x][2]
+                vertical_location = self.touch_matrix[index_y][index_x][1] >= self.point[1] > self.touch_matrix[index_y][index_x][3]
                 if horizontal_location and vertical_location:
-                    tile_type = self.map_canvas.map_matrix[indy][indx]['type']
-                    self.player_path.append([indx, indy])
+                    tile_type = self.map_canvas.map_matrix[index_y][index_x]['type']
+                    if tile_type is None:
+                        raise Exception("Tile didn't get properties")
+                    self.player_path.append([index_x, index_y])
                     return tile_type
+        return "pading"
 
     """"
     win methods
@@ -106,17 +109,17 @@ class Level(FloatLayout):
 
     def get_win_conditions(self):
         """
-        get wins path and conditions
+        Get win path and conditions.
         :type: void
         """
-        for indx in range(self.ymax):
-            for indy in range(self.xmax):
-                if self.map_canvas.map_matrix[indy][indx]['type'] == 'A':
-                    self.win_path.append([indx, indy])
+        for index_x in range(self.y_max):
+            for index_y in range(self.x_max):
+                if self.map_canvas.map_matrix[index_y][index_x]['type'] == 'A':
+                    self.win_path.append([index_x, index_y])
 
     def test_win_conditions(self):
         """
-        test if players win
+        Test if player win.
         :rtype: boolean
         """
         for entry in self.win_path:
@@ -130,15 +133,15 @@ class Level(FloatLayout):
 
     def on_touch_down(self, touch):
 
-        # sauvegarde le touch
+        # Save touch.
         ud = touch.ud
         ud['identifier'] = str(touch.uid)
         self.point = [touch.x, touch.y]
         self.player_path = []
 
-        # dessine le point si l'emplacement est valide sinon supprime le dessin.
+        # Draw a point if player get authorisation.
         tile_type = self.get_tile_properties()
-        if self.get_touch_auth(tile_type):
+        if self.is_authorised(tile_type):
             with self.canvas:
                 Color(self.color)
                 ud['points'] = [Point(points=self.point, pointsize=self.touch_width, group=ud['identifier'])]
@@ -147,41 +150,27 @@ class Level(FloatLayout):
             self.canvas.remove_group(ud['identifier'])
             return
 
-        # sauvegarde les differentes coordonnées
+        # Save coordinates.
         self.old_point = ud['points'][0].points[:]
         self.point = ud['points'][0].points[:]
 
-        # lance le touch
+        # Launch touch.
         touch.grab(self)
 
     def on_touch_move(self, touch):
 
-        # si le touch est lancé
+        # If touch launch.
         if touch.grab_current is not self:
             return
 
-        # sauvegarde le touch
+        # Save touch.
         ud = touch.ud
         ud['identifier'] = str(touch.uid)
         self.point = [touch.x, touch.y]
 
-        """
-        enlever le commentaire pour reimplementer le touch guider.
-
-        # recupere la distance relative entre les deux états du touch
-        x_dif = touch.x - self.old_point[0]
-        y_dif = touch.y - self.old_point[1]
-
-        # trouve la direction du touch guidé et sauvegarde les valeurs
-        if abs(x_dif) > abs(y_dif):
-            self.point[0] += x_dif
-        else:
-            self.point[1] += y_dif
-        """
-
-        # dessine le point si l'emplacement est valide sinon supprime le dessin.
+        # Draw a point if player get authorisation.
         tile_type = self.get_tile_properties()
-        if self.get_touch_auth(tile_type):
+        if self.is_authorised(tile_type):
             with self.canvas:
                 Color(self.color)
                 ud['points'] = [Point(points=self.point, pointsize=self.touch_width, group=ud['identifier'])]
@@ -190,21 +179,22 @@ class Level(FloatLayout):
             self.canvas.remove_group(ud['identifier'])
             return
 
-        # recupere les coordonnées
+        # Save coordinates.
         self.old_point = [touch.x, touch.y]
 
     def on_touch_up(self, touch):
 
-        # si le touch est lancé
+        # If touch launch.
         if touch.grab_current is not self:
             return
 
-        if self.test_win_conditions:
-            print("win")
-            return;
+        # If player win.
+        if self.test_win_conditions():
+            # player win, need menu and other impl to finish
+            return
 
-        # supprime le touch UD en question si loose
-        print("loose")
+        # Delete touch if loose.
         touch.ungrab(self)
         ud = touch.ud
         self.canvas.remove_group(ud['identifier'])
+        # player loose, need menu and other impl to finish
