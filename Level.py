@@ -35,11 +35,11 @@ class Level(FloatLayout):
         # Load level victory path.
         self.player_path = []
         self.win_path = []
-        self.get_win_conditions()
+        self.define_win_conditions()
 
-    """
-    level properties for initialisation
-    """
+    ####
+    # level properties for initialisation
+    ####
 
     def define_level_properties(self):
         """
@@ -70,9 +70,9 @@ class Level(FloatLayout):
             x += self.tile_size[0]
             y = self.map_canvas.window.size[1]
 
-    """
-    Tiles methods
-    """
+    ####
+    # Tiles methods
+    ####
 
     def is_authorised(self, tile_type):
         """
@@ -103,11 +103,11 @@ class Level(FloatLayout):
                     return tile_type
         return "pading"
 
-    """"
-    win methods
-    """""
+    ####
+    # win methods
+    ####
 
-    def get_win_conditions(self):
+    def define_win_conditions(self):
         """
         Get win path and conditions.
         :type: void
@@ -117,7 +117,7 @@ class Level(FloatLayout):
                 if self.map_canvas.map_matrix[index_y][index_x]['type'] == 'A':
                     self.win_path.append([index_x, index_y])
 
-    def test_win_conditions(self):
+    def is_path_correct(self):
         """
         Test if player win.
         :rtype: boolean
@@ -127,9 +127,9 @@ class Level(FloatLayout):
                 return False
         return True
 
-    """"
-    Touch methods
-    """""
+    ####
+    # Touch methods
+    ####
 
     def on_touch_down(self, touch):
 
@@ -189,7 +189,7 @@ class Level(FloatLayout):
             return
 
         # If player win.
-        if self.test_win_conditions():
+        if self.is_path_correct():
             # player win, need menu and other impl to finish
             return
 
