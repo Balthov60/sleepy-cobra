@@ -62,13 +62,14 @@ class Level(FloatLayout):
         # Fill matrix.
         x = self.map_canvas.vectical_padding
         y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
-
-        for index_x in range(self.x_max):
-            for index_y in range(self.y_max):
+        print(y)
+        for index_y in range(self.y_max):
+            for index_x in range(self.x_max):
                 self.touch_matrix[index_y][index_x] = [x, y, x + self.tile_size[0], y - self.tile_size[1]]
-                y -= self.tile_size[1]
-            x += self.tile_size[0]
-            y = self.map_canvas.window.size[1]
+                x += self.tile_size[0]
+                print(y)
+            y -= self.tile_size[1]
+            x = self.map_canvas.vectical_padding
 
     ####
     # Tiles methods
@@ -91,16 +92,18 @@ class Level(FloatLayout):
         Find the current tile properties.
         :rtype string (key of the texture)
         """
-        for index_x in range(self.y_max):
-            for index_y in range(self.x_max):
+        for index_y in range(self.y_max):
+            for index_x in range(self.x_max):
                 horizontal_location = self.touch_matrix[index_y][index_x][0] <= self.point[0] < self.touch_matrix[index_y][index_x][2]
                 vertical_location = self.touch_matrix[index_y][index_x][1] >= self.point[1] > self.touch_matrix[index_y][index_x][3]
                 if horizontal_location and vertical_location:
                     tile_type = self.map_canvas.map_matrix[index_y][index_x]['type']
                     if tile_type is None:
                         raise Exception("Tile didn't get properties")
-                    self.player_path.append([index_x, index_y])
+                    self.player_path.append([index_y, index_x])
+                    print(tile_type)
                     return tile_type
+        print("pading")
         return "pading"
 
     ####
@@ -112,10 +115,11 @@ class Level(FloatLayout):
         Get win path and conditions.
         :type: void
         """
-        for index_x in range(self.y_max):
-            for index_y in range(self.x_max):
+        for index_y in range(self.y_max):
+            for index_x in range(self.x_max):
+                print(self.touch_matrix[index_y][index_x])
                 if self.map_canvas.map_matrix[index_y][index_x]['type'] == 'A':
-                    self.win_path.append([index_x, index_y])
+                    self.win_path.append([index_y, index_x])
 
     def is_path_correct(self):
         """

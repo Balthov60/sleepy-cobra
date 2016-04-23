@@ -76,12 +76,12 @@ class MapCanvas(Widget):
 
         pixels_matrix = map_file.load()
 
-        for x in range(0, self.map_width):
+        for y in range(0, self.map_height):
             self.map_matrix.append([])
-            for y in range(0, self.map_height):
-                rgb = pixels_matrix[y, x]
+            for x in range(0, self.map_width):
+                rgb = pixels_matrix[x, y]
                 texture = self.get_texture(rgb)
-                self.map_matrix[x].append({
+                self.map_matrix[y].append({
                     'texture': texture,
                     'type': self.textures.get_other_keys(rgb)[0]
                 })
