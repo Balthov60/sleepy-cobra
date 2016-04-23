@@ -62,12 +62,10 @@ class Level(FloatLayout):
         # Fill matrix.
         x = self.map_canvas.vectical_padding
         y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
-        print(y)
         for index_y in range(self.y_max):
             for index_x in range(self.x_max):
                 self.touch_matrix[index_y][index_x] = [x, y, x + self.tile_size[0], y - self.tile_size[1]]
                 x += self.tile_size[0]
-                print(y)
             y -= self.tile_size[1]
             x = self.map_canvas.vectical_padding
 
@@ -101,9 +99,7 @@ class Level(FloatLayout):
                     if tile_type is None:
                         raise Exception("Tile didn't get properties")
                     self.player_path.append([index_y, index_x])
-                    print(tile_type)
                     return tile_type
-        print("pading")
         return "pading"
 
     ####
@@ -117,7 +113,6 @@ class Level(FloatLayout):
         """
         for index_y in range(self.y_max):
             for index_x in range(self.x_max):
-                print(self.touch_matrix[index_y][index_x])
                 if self.map_canvas.map_matrix[index_y][index_x]['type'] == 'A':
                     self.win_path.append([index_y, index_x])
 
