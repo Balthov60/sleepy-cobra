@@ -15,4 +15,4 @@ for source_name in sorted(sources):
 
 textures = multi_key_dict()
 textures[(0, 0, 0), 'W'] = CoreImage(source=sources['wall']).texture
-textures[(255, 255, 255), 'X'] = CoreImage(source=sources['air']).texture
+textures[(255, 255, 255), 'A'] = CoreImage(source=sources['air']).texture

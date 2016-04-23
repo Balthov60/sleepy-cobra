@@ -27,6 +27,11 @@ class MapCanvas(Widget):
         self.map_matrix = None
         self.textures = textures
         self.textures_size = 256
+        self.window = Window
+
+        self.tile_size = None
+        self.vectical_padding = None
+        self.horizontal_padding = None
 
         is_file = os.path.isfile(map_file_path)
         if not is_file:
@@ -71,7 +76,7 @@ class MapCanvas(Widget):
 
         pixels_matrix = map_file.load()
 
-        for y in range(0, self.map_width):
+        for y in range(0, self.map_height):
             self.map_matrix.append([])
             for x in range(0, self.map_width):
                 rgb = pixels_matrix[x, y]
@@ -130,9 +135,9 @@ class MapCanvas(Widget):
         size_needed_height = self.map_height * self.textures_size
         size_needed_max = max(size_needed_width, size_needed_height)
         scaling_factor = size_needed_max / min_window_size
-        tile_size = self.textures_size / scaling_factor
-        padding_left = (window_width - size_needed_width / scaling_factor) / 2
-        padding_top = (window_height - size_needed_height / scaling_factor) / 2
+        self.tile_size = self.textures_size / scaling_factor
+        self.vectical_padding = (window_width - size_needed_width / scaling_factor) / 2
+        self.horizontal_padding = (window_height - size_needed_height / scaling_factor) / 2
 
         self.canvas.clear()
 
@@ -140,11 +145,11 @@ class MapCanvas(Widget):
 
         for y in range(0, len(self.map_matrix)):
             for x in range(0, len(self.map_matrix[y])):
-                x_position = (x * tile_size) + padding_left
+                x_position = (x * self.tile_size) + self.vectical_padding
                 # y + 1 car avec y == 0 cela ne s'afficherait pas
-                y_position = window_height - ((y + 1) * tile_size) - padding_top
+                y_position = window_height - ((y + 1) * self.tile_size) - self.horizontal_padding
                 position = (x_position, y_position)
-                tile_size_tuple = [tile_size] * 2
+                tile_size_tuple = [self.tile_size] * 2
                 texture = self.map_matrix[y][x]['texture']
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
 
