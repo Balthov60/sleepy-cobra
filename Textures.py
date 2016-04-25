@@ -5,8 +5,8 @@ import os.path
 from multi_key_dict import multi_key_dict
 
 sources = {
-    'wall': 'resources/wall.png',
-    'air': 'resources/air.png'
+    'wall': 'resources/blocks/wall.png',
+    'air': 'resources/blocks/air.png'
 }
 
 for source_name in sorted(sources):
