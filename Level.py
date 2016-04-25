@@ -4,13 +4,15 @@ from MapCanvas import MapCanvas
 
 
 class Level(FloatLayout):
-    def __init__(self, map_file_path, textures, **kwargs):
+    def __init__(self, map_file_path, textures, authorizations, **kwargs):
         """
         Load map in a layout and load level and touch properties.
         :param map_file_path: path to the map
         :param textures: textures dictionnary
+        :param authorizations: authorizations dictionnary
         :param kwargs: layout's args
         """
+        # load map
         super(Level, self).__init__(**kwargs)
         self.map_canvas = MapCanvas(map_file_path, textures)
         self.add_widget(self.map_canvas)
@@ -32,10 +34,11 @@ class Level(FloatLayout):
 
         self.define_level_properties()
 
-        # Load level victory path.
+        # Load level victory path and authorizations.
         self.player_path = []
         self.win_path = []
         self.define_win_conditions()
+        self.authorizations = authorizations
 
     ####
     # level properties for initialisation

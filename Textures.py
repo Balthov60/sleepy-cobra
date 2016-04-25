@@ -45,3 +45,23 @@ textures[(11, 0, 0), 'AR'] = CoreImage(source=sources['angle_right']).texture
 textures[(12, 0, 0), 'AL'] = CoreImage(source=sources['angle_left']).texture
 textures[(13, 0, 0), 'H'] = CoreImage(source=sources['double_wall_horizontal']).texture
 textures[(14, 0, 0), 'V'] = CoreImage(source=sources['double_wall_vertical']).texture
+
+# authorization boolean list format : {left, right, top, bot, start/stop}
+authorizations = dict()
+authorizations['W'] = [False, False, False, False, False]
+authorizations['A'] = [True, True, True, True, False]
+authorizations['L'] = [False, True, True, True, False]
+authorizations['R'] = [True, False, True, True, False]
+authorizations['T'] = [True, True, False, True, False]
+authorizations['B'] = [True, True, True, False, False]
+authorizations['LB'] = [False, True, True, False, False]
+authorizations['LT'] = [False, True, False, True, False]
+authorizations['RB'] = [True, False, True, False, False]
+authorizations['RT'] = [True, False, False, True, False]
+authorizations['AT'] = [False, False, False, True, False]
+authorizations['AB'] = [False, False, True, False, False]
+authorizations['AR'] = [False, True, False, False, False]
+authorizations['AL'] = [True, False, False, False, False]
+authorizations['H'] = [True, True, False, False, False]
+authorizations['V'] = [False, False, True, True, False]
+
