@@ -31,6 +31,8 @@ class Level(FloatLayout):
         self.color = (1, 1, 1)
         self.old_point = list
         self.point = list
+        self.tile_identifier = list
+        self.old_tile_identifier = list
 
         self.define_level_properties()
 
@@ -46,7 +48,7 @@ class Level(FloatLayout):
 
     def define_level_properties(self):
         """
-        :rtype void
+        :rtype: void
         """
         # Define touch width.
         self.touch_width = self.map_canvas.tile_size / self.touch_scaling_factor
@@ -73,37 +75,82 @@ class Level(FloatLayout):
             x = self.map_canvas.vectical_padding
 
     ####
-    # Tiles methods
+    # Tiles and auth methods
     ####
 
-    def is_authorised(self, tile_type):
+    def get_tile(self):
         """
-        Test the current tile to get authorizations.
-        :param tile_type: string (key of the texture)
-        :rtype boolean
-        """
-        if tile_type == "A":
-            return True
-        else:
-            self.player_path = []
-            return False
-
-    def get_tile_properties(self):
-        """
-        Find the current tile properties.
-        :rtype string (key of the texture)
+        get the current tile
+        :rtype: tuple
         """
         for index_y in range(self.y_max):
             for index_x in range(self.x_max):
                 horizontal_location = self.touch_matrix[index_y][index_x][0] <= self.point[0] < self.touch_matrix[index_y][index_x][2]
                 vertical_location = self.touch_matrix[index_y][index_x][1] >= self.point[1] > self.touch_matrix[index_y][index_x][3]
                 if horizontal_location and vertical_location:
-                    tile_type = self.map_canvas.map_matrix[index_y][index_x]['type']
-                    if tile_type is None:
-                        raise Exception("Tile didn't get properties")
-                    self.player_path.append([index_y, index_x])
-                    return tile_type
-        return "pading"
+                    print(index_y, index_x)
+                    return [index_y, index_x]
+        return None
+
+    def get_tile_properties(self):
+        """
+        Find the current tile properties.
+        :rtype: string (key of the texture)
+        """
+
+        if self.tile_identifier is None:
+            return "pading"
+
+        tile_type = self.map_canvas.map_matrix[self.tile_identifier[0]][self.tile_identifier[1]]['type']
+        if tile_type is None:
+            raise Exception("Tile didn't get properties")
+
+        self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
+        return tile_type
+
+    def get_touch_direction(self):
+        """
+        get the touch direction
+        :return: touch direction
+        """
+        y = self.tile_identifier[0]
+        x = self.tile_identifier[1]
+        y_old = self.old_tile_identifier[0]
+        x_old = self.old_tile_identifier[1]
+
+        if y > y_old:
+            return "bottom"
+        elif y < y_old:
+            return "top"
+        elif x > x_old:
+            return "right"
+        elif x < x_old:
+            return "left"
+
+        raise Exception("no direction provided")
+
+    def can_start(self, tile_type):
+        """
+        test if player can start is path
+        :param tile_type: string key of the texture
+        :rtype: boolean
+        """
+        if tile_type == "W" or tile_type == "pading":
+            return False
+        return True
+
+    def is_authorised(self, tile_type, direction):
+        """
+        Test the current tile to get authorizations.
+        :param tile_type: string (key of the texture)
+        :param direction: string direction of the tile
+        :rtype: boolean
+        """
+        if tile_type == "A":
+            return True
+        else:
+            self.player_path = []
+            return False
 
     ####
     # win methods
@@ -142,8 +189,9 @@ class Level(FloatLayout):
         self.player_path = []
 
         # Draw a point if player get authorisation.
+        self.tile_identifier = self.get_tile()
         tile_type = self.get_tile_properties()
-        if self.is_authorised(tile_type):
+        if self.can_start(tile_type):
             with self.canvas:
                 Color(self.color)
                 ud['points'] = [Point(points=self.point, pointsize=self.touch_width, group=ud['identifier'])]
@@ -155,6 +203,7 @@ class Level(FloatLayout):
         # Save coordinates.
         self.old_point = ud['points'][0].points[:]
         self.point = ud['points'][0].points[:]
+        self.old_tile_identifier = self.tile_identifier
 
         # Launch touch.
         touch.grab(self)
@@ -170,9 +219,20 @@ class Level(FloatLayout):
         ud['identifier'] = str(touch.uid)
         self.point = [touch.x, touch.y]
 
+        # if change tile event
+        self.tile_identifier = self.get_tile()
+        if self.tile_identifier is None:
+            is_authorised = False
+        elif self.tile_identifier != self.old_tile_identifier:
+            tile_type = self.get_tile_properties()
+            direction = self.get_touch_direction()
+            print(direction)
+            is_authorised = self.is_authorised(tile_type, direction)
+        else :
+            is_authorised = True
+
         # Draw a point if player get authorisation.
-        tile_type = self.get_tile_properties()
-        if self.is_authorised(tile_type):
+        if is_authorised:
             with self.canvas:
                 Color(self.color)
                 ud['points'] = [Point(points=self.point, pointsize=self.touch_width, group=ud['identifier'])]
@@ -183,6 +243,7 @@ class Level(FloatLayout):
 
         # Save coordinates.
         self.old_point = [touch.x, touch.y]
+        self.old_tile_identifier = self.tile_identifier
 
     def on_touch_up(self, touch):
 
@@ -191,9 +252,12 @@ class Level(FloatLayout):
             return
 
         # If player win.
-        if self.is_path_correct():
-            # player win, need menu and other impl to finish
-            return
+        self.tile_identifier = self.get_tile()
+        tile_type = self.get_tile_properties()
+        if self.can_start(tile_type):
+            if self.is_path_correct():
+                # player win, need menu and other impl to finish
+                return
 
         # Delete touch if loose.
         touch.ungrab(self)
