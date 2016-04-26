@@ -2,8 +2,6 @@ from kivy.uix.image import Image as CoreImage
 
 import os.path
 
-from multi_key_dict import multi_key_dict
-
 sources = {
     'wall': 'resources/blocks/wall.png',
     'air': 'resources/blocks/air.png',
@@ -28,20 +26,21 @@ for source_name in sorted(sources):
     if not os.path.isfile(sources[source_name]):
         raise ValueError("File %s does not exist." % sources[source_name])
 
-textures = multi_key_dict()
-textures[(0, 0, 0), 'W'] = CoreImage(source=sources['wall']).texture
-textures[(255, 255, 255), 'A'] = CoreImage(source=sources['air']).texture
-textures[(1, 0, 0), 'L'] = CoreImage(source=sources['wall_left']).texture
-textures[(2, 0, 0), 'R'] = CoreImage(source=sources['wall_right']).texture
-textures[(3, 0, 0), 'T'] = CoreImage(source=sources['wall_top']).texture
-textures[(4, 0, 0), 'B'] = CoreImage(source=sources['wall_bottom']).texture
-textures[(5, 0, 0), 'LB'] = CoreImage(source=sources['angle_left_bottom']).texture
-textures[(6, 0, 0), 'LT'] = CoreImage(source=sources['angle_left_top']).texture
-textures[(7, 0, 0), 'RB'] = CoreImage(source=sources['angle_right_bottom']).texture
-textures[(8, 0, 0), 'RT'] = CoreImage(source=sources['angle_right_top']).texture
-textures[(9, 0, 0), 'AT'] = CoreImage(source=sources['angle_top']).texture
-textures[(10, 0, 0), 'AB'] = CoreImage(source=sources['angle_bottom']).texture
-textures[(11, 0, 0), 'AR'] = CoreImage(source=sources['angle_right']).texture
-textures[(12, 0, 0), 'AL'] = CoreImage(source=sources['angle_left']).texture
-textures[(13, 0, 0), 'H'] = CoreImage(source=sources['double_wall_horizontal']).texture
-textures[(14, 0, 0), 'V'] = CoreImage(source=sources['double_wall_vertical']).texture
+textures = dict([
+    ('W', CoreImage(source=sources['wall']).texture),
+    ('A', CoreImage(source=sources['air']).texture),
+    ('L', CoreImage(source=sources['wall_left']).texture),
+    ('R', CoreImage(source=sources['wall_right']).texture),
+    ('T', CoreImage(source=sources['wall_top']).texture),
+    ('B', CoreImage(source=sources['wall_bottom']).texture),
+    ('LB', CoreImage(source=sources['angle_left_bottom']).texture),
+    ('LT', CoreImage(source=sources['angle_left_top']).texture),
+    ('RB', CoreImage(source=sources['angle_right_bottom']).texture),
+    ('RT', CoreImage(source=sources['angle_right_top']).texture),
+    ('AT', CoreImage(source=sources['angle_top']).texture),
+    ('AB', CoreImage(source=sources['angle_bottom']).texture),
+    ('AR', CoreImage(source=sources['angle_right']).texture),
+    ('AL', CoreImage(source=sources['angle_left']).texture),
+    ('H', CoreImage(source=sources['double_wall_horizontal']).texture),
+    ('V', CoreImage(source=sources['double_wall_vertical']).texture)
+])

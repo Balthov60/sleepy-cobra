@@ -6,7 +6,6 @@ from kivy.core.window import Window
 from kivy.logger import Logger
 
 import datetime
-import Image
 import os
 import re
 
@@ -34,16 +33,16 @@ class MapCanvas(Widget):
         self.horizontal_padding = None
 
         is_file = os.path.isfile(map_file_path)
+
         if not is_file:
             raise ValueError("File given does not exist.")
-        is_png = map_file_path.lower().endswith('.png')
+
         is_cfg = map_file_path.lower().endswith('.cfg')
-        if is_png:
-            self.parse_png_map(map_file_path)
-        elif is_cfg:
+
+        if is_cfg:
             self.parse_pipe_delimited_file(map_file_path)
         else:
-            raise ValueError("Image given is not valid for use.")
+            raise ValueError("File given is not valid for use.")
 
         self.update_drawing_instructions()
 
@@ -52,43 +51,20 @@ class MapCanvas(Widget):
     def get_texture(self, token):
         """
         Retourne les textures compatible selon le dictionnaire de textures.
-        :param token: {tuple} rouge, vert, bleu ou {str} lettre
+        :param token: {str} lettre
         :return: {CoreImage.texture} texture
         """
         try:
             texture = self.textures[token]
-        except KeyError, error:
+        except KeyError as error:
             raise KeyError("Texture ", token, " doesn't exist :", error)
 
         return texture
 
-    def parse_png_map(self, map_file_path):
-        map_file = Image.open(map_file_path)
-
-        self.map_size = map_file.size
-        self.map_width = self.map_size[0]
-        self.map_height = self.map_size[1]
-
-        if self.map_width <= 0 or self.map_height <= 0:
-            raise ValueError("Image given is not valid for use.")
-
-        self.map_matrix = []
-
-        pixels_matrix = map_file.load()
-
-        for y in range(0, self.map_height):
-            self.map_matrix.append([])
-            for x in range(0, self.map_width):
-                rgb = pixels_matrix[x, y]
-                texture = self.get_texture(rgb)
-                self.map_matrix[y].append({
-                    'texture': texture,
-                    'type': self.textures.get_other_keys(rgb)[0]
-                })
-
     def parse_pipe_delimited_file(self, map_file_path):
 
         map_file = None
+
         try:
             map_file = open(map_file_path)
 
@@ -97,7 +73,6 @@ class MapCanvas(Widget):
 
             self.map_matrix = []
 
-            map_file.seek(0)
             y = 0
             for line in map_file:
                 cleaned_line = comment.sub('', line).strip()
@@ -120,6 +95,7 @@ class MapCanvas(Widget):
 
             if self.map_width <= 0 or self.map_height <= 0:
                 raise ValueError("Pipe delimited file given is not valid for use.")
+
         finally:
             map_file.close()
 
