@@ -94,6 +94,7 @@ class Level(FloatLayout):
     def get_tile_properties(self, tile_identifier):
         """
         Find the current tile properties.
+        :param tile_identifier: the tile number
         :rtype: boolean list of authorization or False if tile_type is not valid
         """
 
@@ -105,14 +106,7 @@ class Level(FloatLayout):
         if tile_type is None:
             raise Exception("Tile didn't get properties")
 
-        self.player_path.append([tile_identifier[0], tile_identifier[1]])
         return tile_properties
-
-    def get_tile_type(self):
-        return
-
-    def get_tile_authorization(self):
-        return
 
     def get_touch_direction(self):
         """
@@ -169,7 +163,7 @@ class Level(FloatLayout):
         """
         for index_y in range(self.y_max):
             for index_x in range(self.x_max):
-                if self.map_canvas.map_matrix[index_y][index_x]['type'] == 'A':
+                if self.map_canvas.map_matrix[index_y][index_x]['type'] != 'W':
                     self.win_path.append([index_y, index_x])
 
     def is_path_correct(self):
@@ -210,6 +204,7 @@ class Level(FloatLayout):
         self.old_point = ud['points'][0].points[:]
         self.point = ud['points'][0].points[:]
         self.old_tile_identifier = self.tile_identifier[:]
+        self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
 
         # Launch touch.
         touch.grab(self)
@@ -232,9 +227,12 @@ class Level(FloatLayout):
         elif self.tile_identifier != self.old_tile_identifier:
             tile_properties = self.get_tile_properties(self.old_tile_identifier)
             direction = self.get_touch_direction()
-            print(direction)
-            print(tile_properties)
             is_authorised = self.is_authorised(tile_properties, direction)
+            if is_authorised:
+                if [self.tile_identifier[0], self.tile_identifier[1]] in self.player_path:
+                    is_authorised = False
+                self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
+                print(self.player_path)
         else :
             is_authorised = True
 
@@ -263,6 +261,7 @@ class Level(FloatLayout):
         tile_type = self.get_tile_properties(self.tile_identifier)
         if self.can_start(tile_type):
             if self.is_path_correct():
+                print self.player_path
                 # player win, need menu and other impl to finish
                 return
 
