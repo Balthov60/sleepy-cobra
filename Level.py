@@ -1,7 +1,8 @@
 from kivy.uix.floatlayout import FloatLayout
 from MapCanvas import MapCanvas
 from kivy.graphics import Line, Color
-from Tile import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised
+from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
+from random import randint
 
 
 class Level(FloatLayout):
@@ -22,7 +23,7 @@ class Level(FloatLayout):
 
         # Initialize variables.
         self.touch_width = int()
-        self.touch_scaling_factor = 6
+        self.touch_scaling_factor = 9
 
         self.level_size = list()
         self.tile_size = list()
@@ -100,8 +101,8 @@ class Level(FloatLayout):
 
         elif self.tile_identifier != self.old_tile_identifier:
             tile_properties = get_tile_properties(self.map_canvas.map_matrix, self.old_tile_identifier)
-            direction = self.get_touch_direction()
-            can_draw = is_authorised(self, tile_properties, direction)
+            direction = get_touch_direction(self.tile_identifier, self.old_tile_identifier)
+            can_draw = is_authorised(self.tile_identifier, self.player_path, tile_properties, direction)
 
             if can_draw:
                 self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
@@ -122,9 +123,16 @@ class Level(FloatLayout):
             x = points_list[index][0]
             y = points_list[index][1]
             with self.canvas:
-                for diameter in range(1, self.touch_width):
-                    Line(circle=(x, y, diameter),
-                         group=ud['unique_identifier'])
+                gap = randint(1,3)
+                for diameter in range(1, self.touch_width, gap):
+                    circle_radius = randint(0,120)
+                    side = randint(1, 2)
+                    if side == 1:
+                        Line(circle=(x, y, diameter, 0, 360 - circle_radius),
+                             group=ud['unique_identifier'])
+                    else:
+                        Line(circle=(x, y, diameter, 0 + circle_radius, 360),
+                             group=ud['unique_identifier'])
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier
@@ -158,30 +166,6 @@ class Level(FloatLayout):
 
         # player win, need menu and other impl to finish
 
-    def get_touch_direction(self):
-        """
-        Get the simple touch direction. { 1 = bottom, 2 = top, 3 = right, 4 = left}
-
-        :return: simple touch direction
-        :rtype: Integer
-        """
-
-        y = self.tile_identifier[0]
-        x = self.tile_identifier[1]
-        y_old = self.old_tile_identifier[0]
-        x_old = self.old_tile_identifier[1]
-
-        if y > y_old:
-            return 3
-        elif y < y_old:
-            return 2
-        elif x > x_old:
-            return 1
-        elif x < x_old:
-            return 0
-
-        raise Exception("No direction provided !")
-
     def get_smooth_points(self, x1, y1, x2, y2):
         """
         When player touch fast, get all the points between old and new point to smooth the trace.
@@ -197,7 +181,7 @@ class Level(FloatLayout):
         dx = x2 - x1
         dy = y2 - y1
         distance = (dx * dx + dy * dy)**0.5
-        gap = self.touch_width / 4
+        gap = self.touch_width / 8
 
         if distance < gap:
             return False

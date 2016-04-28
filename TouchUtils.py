@@ -1,4 +1,4 @@
-from Textures import authorizations
+from Configuration import authorizations
 
 
 def get_tile_identifier(level, x, y):
@@ -40,6 +40,33 @@ def get_tile_properties(matrix, tile_identifier):
     return authorizations[tile_type]
 
 
+def get_touch_direction(tile_identifier, old_tile_identifier):
+    """
+    Get the simple touch direction. { 1 = bottom, 2 = top, 3 = right, 4 = left}
+
+    :param old_tile_identifier: old tile coordinates
+    :param tile_identifier: tile coordinates
+    :return: simple touch direction
+    :rtype: Integer
+    """
+
+    y = tile_identifier[0]
+    x = tile_identifier[1]
+    y_old = old_tile_identifier[0]
+    x_old = old_tile_identifier[1]
+
+    if y > y_old:
+        return 3
+    elif y < y_old:
+        return 2
+    elif x > x_old:
+        return 1
+    elif x < x_old:
+        return 0
+
+    raise Exception("No direction provided !")
+
+
 def can_start_stop(tile_type, points_list):
     """
     Test if player can start is path.
@@ -54,10 +81,12 @@ def can_start_stop(tile_type, points_list):
     return False
 
 
-def is_authorised(level, tile_authorization, direction):
+def is_authorised(tile_identifier, player_path, tile_authorization, direction):
     """
     Test the current tile to get authorizations.
 
+    :param player_path:
+    :param tile_identifier: tile coordinates
     :param level: Level class
     :param tile_authorization: boolean list of authorization {left, right, top, bot, start/stop}
     :param direction: direction of the tile (Integer)
@@ -65,7 +94,7 @@ def is_authorised(level, tile_authorization, direction):
     """
 
     if type(tile_authorization) is not list \
-            or [level.tile_identifier[0], level.tile_identifier[1]] in level.player_path:
+            or [tile_identifier[0], tile_identifier[1]] in player_path:
         return False
 
     return tile_authorization[direction]
