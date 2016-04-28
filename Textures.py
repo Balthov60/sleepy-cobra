@@ -18,8 +18,9 @@ sources = {
     'angle_right': 'resources/blocks/angle_right.png',
     'angle_left': 'resources/blocks/angle_left.png',
     'double_wall_horizontal': 'resources/blocks/double_wall_horizontal.png',
-    'double_wall_vertical': 'resources/blocks/double_wall_vertical.png'
-
+    'double_wall_vertical': 'resources/blocks/double_wall_vertical.png',
+    'start': 'resources/start.png',
+    'stop': 'resources/stop.png'
 }
 
 for source_name in sorted(sources):
@@ -27,6 +28,8 @@ for source_name in sorted(sources):
         raise ValueError("File %s does not exist." % sources[source_name])
 
 textures = dict([
+    ('start', CoreImage(source=sources['start']).texture),
+    ('stop', CoreImage(source=sources['stop']).texture),
     ('W', CoreImage(source=sources['wall']).texture),
     ('A', CoreImage(source=sources['air']).texture),
     ('L', CoreImage(source=sources['wall_left']).texture),
