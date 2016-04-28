@@ -63,7 +63,7 @@ class Level(FloatLayout):
         if self.tile_identifier is None:
             can_draw = False
         else:
-            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.start_points, self.map_canvas.stop_points)
+            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if not can_draw:
             self.canvas.remove_group(ud['unique_identifier'])
@@ -144,7 +144,7 @@ class Level(FloatLayout):
         if self.tile_identifier is None:
             can_draw = False
         else:
-            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.start_points, self.map_canvas.stop_points)
+            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if can_draw:
             # Delete touch if player loose.
