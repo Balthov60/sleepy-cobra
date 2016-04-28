@@ -77,7 +77,7 @@ class Level(FloatLayout):
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier[:]
-        self.player_path.append(self.tile_identifier)
+        self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
         self.old_point = [touch.x, touch.y]
 
         touch.grab(self)
@@ -104,7 +104,7 @@ class Level(FloatLayout):
             can_draw = is_authorised(self, tile_properties, direction)
 
             if can_draw:
-                self.player_path.append(self.tile_identifier)
+                self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
         else:
             can_draw = True
 
@@ -150,6 +150,7 @@ class Level(FloatLayout):
             # Delete touch if player loose.
             if self.is_path_correct():
                 return
+
         touch.ungrab(self)
         ud = touch.ud
         self.canvas.remove_group(ud['unique_identifier'])

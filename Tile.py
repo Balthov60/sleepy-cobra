@@ -19,7 +19,7 @@ def get_tile_identifier(level, x, y):
             vertical_location_matches = \
                 level.touch_matrix[index_y][index_x][1] >= y > level.touch_matrix[index_y][index_x][3]
             if horizontal_location_matches and vertical_location_matches:
-                return [index_y, index_x]
+                return index_y, index_x
     return None
 
 
@@ -42,12 +42,11 @@ def get_tile_properties(matrix, tile_identifier):
 
 def can_start_stop(tile_type, start_points, stop_points):
     """
-        Test if player can start is path.
+    Test if player can start is path.
 
-        :param tile_type: key of the texture (string)
-        :rtype: boolean
-        """
-    print(tile_type, start_points, stop_points)
+    :param tile_type: key of the texture (string)
+    :rtype: boolean
+    """
     if tile_type in start_points or tile_type in stop_points:
         return True
 
