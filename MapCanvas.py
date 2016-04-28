@@ -25,8 +25,7 @@ class MapCanvas(Widget):
         self.map_size = int
         self.map_matrix = list
 
-        self.start_points = list()
-        self.stop_points = list()
+        self.points = list()
 
         self.textures = textures
         self.textures_size = 256
@@ -94,15 +93,14 @@ class MapCanvas(Widget):
                     if x > self.map_width:
                         self.map_width = x
                 indication = start_and_stop.split(line.replace('#', ''))
-                if len(indication) == 4:
-                    self.start_points.append((int(indication[0]), int(indication[1])))
-                    self.stop_points.append((int(indication[2]), int(indication[3])))
+                if len(indication) == 2:
+                    self.points.append((int(indication[1]), int(indication[0])))
 
             self.map_height = y
 
             self.map_size = (self.map_width, self.map_height)
 
-            if self.map_width <= 0 or self.map_height <= 0 or not self.start_points or not self.stop_points:
+            if self.map_width <= 0 or self.map_height <= 0 or not self.points:
                 raise ValueError("Pipe delimited file given is not valid for use.")
 
         finally:
@@ -124,7 +122,9 @@ class MapCanvas(Widget):
         self.vectical_padding = (window_width - size_needed_width / scaling_factor) / 2
         self.horizontal_padding = (window_height - size_needed_height / scaling_factor) / 2
 
+        self.canvas.before.clear()
         self.canvas.clear()
+        self.canvas.after.clear()
 
         start_time = datetime.datetime.now()
 
@@ -137,17 +137,13 @@ class MapCanvas(Widget):
                 tile_size_tuple = [self.tile_size] * 2
                 texture = self.map_matrix[y][x]['texture']
 
-                if (x, y) in self.start_points:
-                    start_texture = self.textures['start']
-                    self.canvas.add(Rectangle(size=tile_size_tuple, texture=start_texture, pos=position))
+                self.canvas.before.add(Color(0.37, 0.37, 0.37, 1) if (x + y) % 2 else Color(0.19, 0.19, 0.19, 1))
+                self.canvas.before.add(Rectangle(size=tile_size_tuple, pos=position))
+                self.canvas.add(Color(None))
 
-                if (x, y) in self.stop_points:
-                    stop_texture = self.textures['stop']
-                    self.canvas.add(Rectangle(size=tile_size_tuple, texture=stop_texture, pos=position))
-
-                self.canvas.add(Color(.204, .206, .203, .5) if (x + y) % 2 else Color(.204, .19, .204, .5))
-                self.canvas.add(Rectangle(size=tile_size_tuple, pos=position))
-
+                if (y, x) in self.points:
+                    point_texture = self.textures['point']
+                    self.canvas.add(Rectangle(size=tile_size_tuple, texture=point_texture, pos=position))
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
 
 
