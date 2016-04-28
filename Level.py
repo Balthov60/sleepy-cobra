@@ -17,8 +17,9 @@ class Level(FloatLayout):
         """
 
         # Load map.
+        self.textures = textures
         super(Level, self).__init__(**kwargs)
-        self.map_canvas = MapCanvas(map_file_path, textures)
+        self.map_canvas = MapCanvas(map_file_path, self.textures)
         self.add_widget(self.map_canvas)
 
         # Initialize variables.
@@ -43,6 +44,10 @@ class Level(FloatLayout):
         # Define level settings.
         self.define_level_properties()
         self.define_win_conditions()
+
+        # Define global settings.
+        self.group = 0
+        self.level = 0
 
     ####
     # Touch methods
@@ -157,11 +162,11 @@ class Level(FloatLayout):
         if can_draw:
             # Delete touch if player loose.
             if self.is_path_correct():
+                self.level_up()
                 return
 
         touch.ungrab(self)
         ud = touch.ud
-        self.canvas.remove_group(ud['unique_identifier'])
         return
 
         # player win, need menu and other impl to finish
@@ -198,7 +203,7 @@ class Level(FloatLayout):
         return points_list
 
     ####
-    # level properties for initialisation
+    # initialisation and level up
     ####
 
     def define_level_properties(self):
@@ -217,8 +222,8 @@ class Level(FloatLayout):
                           self.level_size[1] / self.map_canvas.map_size[1]]
 
         # Initialise then fill matrix.
-        self.x_max = self.map_canvas.map_size[0]  # find other name ?
-        self.y_max = self.map_canvas.map_size[1]  # find other name ?
+        self.x_max = self.map_canvas.map_size[0]
+        self.y_max = self.map_canvas.map_size[1]
         self.touch_matrix = [[0 for _ in xrange(self.x_max)] for _ in xrange(self.y_max)]
 
         x = self.map_canvas.vectical_padding
@@ -230,6 +235,43 @@ class Level(FloatLayout):
                 x += self.tile_size[0]
             y -= self.tile_size[1]
             x = self.map_canvas.vectical_padding
+
+    def reset_old_properties(self):
+        """
+        Reset properties of the old level.
+
+        :rtype: void
+        """
+        # Initialize variables.
+
+        self.touch_matrix = None
+        self.remove_widget(self.map_canvas)
+
+        self.old_point = list()
+        self.tile_identifier = list()
+        self.old_tile_identifier = list()
+        self.win_path = list()
+        self.player_path = list()
+
+    def level_up(self):
+        """
+        Load the next map canvas and properties/
+
+        :rtype: void
+        """
+
+        self.group += 1
+        self.level += 1
+        map_file_path = 'resources/maps' + '/set' + str(self.group) + '/level' + str(self.group) + '_' + str(self.level) + '.cfg'
+
+        self.reset_old_properties()
+
+        self.map_canvas = MapCanvas(map_file_path, self.textures)
+        self.add_widget(self.map_canvas)
+
+        self.define_level_properties()
+        self.define_win_conditions()
+
 
     ####
     # win methods
