@@ -1,7 +1,7 @@
 from kivy.uix.floatlayout import FloatLayout
 from MapCanvas import MapCanvas
 from kivy.graphics import Line, Color
-from Tile import get_tile_identifier, get_tile_properties, can_start, is_authorised
+from Tile import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised
 
 
 class Level(FloatLayout):
@@ -63,8 +63,7 @@ class Level(FloatLayout):
         if self.tile_identifier is None:
             can_draw = False
         else:
-            tile_properties = get_tile_properties(self.map_canvas.map_matrix, self.tile_identifier)
-            can_draw = can_start(tile_properties)
+            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.start_points, self.map_canvas.stop_points)
 
         if not can_draw:
             self.canvas.remove_group(ud['unique_identifier'])
@@ -140,12 +139,21 @@ class Level(FloatLayout):
         if touch.grab_current is not self:
             return
 
-        # Delete touch if player loose.
-        if not self.is_path_correct():
-            touch.ungrab(self)
-            ud = touch.ud
-            self.canvas.remove_group(ud['unique_identifier'])
-            return
+        # get if player can draw here
+        self.tile_identifier = get_tile_identifier(self, touch.x, touch.y)
+        if self.tile_identifier is None:
+            can_draw = False
+        else:
+            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.start_points, self.map_canvas.stop_points)
+
+        if can_draw:
+            # Delete touch if player loose.
+            if self.is_path_correct():
+                return
+        touch.ungrab(self)
+        ud = touch.ud
+        self.canvas.remove_group(ud['unique_identifier'])
+        return
 
         # player win, need menu and other impl to finish
 

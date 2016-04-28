@@ -40,18 +40,18 @@ def get_tile_properties(matrix, tile_identifier):
     return authorizations[tile_type]
 
 
-def can_start(tile_type):
+def can_start_stop(tile_type, start_points, stop_points):
     """
         Test if player can start is path.
 
         :param tile_type: key of the texture (string)
         :rtype: boolean
         """
+    print(tile_type, start_points, stop_points)
+    if tile_type in start_points or tile_type in stop_points:
+        return True
 
-    if tile_type == "W" or tile_type == "pading":
-        return False
-
-    return True
+    return False
 
 
 def is_authorised(level, tile_authorization, direction):
