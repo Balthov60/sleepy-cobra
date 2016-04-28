@@ -21,7 +21,7 @@ class GameApp(App):
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)
 
-        self.game_widget = Level('resources/maps/test1.cfg', self.textures)
+        self.game_widget = Level('resources/maps/test.cfg', self.textures)
         self.game_screen = Screen(name="Game")
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)
