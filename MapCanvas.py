@@ -25,8 +25,8 @@ class MapCanvas(Widget):
         self.map_size = int
         self.map_matrix = list
 
-        self.start = tuple
-        self.stop = tuple
+        self.start_points = list()
+        self.stop_points = list()
 
         self.textures = textures
         self.textures_size = 256
@@ -95,16 +95,14 @@ class MapCanvas(Widget):
                         self.map_width = x
                 indication = start_and_stop.split(line.replace('#', ''))
                 if len(indication) == 4:
-                    print(line)
-                    print(indication)
-                    self.start = (int(indication[0]), int(indication[1]))
-                    self.stop = (int(indication[2]), int(indication[3]))
+                    self.start_points.append((int(indication[0]), int(indication[1])))
+                    self.stop_points.append((int(indication[2]), int(indication[3])))
 
             self.map_height = y
 
             self.map_size = (self.map_width, self.map_height)
 
-            if self.map_width <= 0 or self.map_height <= 0 or not self.start or not self.stop:
+            if self.map_width <= 0 or self.map_height <= 0 or not self.start_points or not self.stop_points:
                 raise ValueError("Pipe delimited file given is not valid for use.")
 
         finally:
@@ -139,17 +137,19 @@ class MapCanvas(Widget):
                 tile_size_tuple = [self.tile_size] * 2
                 texture = self.map_matrix[y][x]['texture']
 
-                self.canvas.add(Color(.204, .206, .203) if (x + y) % 2 else Color(.204, .19, .204))
-                self.canvas.add(Rectangle(size=tile_size_tuple, pos=position))
-                self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
-
-                if self.start == (x, y):
+                if (x, y) in self.start_points:
                     start_texture = self.textures['start']
                     self.canvas.add(Rectangle(size=tile_size_tuple, texture=start_texture, pos=position))
 
-                if self.stop == (x, y):
+                if (x, y) in self.stop_points:
                     stop_texture = self.textures['stop']
                     self.canvas.add(Rectangle(size=tile_size_tuple, texture=stop_texture, pos=position))
+
+                self.canvas.add(Color(.204, .206, .203, .5) if (x + y) % 2 else Color(.204, .19, .204, .5))
+                self.canvas.add(Rectangle(size=tile_size_tuple, pos=position))
+
+                self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
+
 
 
         end_time = datetime.datetime.now()
