@@ -27,6 +27,7 @@ for source_name in sorted(sources):
     if not os.path.isfile(sources[source_name]):
         raise ValueError("File %s does not exist." % sources[source_name])
 
+# textures dictionary, format : textures path
 textures = dict([
     ('start', CoreImage(source=sources['start']).texture),
     ('stop', CoreImage(source=sources['stop']).texture),
@@ -48,22 +49,23 @@ textures = dict([
     ('V', CoreImage(source=sources['double_wall_vertical']).texture)
 ])
 
-# authorization boolean list format : {left, right, top, bot, start/stop}
-authorizations = dict()
-authorizations['W'] = [False, False, False, False, False]
-authorizations['A'] = [True, True, True, True, False]
-authorizations['L'] = [False, True, True, True, False]
-authorizations['R'] = [True, False, True, True, False]
-authorizations['T'] = [True, True, False, True, False]
-authorizations['B'] = [True, True, True, False, False]
-authorizations['LB'] = [False, True, True, False, False]
-authorizations['LT'] = [False, True, False, True, False]
-authorizations['RB'] = [True, False, True, False, False]
-authorizations['RT'] = [True, False, False, True, False]
-authorizations['AT'] = [False, False, False, True, False]
-authorizations['AB'] = [False, False, True, False, False]
-authorizations['AR'] = [False, True, False, False, False]
-authorizations['AL'] = [True, False, False, False, False]
-authorizations['H'] = [True, True, False, False, False]
-authorizations['V'] = [False, False, True, True, False]
+# authorization dictionary, format boolean list : {left, right, top, bot, start/stop}
+authorizations = dict([
+    ('W', [False, False, False, False, False]),
+    ('A', [True, True, True, True, False]),
+    ('L', [False, True, True, True, False]),
+    ('R', [True, False, True, True, False]),
+    ('T', [True, True, False, True, False]),
+    ('B', [True, True, True, False, False]),
+    ('LB', [False, True, True, False, False]),
+    ('LT', [False, True, False, True, False]),
+    ('RB', [True, False, True, False, False]),
+    ('RT', [True, False, False, True, False]),
+    ('AT', [False, False, False, True, False]),
+    ('AB', [False, False, True, False, False]),
+    ('AR', [False, True, False, False, False]),
+    ('AL', [True, False, False, False, False]),
+    ('H', [True, True, False, False, False]),
+    ('V', [False, False, True, True, False]),
+])
 
