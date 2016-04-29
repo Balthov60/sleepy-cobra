@@ -23,7 +23,7 @@ class GameApp(App):
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)
 
-        self.game_widget = Level(self.group, self.level, self.textures, self.authorizations)
+        self.game_widget = Level(self.textures, self.authorizations)
         self.game_screen = Screen(name="Game")
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)

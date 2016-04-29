@@ -14,7 +14,7 @@ class Level(FloatLayout):
     ID = 'unique_identifier'
     SAVE_PATH = "resources/save.yml"
 
-    def __init__(self, group, level, textures, authorizations, **kwargs):
+    def __init__(self, textures, authorizations, **kwargs):
         """
         Load map in a layout then load level and touch properties.
 
