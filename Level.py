@@ -6,7 +6,14 @@ from random import randint
 
 
 class Level(FloatLayout):
-    def __init__(self, map_file_path, textures, authorizations, **kwargs):
+
+    MAP = 'resources/maps/set'
+    LEVEL = '/level'
+    CFG = '.cfg'
+    SEPARATOR = '_'
+    ID = 'unique_identifier'
+
+    def __init__(self, map_file_path, group, level, textures, authorizations, **kwargs):
         """
         Load map in a layout then load level and touch properties.
 
@@ -16,6 +23,10 @@ class Level(FloatLayout):
         :param kwargs: layout's args
         """
 
+        # Defin global conditions.
+        self.group = group
+        self.level = level
+
         # Load map.
         self.textures = textures
         super(Level, self).__init__(**kwargs)
@@ -24,7 +35,7 @@ class Level(FloatLayout):
 
         # Initialize variables.
         self.touch_width = int()
-        self.touch_scaling_factor = 9
+        self.touch_scaling_factor = 8
 
         self.level_size = list()
         self.tile_size = list()
@@ -45,10 +56,6 @@ class Level(FloatLayout):
         self.define_level_properties()
         self.define_win_conditions()
 
-        # Define global settings.
-        self.group = 0
-        self.level = 0
-
     ####
     # Touch methods
     ####
@@ -61,7 +68,7 @@ class Level(FloatLayout):
 
         # Save current touch.
         ud = touch.ud
-        ud['unique_identifier'] = str(touch.uid)
+        ud[self.ID] = str(touch.uid)
         self.player_path = []
 
         # get if player can draw here
@@ -72,14 +79,14 @@ class Level(FloatLayout):
             can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if not can_draw:
-            self.canvas.remove_group(ud['unique_identifier'])
+            self.canvas.remove_group(ud[self.ID])
             return
 
         with self.canvas:
             Color(0.97, 0.97, 1)
             for diameter in range(1, self.touch_width):
                 Line(circle=(touch.x, touch.y, diameter),
-                     group=ud['unique_identifier'])
+                     group=ud[self.ID])
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier[:]
@@ -97,7 +104,7 @@ class Level(FloatLayout):
         if touch.grab_current is not self:
             return
         ud = touch.ud
-        ud['unique_identifier'] = str(touch.uid)
+        ud[self.ID] = str(touch.uid)
 
         # get if player can draw (test if player is in a valid tile then test if tile change).
         self.tile_identifier = get_tile_identifier(self, touch.x, touch.y)
@@ -116,7 +123,7 @@ class Level(FloatLayout):
 
         if not can_draw:
             touch.ungrab(self)
-            self.canvas.remove_group(ud['unique_identifier'])
+            self.canvas.remove_group(ud[self.ID])
             return
 
         points_list = self.get_smooth_points(self.old_point[0], self.old_point[1], touch.x, touch.y)
@@ -128,16 +135,10 @@ class Level(FloatLayout):
             x = points_list[index][0]
             y = points_list[index][1]
             with self.canvas:
-                gap = randint(1,3)
+                gap = randint(1, 3)
                 for diameter in range(1, self.touch_width, gap):
-                    circle_radius = randint(0,120)
-                    side = randint(1, 2)
-                    if side == 1:
-                        Line(circle=(x, y, diameter, 0, 360 - circle_radius),
-                             group=ud['unique_identifier'])
-                    else:
-                        Line(circle=(x, y, diameter, 0 + circle_radius, 360),
-                             group=ud['unique_identifier'])
+                        Line(circle=(x, y, diameter),
+                             group=ud[self.ID])
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier
@@ -163,10 +164,10 @@ class Level(FloatLayout):
             # Delete touch if player loose.
             if self.is_path_correct():
                 self.level_up()
-                return
 
-        touch.ungrab(self)
         ud = touch.ud
+        touch.ungrab(self)
+        self.canvas.remove_group(ud[self.ID])
         return
 
         # player win, need menu and other impl to finish
@@ -186,7 +187,7 @@ class Level(FloatLayout):
         dx = x2 - x1
         dy = y2 - y1
         distance = (dx * dx + dy * dy)**0.5
-        gap = self.touch_width / 8
+        gap = self.touch_width / 7
 
         if distance < gap:
             return False
@@ -262,7 +263,8 @@ class Level(FloatLayout):
 
         self.group += 1
         self.level += 1
-        map_file_path = 'resources/maps' + '/set' + str(self.group) + '/level' + str(self.group) + '_' + str(self.level) + '.cfg'
+        map_file_path = "{0}{1}{2}{3}{4}{5}{6}".format(self.MAP, str(self.group), self.LEVEL, str(self.group),
+                                                       self.SEPARATOR, str(self.level), self.CFG)
 
         self.reset_old_properties()
 
@@ -271,7 +273,6 @@ class Level(FloatLayout):
 
         self.define_level_properties()
         self.define_win_conditions()
-
 
     ####
     # win methods

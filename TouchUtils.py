@@ -1,4 +1,4 @@
-from Configuration import authorizations
+from Configurations import authorizations
 
 
 def get_tile_identifier(level, x, y):
