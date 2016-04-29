@@ -2,7 +2,6 @@ from kivy.uix.floatlayout import FloatLayout
 from MapCanvas import MapCanvas
 from kivy.graphics import Line, Color
 from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
-from FilesUtils import set_object_in_yaml
 from random import randint
 
 
@@ -26,8 +25,8 @@ class Level(FloatLayout):
         """
 
         # Defin global conditions.
-        self.group = group
-        self.level = level
+        self.group = 1
+        self.level = 1
 
         # Load map.
         self.textures = textures
@@ -270,10 +269,7 @@ class Level(FloatLayout):
         self.level += 1
         if self.level > 5:
             self.group += 1
-            set_object_in_yaml(self.SAVE_PATH, ['player_save', 'group'], self.group)
             self.level = 1
-
-        set_object_in_yaml(self.SAVE_PATH, ['player_save', 'level'], self.level)
 
         map_file_path = "{0}{1}{2}{3}{4}{5}{6}".format(self.MAP, str(self.group), self.LEVEL, str(self.group),
                                                        self.SEPARATOR, str(self.level), self.CFG)

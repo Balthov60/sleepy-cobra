@@ -4,10 +4,10 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Rectangle, Color
 from kivy.core.window import Window
 from kivy.logger import Logger
-from FilesUtils import test_cfg_file
 
 import datetime
 import re
+import os
 
 
 class MapCanvas(Widget):
@@ -35,9 +35,18 @@ class MapCanvas(Widget):
         self.vectical_padding = int
         self.horizontal_padding = int
 
-        test_cfg_file(map_file_path)
+        is_file = os.path.isfile(map_file_path)
+        if not is_file:
+            raise ValueError("File given does not exist.")
 
-        self.parse_pipe_delimited_file(map_file_path)
+        is_cfg = map_file_path.lower().endswith('.cfg')
+
+        if is_cfg:
+            self.parse_pipe_delimited_file(map_file_path)
+
+        else:
+           raise ValueError("File given is not valid for use.")
+
         self.update_drawing_instructions()
 
         Window.bind(on_resize=self.update_drawing_instructions)
