@@ -42,7 +42,7 @@ def get_tile_properties(matrix, tile_identifier):
 
 def get_touch_direction(tile_identifier, old_tile_identifier):
     """
-    Get the simple touch direction. { 1 = bottom, 2 = top, 3 = right, 4 = left}
+    Get the simple touch direction. {0 = left, 1 = right, 2 = top, 3 = bottom}
 
     :param old_tile_identifier: old tile coordinates
     :param tile_identifier: tile coordinates
@@ -55,14 +55,14 @@ def get_touch_direction(tile_identifier, old_tile_identifier):
     y_old = old_tile_identifier[0]
     x_old = old_tile_identifier[1]
 
-    if y > y_old:
-        return 3
-    elif y < y_old:
-        return 2
+    if x < x_old:
+        return 0, 1
     elif x > x_old:
-        return 1
-    elif x < x_old:
-        return 0
+        return 1, 0
+    elif y < y_old:
+        return 2, 3
+    elif y > y_old:
+        return 3, 2
 
     raise Exception("No direction provided !")
 
@@ -81,15 +81,15 @@ def can_start_stop(tile_type, points_list):
     return False
 
 
-def is_authorised(tile_identifier, player_path, tile_authorization, direction):
+def is_authorised(tile_identifier, player_path, tile_authorization, old_tile_authorization, direction):
     """
     Test the current tile to get authorizations.
 
     :param player_path:
     :param tile_identifier: tile coordinates
-    :param level: Level class
-    :param tile_authorization: boolean list of authorization {left, right, top, bot, start/stop}
-    :param direction: direction of the tile (Integer)
+    :param tile_authorization: boolean list of authorization {left, right, top, bot}
+    :param old_tile_authorization: boolean list of authorization {left, right, top, bot}
+    :param direction: direction of the tile (tuple of Integer)
     :rtype: boolean
     """
 
@@ -97,4 +97,7 @@ def is_authorised(tile_identifier, player_path, tile_authorization, direction):
             or [tile_identifier[0], tile_identifier[1]] in player_path:
         return False
 
-    return tile_authorization[direction]
+    if old_tile_authorization[direction[0]] and tile_authorization[direction[1]]:
+        return True
+
+    return False

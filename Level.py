@@ -2,6 +2,7 @@ from kivy.uix.floatlayout import FloatLayout
 from MapCanvas import MapCanvas
 from kivy.graphics import Line, Color
 from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
+from FilesUtils import set_object_in_yaml
 from random import randint
 
 
@@ -12,8 +13,9 @@ class Level(FloatLayout):
     CFG = '.cfg'
     SEPARATOR = '_'
     ID = 'unique_identifier'
+    SAVE_PATH = "resources/save.yml"
 
-    def __init__(self, map_file_path, group, level, textures, authorizations, **kwargs):
+    def __init__(self, group, level, textures, authorizations, **kwargs):
         """
         Load map in a layout then load level and touch properties.
 
@@ -30,6 +32,8 @@ class Level(FloatLayout):
         # Load map.
         self.textures = textures
         super(Level, self).__init__(**kwargs)
+        map_file_path = "{0}{1}{2}{3}{4}{5}{6}".format(self.MAP, str(self.group), self.LEVEL, str(self.group),
+                                                       self.SEPARATOR, str(self.level), self.CFG)
         self.map_canvas = MapCanvas(map_file_path, self.textures)
         self.add_widget(self.map_canvas)
 
@@ -112,9 +116,11 @@ class Level(FloatLayout):
             can_draw = False
 
         elif self.tile_identifier != self.old_tile_identifier:
-            tile_properties = get_tile_properties(self.map_canvas.map_matrix, self.old_tile_identifier)
+            old_tile_properties = get_tile_properties(self.map_canvas.map_matrix, self.old_tile_identifier)
+            tile_properties = get_tile_properties(self.map_canvas.map_matrix, self.tile_identifier)
             direction = get_touch_direction(self.tile_identifier, self.old_tile_identifier)
-            can_draw = is_authorised(self.tile_identifier, self.player_path, tile_properties, direction)
+            can_draw = is_authorised(self.tile_identifier, self.player_path,
+                                     tile_properties, old_tile_properties, direction)
 
             if can_draw:
                 self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
@@ -261,8 +267,14 @@ class Level(FloatLayout):
         :rtype: void
         """
 
-        self.group += 1
         self.level += 1
+        if self.level > 5:
+            self.group += 1
+            set_object_in_yaml(self.SAVE_PATH, ['player_save', 'group'], self.group)
+            self.level = 1
+
+        set_object_in_yaml(self.SAVE_PATH, ['player_save', 'level'], self.level)
+
         map_file_path = "{0}{1}{2}{3}{4}{5}{6}".format(self.MAP, str(self.group), self.LEVEL, str(self.group),
                                                        self.SEPARATOR, str(self.level), self.CFG)
 
