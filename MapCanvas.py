@@ -6,8 +6,8 @@ from kivy.core.window import Window
 from kivy.logger import Logger
 
 import datetime
-import os
 import re
+import os
 
 
 class MapCanvas(Widget):
@@ -36,7 +36,6 @@ class MapCanvas(Widget):
         self.horizontal_padding = int
 
         is_file = os.path.isfile(map_file_path)
-
         if not is_file:
             raise ValueError("File given does not exist.")
 
@@ -44,8 +43,9 @@ class MapCanvas(Widget):
 
         if is_cfg:
             self.parse_pipe_delimited_file(map_file_path)
+
         else:
-            raise ValueError("File given is not valid for use.")
+           raise ValueError("File given is not valid for use.")
 
         self.update_drawing_instructions()
 
@@ -145,8 +145,6 @@ class MapCanvas(Widget):
                     point_texture = self.textures['point']
                     self.canvas.add(Rectangle(size=tile_size_tuple, texture=point_texture, pos=position))
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
-
-
 
         end_time = datetime.datetime.now()
         duration = end_time - start_time

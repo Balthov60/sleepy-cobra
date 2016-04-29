@@ -2,10 +2,11 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from Level import Level
 from Menu import Menu
-from Configuration import textures, authorizations
+from Configurations import textures, authorizations
 
 
 class GameApp(App):
+
     def __init__(self, **kwargs):
         """
 
@@ -22,7 +23,7 @@ class GameApp(App):
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)
 
-        self.game_widget = Level('resources/maps/test.cfg', self.textures, self.authorizations)
+        self.game_widget = Level(self.group, self.level, self.textures, self.authorizations)
         self.game_screen = Screen(name="Game")
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)
