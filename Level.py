@@ -1,6 +1,6 @@
 from kivy.uix.floatlayout import FloatLayout
 from MapCanvas import MapCanvas
-from kivy.graphics import Line, Color
+from kivy.graphics import Point
 from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
 from random import randint
 
@@ -86,10 +86,8 @@ class Level(FloatLayout):
             return
 
         with self.canvas:
-            Color(0.97, 0.97, 1)
-            for diameter in range(1, self.touch_width):
-                Line(circle=(touch.x, touch.y, diameter),
-                     group=ud[self.ID])
+            Point(points=(touch.x, touch.y), source='resources/other/trace.png',
+                          pointsize=self.touch_width, group=ud[self.ID])
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier[:]
@@ -141,9 +139,8 @@ class Level(FloatLayout):
             y = points_list[index][1]
             with self.canvas:
                 gap = randint(1, 3)
-                for diameter in range(1, self.touch_width, gap):
-                        Line(circle=(x, y, diameter),
-                             group=ud[self.ID])
+                Point(points=(x, y), source='resources/other/trace.png',
+                          pointsize=self.touch_width, group=ud[self.ID])
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier
