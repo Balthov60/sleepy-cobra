@@ -4,10 +4,10 @@
 title = Sleepy Cobra
 
 # (str) Package name
-package.name = sleepycobra
+package.name = scapeme
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.sleepycobra
+package.domain = org.scapeme
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -25,7 +25,7 @@ source.include_exts = py,png,jpg,kv,atlas,cfg
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.2
+version = 0.3
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -33,7 +33,7 @@ version = 0.2
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy, pil, multi_key_dict
+requirements = kivy, pil, multi_key_dict, sqlite3
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

@@ -1,11 +1,14 @@
 from kivy.uix.floatlayout import FloatLayout
-from MapCanvas import MapCanvas
 from kivy.graphics import Point
+
+from MapCanvas import MapCanvas
 from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
+from LevelService import LevelService
+
+from datetime import datetime
 
 
 class Level(FloatLayout):
-
     MAP = 'resources/maps/set'
     LEVEL = '/level'
     CFG = '.cfg'
@@ -23,7 +26,7 @@ class Level(FloatLayout):
         :param kwargs: layout's args
         """
 
-        # Defin global conditions.
+        # Define global conditions.
         self.group = 1
         self.level = 1
 
@@ -57,6 +60,10 @@ class Level(FloatLayout):
         # Define level settings.
         self.define_level_properties()
         self.define_win_conditions()
+
+        self.level_service = LevelService()
+        self.start_time = datetime.now()
+        self.failed_attempts = 0
 
     ####
     # Touch methods
@@ -180,7 +187,7 @@ class Level(FloatLayout):
 
         dx = x2 - x1
         dy = y2 - y1
-        distance = (dx * dx + dy * dy)**0.5
+        distance = (dx * dx + dy * dy) ** 0.5
         gap = self.touch_width / 5
 
         if distance < gap:
@@ -256,6 +263,11 @@ class Level(FloatLayout):
 
         :rtype: void
         """
+        self.level_service.save_advancement(
+            str(self.group) + str(self.level),
+            datetime.now() - self.start_time,
+            self.failed_attempts
+        )
 
         self.level += 1
         if self.level > 5:
@@ -296,5 +308,6 @@ class Level(FloatLayout):
         """
         for entry in self.win_path:
             if entry not in self.player_path:
+                self.failed_attempts += 1
                 return False
         return True

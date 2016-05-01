@@ -6,7 +6,6 @@ from Configurations import textures, authorizations
 
 
 class GameApp(App):
-
     def __init__(self, **kwargs):
         """
 
@@ -35,6 +34,7 @@ class GameApp(App):
         """
         self.screen_manager.current = 'Game'
         return self.screen_manager
+
 
 if __name__ == '__main__':
     GameApp().run()

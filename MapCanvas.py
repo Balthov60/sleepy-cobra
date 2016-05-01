@@ -5,7 +5,7 @@ from kivy.graphics import Rectangle, Color
 from kivy.core.window import Window
 from kivy.logger import Logger
 
-import datetime
+from datetime import datetime
 import re
 import os
 
@@ -126,7 +126,7 @@ class MapCanvas(Widget):
         self.canvas.clear()
         self.canvas.after.clear()
 
-        start_time = datetime.datetime.now()
+        start_time = datetime.now()
 
         for y in range(0, len(self.map_matrix)):
             for x in range(0, len(self.map_matrix[y])):
@@ -146,7 +146,7 @@ class MapCanvas(Widget):
                     self.canvas.add(Rectangle(size=tile_size_tuple, texture=point_texture, pos=position))
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
 
-        end_time = datetime.datetime.now()
+        end_time = datetime.now()
         duration = end_time - start_time
         duration_seconds = duration.microseconds * 10**-6
         Logger.info("Drawing instruction added in %fs" % duration_seconds)
