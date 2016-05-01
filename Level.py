@@ -86,6 +86,7 @@ class Level(FloatLayout):
             can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if not can_draw:
+            self.failed_attempts += 1
             self.canvas.after.clear()
             return
 
@@ -126,6 +127,7 @@ class Level(FloatLayout):
             can_draw = True
 
         if not can_draw:
+            self.failed_attempts += 1
             touch.ungrab(self)
             self.canvas.after.clear()
             return
@@ -166,7 +168,9 @@ class Level(FloatLayout):
             if self.is_path_correct():
                 self.level_up()
 
-        ud = touch.ud
+        else:
+            self.failed_attempts += 1
+
         touch.ungrab(self)
         self.canvas.after.clear()
         return
@@ -246,7 +250,6 @@ class Level(FloatLayout):
         :rtype: void
         """
         # Initialize variables.
-
         self.touch_matrix = None
         self.canvas.after.clear()
         self.remove_widget(self.map_canvas)
