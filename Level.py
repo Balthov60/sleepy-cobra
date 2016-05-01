@@ -2,7 +2,6 @@ from kivy.uix.floatlayout import FloatLayout
 from MapCanvas import MapCanvas
 from kivy.graphics import Point
 from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
-from random import randint
 
 
 class Level(FloatLayout):
@@ -12,7 +11,7 @@ class Level(FloatLayout):
     CFG = '.cfg'
     SEPARATOR = '_'
     ID = 'unique_identifier'
-    SAVE_PATH = "resources/save.yml"
+    SAVE_PATH = 'resources/save.yml'
 
     def __init__(self, textures, authorizations, **kwargs):
         """
@@ -38,7 +37,7 @@ class Level(FloatLayout):
 
         # Initialize variables.
         self.touch_width = int()
-        self.touch_scaling_factor = 8
+        self.touch_scaling_factor = 5
 
         self.level_size = list()
         self.tile_size = list()
@@ -69,9 +68,7 @@ class Level(FloatLayout):
         :rtype: void
         """
 
-        # Save current touch.
-        ud = touch.ud
-        ud[self.ID] = str(touch.uid)
+        # Save current path.
         self.player_path = []
 
         # get if player can draw here
@@ -82,16 +79,15 @@ class Level(FloatLayout):
             can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if not can_draw:
-            self.canvas.remove_group(ud[self.ID])
+            self.canvas.after.clear()
             return
 
-        with self.canvas:
-            Point(points=(touch.x, touch.y), source='resources/other/trace.png',
-                          pointsize=self.touch_width, group=ud[self.ID])
+        with self.canvas.after:
+            Point(points=(touch.x, touch.y), source='resources/other/trace.png', pointsize=self.touch_width)
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier[:]
-        self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
+        self.player_path.append((self.tile_identifier[0], self.tile_identifier[1]))
         self.old_point = [touch.x, touch.y]
 
         touch.grab(self)
@@ -104,8 +100,6 @@ class Level(FloatLayout):
 
         if touch.grab_current is not self:
             return
-        ud = touch.ud
-        ud[self.ID] = str(touch.uid)
 
         # get if player can draw (test if player is in a valid tile then test if tile change).
         self.tile_identifier = get_tile_identifier(self, touch.x, touch.y)
@@ -120,27 +114,25 @@ class Level(FloatLayout):
                                      tile_properties, old_tile_properties, direction)
 
             if can_draw:
-                self.player_path.append([self.tile_identifier[0], self.tile_identifier[1]])
+                self.player_path.append((self.tile_identifier[0], self.tile_identifier[1]))
         else:
             can_draw = True
 
         if not can_draw:
             touch.ungrab(self)
-            self.canvas.remove_group(ud[self.ID])
+            self.canvas.after.clear()
             return
 
         points_list = self.get_smooth_points(self.old_point[0], self.old_point[1], touch.x, touch.y)
 
         if not points_list:
-            points_list = [[touch.x, touch.y]]
+            points_list = [(touch.x, touch.y)]
 
         for index in range(len(points_list)):
             x = points_list[index][0]
             y = points_list[index][1]
-            with self.canvas:
-                gap = randint(1, 3)
-                Point(points=(x, y), source='resources/other/trace.png',
-                          pointsize=self.touch_width, group=ud[self.ID])
+            with self.canvas.after:
+                Point(points=(x, y), source='resources/other/trace.png', pointsize=self.touch_width)
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier
@@ -169,7 +161,7 @@ class Level(FloatLayout):
 
         ud = touch.ud
         touch.ungrab(self)
-        self.canvas.remove_group(ud[self.ID])
+        self.canvas.after.clear()
         return
 
         # player win, need menu and other impl to finish
@@ -189,7 +181,7 @@ class Level(FloatLayout):
         dx = x2 - x1
         dy = y2 - y1
         distance = (dx * dx + dy * dy)**0.5
-        gap = self.touch_width / 7
+        gap = self.touch_width / 5
 
         if distance < gap:
             return False
@@ -201,7 +193,7 @@ class Level(FloatLayout):
             factor = index / quantity
             x = x1 + dx * factor
             y = y1 + dy * factor
-            points_list.append([x, y])
+            points_list.append((x, y))
 
         return points_list
 
@@ -227,14 +219,15 @@ class Level(FloatLayout):
         # Initialise then fill matrix.
         self.x_max = self.map_canvas.map_size[0]
         self.y_max = self.map_canvas.map_size[1]
-        self.touch_matrix = [[0 for _ in xrange(self.x_max)] for _ in xrange(self.y_max)]
+        self.touch_matrix = []
 
         x = self.map_canvas.vectical_padding
         y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
 
         for index_y in range(self.y_max):
+            self.touch_matrix.append([])
             for index_x in range(self.x_max):
-                self.touch_matrix[index_y][index_x] = [x, y, x + self.tile_size[0], y - self.tile_size[1]]
+                self.touch_matrix[index_y].append((x, y, x + self.tile_size[0], y - self.tile_size[1]))
                 x += self.tile_size[0]
             y -= self.tile_size[1]
             x = self.map_canvas.vectical_padding
@@ -248,6 +241,7 @@ class Level(FloatLayout):
         # Initialize variables.
 
         self.touch_matrix = None
+        self.canvas.after.clear()
         self.remove_widget(self.map_canvas)
 
         self.old_point = list()
@@ -292,7 +286,7 @@ class Level(FloatLayout):
         for index_y in range(self.y_max):
             for index_x in range(self.x_max):
                 if self.map_canvas.map_matrix[index_y][index_x]['type'] != 'W':
-                    self.win_path.append([index_y, index_x])
+                    self.win_path.append((index_y, index_x))
 
     def is_path_correct(self):
         """
