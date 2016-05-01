@@ -59,10 +59,10 @@ class LevelService:
         for entry in current_entries:
             Logger.info('Entries : ' + str(entry))
 
-        current_entry = current_entries[0]
-
         if not current_entries:
             return self.insert_advancement(level_id, resolution_time, failed_attempts)
+
+        current_entry = current_entries[0]
 
         self.edit_advancement(current_entry, failed_attempts)
 
