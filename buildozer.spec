@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Sleepy Cobra
+title = 'Scape Me
 
 # (str) Package name
 package.name = scapeme
@@ -43,10 +43,10 @@ requirements = kivy, sqlite3
 #garden_requirements =
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = %(source.dir)s/resources/logo.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/resources/logo.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait
