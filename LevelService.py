@@ -15,27 +15,26 @@ class LevelService:
 
     def ensure_advancement_table(self):
         self.cursor.execute("""
-          create table if not exists {} (id integer primary key autoincrement, level_id int,
-          resolution_time string, failed_attempts int, successful_attempts int)
-          """.format(self.TABLE_NAME)
-                            )
+          CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY AUTOINCREMENT, level_id INT,
+          resolution_time STRING, failed_attempts INT, successful_attempts INT)
+          """.format(self.TABLE_NAME))
         self.connection.commit()
 
     def get_advancements(self):
-        self.cursor.execute('select * from {}'.format(self.TABLE_NAME))
+        self.cursor.execute('SELECT * FROM {}'.format(self.TABLE_NAME))
         self.connection.commit()
         return self.cursor.fetchall()
 
     def get_advancement_by_id(self, level_id):
         self.cursor.execute(
-            'select * from {} where level_id = ?'.format(self.TABLE_NAME),
+            'SELECT * FROM {} WHERE level_id = ?'.format(self.TABLE_NAME),
             (level_id,)
         )
         return self.cursor.fetchall()
 
     def edit_advancement(self, current_entry, failed_attempts):
         self.cursor.execute("""
-            update {} SET failed_attempts = ?, successful_attempts = ? where id = ?
+            UPDATE {} SET failed_attempts = ?, successful_attempts = ? WHERE id = ?
             """.format(self.TABLE_NAME),
                             (int(current_entry[3]) + failed_attempts,
                              int(current_entry[4]) + 1,
@@ -46,8 +45,8 @@ class LevelService:
 
     def insert_advancement(self, level_id, resolution_time, failed_attempts):
         self.cursor.execute("""
-            insert into {} (level_id, resolution_time, failed_attempts, successful_attempts)
-            values (?, ?, ?, ?)
+            INSERT INTO {} (level_id, resolution_time, failed_attempts, successful_attempts)
+            VALUES (?, ?, ?, ?)
             """.format(self.TABLE_NAME), (level_id, str(resolution_time), failed_attempts, 1))
         self.connection.commit()
         Logger.info('Inserted advancement')
