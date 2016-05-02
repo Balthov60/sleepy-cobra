@@ -94,7 +94,7 @@ def is_authorised(tile_identifier, player_path, tile_authorization, old_tile_aut
     """
 
     if type(tile_authorization) is not list \
-            or [tile_identifier[0], tile_identifier[1]] in player_path:
+            or (tile_identifier[0], tile_identifier[1]) in player_path:
         return False
 
     if old_tile_authorization[direction[0]] and tile_authorization[direction[1]]:
