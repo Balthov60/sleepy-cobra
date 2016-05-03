@@ -19,7 +19,7 @@ sources = {
     'angle_left': 'resources/blocks/angle_left.png',
     'double_wall_horizontal': 'resources/blocks/double_wall_horizontal.png',
     'double_wall_vertical': 'resources/blocks/double_wall_vertical.png',
-    'point': 'resources/blocks/point.png'
+    'point': 'resources/other/point.png'
 }
 
 for source_name in sorted(sources):
