@@ -40,7 +40,7 @@ class Level(FloatLayout):
 
         # Initialize variables.
         self.touch_width = int()
-        self.touch_scaling_factor = 5
+        self.touch_scaling_factor = 7.5
 
         self.level_size = list()
         self.tile_size = list()
