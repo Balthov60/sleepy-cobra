@@ -3,12 +3,14 @@ from kivy.graphics import Point
 
 from MapCanvas import MapCanvas
 from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
-from Configurations import authorizations
+from Configurations import authorizations, textures
 
 from datetime import datetime
 
 
 class Level(FloatLayout):
+
+    trace_texture = textures['trace']
 
     def __init__(self, level_event_dispatcher, level_id, **kwargs):
         """
@@ -83,7 +85,7 @@ class Level(FloatLayout):
             return
 
         with self.canvas.after:
-            Point(points=(touch.x, touch.y), source='resources/other/trace.png', pointsize=self.touch_width)
+            Point(points=(touch.x, touch.y), texture=self.trace_texture, pointsize=self.touch_width)
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier[:]
@@ -133,7 +135,7 @@ class Level(FloatLayout):
             x = points_list[index][0]
             y = points_list[index][1]
             with self.canvas.after:
-                Point(points=(x, y), source='resources/other/trace.png', pointsize=self.touch_width)
+                Point(points=(x, y), texture=self.trace_texture, pointsize=self.touch_width)
 
         # Save tile.
         self.old_tile_identifier = self.tile_identifier
