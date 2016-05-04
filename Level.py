@@ -27,8 +27,8 @@ class Level(FloatLayout):
         """
 
         # Define global conditions.
-        self.group = 3
-        self.level = 2
+        self.group = 1
+        self.level = 1
 
         # Load map.
         self.textures = textures
