@@ -50,11 +50,6 @@ textures = dict([
     ('V', CoreImage(source=sources['double_wall_vertical']).texture)
 ])
 
-# color dictionary, format : color (rgb / 256)
-colors = dict([
-    ('block_color_1', Color(0.37, 0.69, 0.73, 1)),
-    ('block_color_2', Color(0.19, 0.19, 0.19, 1)),
-])
 # authorization dictionary, format boolean list : {left, right, top, bot, start/stop}
 authorizations = dict([
     ('W', [False, False, False, False]),
