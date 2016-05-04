@@ -8,6 +8,10 @@ from EventDispatchers import LevelEventDispatcher
 class LevelManager(Widget):
 
     def __init__(self, **kwargs):
+        """
+        Instantiate the LevelManager with event listener.
+        :param kwargs:
+        """
         super(LevelManager, self).__init__(**kwargs)
         self.level_service = LevelService()
         self.level_event_dispatcher = LevelEventDispatcher()
@@ -23,9 +27,16 @@ class LevelManager(Widget):
         self.clear_widgets()
         super(LevelManager, self).add_widget(widget, index)
 
-    def do_level_up(self, instance, advancement_details, *args):
-        self.level_service.save_advancement(advancement_details)
-        self.load_level(self.level_service.get_next_level_id(advancement_details['level_id']))
+    def do_level_up(self, instance, completion_details, *args):
+        """
+        Save advancement and level up the player loading next level.
+        :param instance:
+        :param completion_details:
+        :param args:
+        :return:
+        """
+        self.level_service.save_completion(completion_details)
+        self.load_level(self.level_service.get_next_level_id(completion_details['level_id']))
 
     def load_resuming_level(self):
         """
@@ -33,11 +44,14 @@ class LevelManager(Widget):
         :return:
         """
         level_id = self.level_service.get_resuming_level()
-        if not level_id:
-            level_id = 11
         self.add_widget(Level(self.level_event_dispatcher, level_id))
 
     def load_level(self, level_id=None):
+        """
+        Load given level with checking.
+        :param level_id:
+        :return:
+        """
 
         if not level_id:
             return self.load_resuming_level()

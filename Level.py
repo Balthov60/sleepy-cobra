@@ -9,7 +9,6 @@ from datetime import datetime
 
 
 class Level(FloatLayout):
-    ID = 'unique_identifier'
 
     def __init__(self, level_event_dispatcher, level_id, **kwargs):
         """
@@ -57,8 +56,6 @@ class Level(FloatLayout):
         self.failed_attempts = 0
 
         self.level_event_dispatcher = level_event_dispatcher
-
-        print(self.level_event_dispatcher)
 
     ####
     # Touch methods
