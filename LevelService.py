@@ -95,10 +95,10 @@ class LevelService:
 
     def is_level_playable(self, level_id):
 
-        if int(str(level_id)[1]) == 1:  # First of the set.
+        if int(str(level_id)[1]) == 1:              # First of the set.
             return True
 
-        previous_level_id = level_id - 1  # Previous level must be unlocked to play.
+        previous_level_id = level_id - 1                # Previous level must be unlocked to play.
 
         return self.is_level_unlocked(previous_level_id)
 
