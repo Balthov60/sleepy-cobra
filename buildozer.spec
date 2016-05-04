@@ -43,10 +43,10 @@ requirements = kivy, sqlite3
 #garden_requirements =
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/resources/logo.png
+presplash.filename = %(source.dir)s/resources/other/logo.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/resources/logo.png
+icon.filename = %(source.dir)s/resources/other/logo.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait
