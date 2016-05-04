@@ -1,7 +1,7 @@
 from __future__ import division             # Pour que les divisions retournent des flotants.
 
 from kivy.uix.widget import Widget
-from kivy.graphics import Rectangle, Color, Point
+from kivy.graphics import Rectangle, Color
 from kivy.core.window import Window
 from kivy.logger import Logger
 
@@ -45,7 +45,7 @@ class MapCanvas(Widget):
             self.parse_pipe_delimited_file(map_file_path)
 
         else:
-           raise ValueError("File given is not valid for use.")
+            raise ValueError("File given is not valid for use.")
 
         self.update_drawing_instructions()
 
@@ -109,7 +109,7 @@ class MapCanvas(Widget):
     def update_drawing_instructions(self, *args):
         """
         Met a jour les instructions de dessins du canvas du widget lorsque la fenetre est change de taille.
-        :param args: Window.on_resize arguments
+        :rtype: void
         """
         Logger.info("Adding drawing instructions")
         window_width, window_height = Window.size
@@ -127,14 +127,15 @@ class MapCanvas(Widget):
         self.canvas.after.clear()
 
         start_time = datetime.now()
+        self.canvas.before.add(Rectangle(size=self.window.size, source="resources/other/fond.png"))
 
         for y in range(0, len(self.map_matrix)):
             for x in range(0, len(self.map_matrix[y])):
-                print(self.tile_size)
                 x_position = (x * self.tile_size) + self.vectical_padding
-                print(self.vectical_padding)
+
                 # y + 1 car avec y == 0 cela ne s'afficherait pas
                 y_position = window_height - ((y + 1) * self.tile_size) - self.horizontal_padding
+
                 position = (x_position, y_position)
                 tile_size_tuple = [self.tile_size] * 2
                 texture = self.map_matrix[y][x]['texture']
@@ -142,7 +143,7 @@ class MapCanvas(Widget):
                 print(position)
 
                 self.canvas.before.add(Color(0.37, 0.69, 0.73, 1) if (x + y) % 2 else Color(0.19, 0.19, 0.19, 1))
-                self.canvas.before.add(Rectangle(size=tile_size_tuple,source='resources/other/block.png', pos=position))
+                self.canvas.before.add(Rectangle(size=tile_size_tuple, source='resources/other/block.png', pos=position))
                 self.canvas.add(Color(None))
 
                 if (y, x) in self.points:
