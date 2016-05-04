@@ -3,20 +3,14 @@ from kivy.graphics import Point
 
 from MapCanvas import MapCanvas
 from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
-from LevelService import LevelService
+from Configurations import authorizations
 
 from datetime import datetime
 
 
 class Level(FloatLayout):
-    MAP = 'resources/maps/set'
-    LEVEL = '/level'
-    CFG = '.cfg'
-    SEPARATOR = '_'
-    ID = 'unique_identifier'
-    SAVE_PATH = 'resources/save.yml'
 
-    def __init__(self, textures, authorizations, **kwargs):
+    def __init__(self, level_event_dispatcher, level_id, **kwargs):
         """
         Load map in a layout then load level and touch properties.
 
@@ -25,17 +19,14 @@ class Level(FloatLayout):
         :param authorizations: authorizations dictionnary
         :param kwargs: layout's args
         """
-
-        # Define global conditions.
-        self.group = 1
-        self.level = 1
+        super(Level, self).__init__(**kwargs)
 
         # Load map.
-        self.textures = textures
-        super(Level, self).__init__(**kwargs)
-        map_file_path = "{0}{1}{2}{3}{4}{5}{6}".format(self.MAP, str(self.group), self.LEVEL, str(self.group),
-                                                       self.SEPARATOR, str(self.level), self.CFG)
-        self.map_canvas = MapCanvas(map_file_path, self.textures)
+        self.level_id = level_id
+        level_set = str(self.level_id)[0]
+        level_id_in_set = str(self.level_id)[1]
+        map_file_path = "resources/maps/set{0}/level{0}_{1}.cfg".format(level_set, level_id_in_set)
+        self.map_canvas = MapCanvas(map_file_path)
         self.add_widget(self.map_canvas)
 
         # Initialize variables.
@@ -61,9 +52,10 @@ class Level(FloatLayout):
         self.define_level_properties()
         self.define_win_conditions()
 
-        self.level_service = LevelService()
         self.start_time = datetime.now()
         self.failed_attempts = 0
+
+        self.level_event_dispatcher = level_event_dispatcher
 
     ####
     # Touch methods
@@ -166,7 +158,7 @@ class Level(FloatLayout):
         if can_draw:
             # Delete touch if player loose.
             if self.is_path_correct():
-                self.level_up()
+                return self.propagate_level_up()
 
         else:
             self.failed_attempts += 1
@@ -214,7 +206,7 @@ class Level(FloatLayout):
 
     def define_level_properties(self):
         """
-        Define prperties for the current level.
+        Define properties for the current level.
 
         :rtype: void
         """
@@ -222,7 +214,7 @@ class Level(FloatLayout):
         self.touch_width = int(self.map_canvas.tile_size / self.touch_scaling_factor)
 
         # Define real tiles and level size.
-        self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vectical_padding * 2,
+        self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vertical_padding * 2,
                            self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding * 2]
         self.tile_size = [self.level_size[0] / self.map_canvas.map_size[0],
                           self.level_size[1] / self.map_canvas.map_size[1]]
@@ -232,7 +224,7 @@ class Level(FloatLayout):
         self.y_max = self.map_canvas.map_size[1]
         self.touch_matrix = []
 
-        x = self.map_canvas.vectical_padding
+        x = self.map_canvas.vertical_padding
         y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
 
         for index_y in range(self.y_max):
@@ -241,52 +233,19 @@ class Level(FloatLayout):
                 self.touch_matrix[index_y].append((x, y, x + self.tile_size[0], y - self.tile_size[1]))
                 x += self.tile_size[0]
             y -= self.tile_size[1]
-            x = self.map_canvas.vectical_padding
+            x = self.map_canvas.vertical_padding
 
-    def reset_old_properties(self):
+    def propagate_level_up(self):
         """
-        Reset properties of the old level.
-
+        Propagate level_up event.
         :rtype: void
         """
-        # Initialize variables.
-        self.touch_matrix = None
-        self.canvas.after.clear()
-        self.remove_widget(self.map_canvas)
 
-        self.old_point = list()
-        self.tile_identifier = list()
-        self.old_tile_identifier = list()
-        self.win_path = list()
-        self.player_path = list()
-
-    def level_up(self):
-        """
-        Load the next map canvas and properties/
-
-        :rtype: void
-        """
-        self.level_service.save_advancement(
-            str(self.group) + str(self.level),
-            datetime.now() - self.start_time,
-            self.failed_attempts
-        )
-
-        self.level += 1
-        if self.level > 5:
-            self.group += 1
-            self.level = 1
-
-        map_file_path = "{0}{1}{2}{3}{4}{5}{6}".format(self.MAP, str(self.group), self.LEVEL, str(self.group),
-                                                       self.SEPARATOR, str(self.level), self.CFG)
-
-        self.reset_old_properties()
-
-        self.map_canvas = MapCanvas(map_file_path, self.textures)
-        self.add_widget(self.map_canvas)
-
-        self.define_level_properties()
-        self.define_win_conditions()
+        self.level_event_dispatcher.dispatch('on_level_completed', {
+            'level_id': self.level_id,
+            'resolution_time': datetime.now() - self.start_time,
+            'failed_attempts': self.failed_attempts
+        })
 
     ####
     # win methods
