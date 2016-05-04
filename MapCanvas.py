@@ -4,6 +4,7 @@ from kivy.uix.widget import Widget
 from kivy.graphics import Rectangle, Color
 from kivy.core.window import Window
 from kivy.logger import Logger
+from Configurations import colors
 
 from datetime import datetime
 import re
@@ -127,7 +128,13 @@ class MapCanvas(Widget):
         self.canvas.after.clear()
 
         start_time = datetime.now()
+
+        self.canvas.add(Color(None))
         self.canvas.before.add(Rectangle(size=self.window.size, source="resources/other/fond.png"))
+
+        point_texture = self.textures['point']
+        block_texture = self.textures['block']
+        block_color = (colors['block_color_1'], colors['block_color_2'])
 
         for y in range(0, len(self.map_matrix)):
             for x in range(0, len(self.map_matrix[y])):
@@ -140,15 +147,13 @@ class MapCanvas(Widget):
                 tile_size_tuple = [self.tile_size] * 2
                 texture = self.map_matrix[y][x]['texture']
 
-                print(position)
-
-                self.canvas.before.add(Color(0.37, 0.69, 0.73, 1) if (x + y) % 2 else Color(0.19, 0.19, 0.19, 1))
-                self.canvas.before.add(Rectangle(size=tile_size_tuple, source='resources/other/block.png', pos=position))
+                self.canvas.before.add(block_color[0] if (x + y) % 2 else block_color[1])
+                self.canvas.before.add(Rectangle(size=tile_size_tuple, texture=block_texture, pos=position))
                 self.canvas.add(Color(None))
 
                 if (y, x) in self.points:
-                    point_texture = self.textures['point']
                     self.canvas.add(Rectangle(size=tile_size_tuple, texture=point_texture, pos=position))
+
                 self.canvas.add(Rectangle(size=tile_size_tuple, texture=texture, pos=position))
 
         end_time = datetime.now()
