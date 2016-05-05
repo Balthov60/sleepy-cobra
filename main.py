@@ -1,11 +1,14 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
+# from kivy.core.audio import SoundLoader
 
 from LevelManager import LevelManager
 from Menu import Menu
 
 
 class GameApp(App):
+    # sound = None
+
     def __init__(self, **kwargs):
         """
 
@@ -30,6 +33,11 @@ class GameApp(App):
 
         :return:
         """
+        # self.sound = SoundLoader.load('resources/music/test.mp3')
+        # if self.sound:
+        #     self.sound.play()
+        self.icon = './resources/other/logo.png'
+        self.title = "'Scape Me"
         self.game_widget.load_resuming_level()
         self.screen_manager.current = 'LevelManager'
         return self.screen_manager
