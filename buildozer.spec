@@ -1,19 +1,19 @@
 [app]
 
 # (str) Title of your application
-title = Sleepy Cobra
+title = 'Scape Me
 
 # (str) Package name
-package.name = sleepycobra
+package.name = scapeme
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.sleepycobra
+package.domain = org.scapeme
 
 # (str) Source code where the main.py live
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,cfg
+source.include_exts = py,png,jpg,kv,atlas,cfg,mp3,wav
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -25,7 +25,7 @@ source.include_exts = py,png,jpg,kv,atlas,cfg
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.2
+version = 0.3
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -33,7 +33,7 @@ version = 0.2
 
 # (list) Application requirements
 # comma seperated e.g. requirements = sqlite3,kivy
-requirements = kivy, pil, multi_key_dict
+requirements = kivy, sqlite3
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -43,10 +43,10 @@ requirements = kivy, pil, multi_key_dict
 #garden_requirements =
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = %(source.dir)s/resources/other/logo.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/resources/other/logo.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = portrait

@@ -1,21 +1,15 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
-from Level import Level
+from kivy.core.audio import SoundLoader
+
 from Menu import Menu, MenuLevel
 from Configurations import textures, authorizations
-from MyEventDispatcher import MenusEventDispatcher
+from EventDispatchers import MenusEventDispatcher
+from LevelManager import LevelManager
 
 
 class GameApp(App):
-    def do_change_screen(self, instance, value, *args):
-        """
-
-        :param instance:
-        :param value:
-        :param args:
-        :rtype: void
-        """
-        self.screen_manager.current = value
+    # sound = None
 
     def __init__(self, **kwargs):
         """
@@ -34,8 +28,8 @@ class GameApp(App):
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)
 
-        self.game_widget = Level(self.textures, self.authorizations)
-        self.game_screen = Screen(name="Game")
+        self.game_widget = LevelManager()
+        self.game_screen = Screen(name="LevelManager")
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)
 
@@ -49,11 +43,29 @@ class GameApp(App):
     def build(self):
         """
 
-        :return:
+        :rtype: void
         """
         self.screen_manager.current = 'Menu'
+
+        # self.sound = SoundLoader.load('resources/music/test.mp3')
+        # if self.sound:
+        #     self.sound.play()
+
+        self.icon = './resources/other/logo.png'
+        self.title = "'Scape Me"
+        self.game_widget.load_resuming_level()
+        self.screen_manager.current = 'LevelManager'
         return self.screen_manager
 
+    def do_change_screen(self, instance, value, *args):
+        """
+
+        :param instance:
+        :param value:
+        :param args:
+        :rtype: void
+        """
+        self.screen_manager.current = value
 
 if __name__ == '__main__':
     GameApp().run()

@@ -19,7 +19,9 @@ sources = {
     'angle_left': 'resources/blocks/angle_left.png',
     'double_wall_horizontal': 'resources/blocks/double_wall_horizontal.png',
     'double_wall_vertical': 'resources/blocks/double_wall_vertical.png',
-    'point': 'resources/blocks/point.png'
+    'point': 'resources/other/point.png',
+    'block': 'resources/other/block.png',
+    'trace': 'resources/other/trace.png'
 }
 
 for source_name in sorted(sources):
@@ -28,6 +30,8 @@ for source_name in sorted(sources):
 
 # textures dictionary, format : textures path
 textures = dict([
+    ('trace', CoreImage(source=sources['trace']).texture),
+    ('block', CoreImage(source=sources['block']).texture),
     ('point', CoreImage(source=sources['point']).texture),
     ('W', CoreImage(source=sources['wall']).texture),
     ('A', CoreImage(source=sources['air']).texture),
