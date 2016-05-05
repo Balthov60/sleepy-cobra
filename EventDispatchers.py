@@ -12,7 +12,8 @@ class LevelEventDispatcher(EventDispatcher):
         self.register_event_type('on_level_completed')
         super(EventDispatcher, self).__init__(**kwargs)
 
-    def on_level_completed(self, *args):
+    @staticmethod
+    def on_level_completed(*args):
         """
         Required method.
         """
@@ -30,7 +31,8 @@ class MenusEventDispatcher(EventDispatcher):
         self.register_event_type('on_change_screen')
         super(MenusEventDispatcher, self).__init__(**kwargs)
 
-    def on_change_screen(self, *args):
+    @staticmethod
+    def on_change_screen(*args):
         """
         Required method
         """

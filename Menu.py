@@ -4,11 +4,12 @@ from kivy.graphics import Rectangle
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
+
 import os
 
 
 class Menu(FloatLayout):
-    FONT_MENU = 'resources/SIXTY.TTF'
+    FONT_MENU = './resources/menu/SIXTY.TTF'
 
     def __init__(self, event_dispatcher, **kwargs):
         """
@@ -17,13 +18,17 @@ class Menu(FloatLayout):
         :param kwargs: Args of Layout
         :rtype: void
         """
-
         super(Menu, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
 
-        self.canvas.add(Rectangle(source='resources/test_im1.jpeg', size=Window.size))
+        # Add fond and title.
+        self.canvas.add(Rectangle(source='resources/menu/test_im1.jpeg', size=Window.size))
 
-        self.add_widget(Button(text="Jouer !", size_hint=(.45, .15), pos_hint={'x': .3, 'y': .4},
+        self.add_widget(Label(text="'Scape me", size_hint=(0.25, 0.1), pos_hint={'x': 0.37, 'y': 0.75},
+                              font_name=self.FONT_MENU, font_size='100sp'))
+
+        # Add buttons.
+        self.add_widget(Button(text="Play !", size_hint=(.45, .15), pos_hint={'x': .3, 'y': .4},
                                on_press=self.switch_to_menu_level_screen, font_name=self.FONT_MENU,
                                background_color=(0, 0, 0, 0), font_size='80sp'))
 
@@ -33,28 +38,16 @@ class Menu(FloatLayout):
 
         self.add_widget(Button(text="Options", size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0},
                                font_name=self.FONT_MENU, background_color=(0, 0, 0, 0), font_size='25sp'))
-        self.add_widget(Label(text="'Scape me", size_hint=(0.25, 0.1), pos_hint={'x': 0.37, 'y': 0.75},
-                              font_name=self.FONT_MENU, font_size='100sp'))
-
-    def propagate_event(self, value):
-        """
-
-        :param value: screen's name.
-        :rtype: void
-        """
-        self.event_dispatcher.dispatch('on_change_screen', value)
 
     def switch_to_menu_level_screen(self, *args):
         """
-
-        :param args:
-        :rtype: void
+        Required method.
         """
-        self.propagate_event('Menu_level')
+        propagate_event('Menu_level', self)
 
 
 class MenuLevel(FloatLayout):
-    FONT_MENU_LEVEL = 'resources/Eraser.ttf'
+    FONT_MENU_LEVEL = './resources/menu/Eraser.ttf'
 
     def __init__(self, event_dispatcher, **kwargs):
         """
@@ -65,10 +58,12 @@ class MenuLevel(FloatLayout):
         :rtype: void
         """
         super(MenuLevel, self).__init__(**kwargs)
-
         self.event_dispatcher = event_dispatcher
-        self.canvas.add(Rectangle(source='resources/test_im7.jpeg', size=Window.size))
 
+        # Add fond.
+        self.canvas.add(Rectangle(source='./resources/menu/test_im7.jpeg', size=Window.size))
+
+        # Add button
         self.add_widget(Button(text="Back to Menu", pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
                                font_name=self.FONT_MENU_LEVEL, on_press=self.switch_to_menu_screen,
                                background_color=(0.8, 0, 0, 0.85)))
@@ -91,16 +86,16 @@ class MenuLevel(FloatLayout):
 
     def switch_to_menu_screen(self, *args):
         """
-
-        :param args:
-        :rtype: void
+        Required method.
         """
-        self.propagate_event('Menu')
+        propagate_event('Menu', self)
 
-    def propagate_event(self, value):
+
+def propagate_event(value, current_class):
         """
 
         :param value: screen's name.
+        :param current_class: Current active class.
         :rtype: void
         """
-        self.event_dispatcher.dispatch('on_change_screen', value)
+        current_class.event_dispatcher.dispatch('on_change_screen', value)
