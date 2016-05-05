@@ -9,9 +9,6 @@ from MyEventDispatcher import MyEventDispatcher
 class GameApp(App):
 
     def do_change_screen (self, instance, value, *args):
-        print(value)
-
-        print(type(value))
         self.screen_manager.current = value
 
     def __init__(self, **kwargs):
