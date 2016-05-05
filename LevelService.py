@@ -12,6 +12,8 @@ class LevelService:
     def __init__(self):
         """
         Instantiate the LevelService.
+
+        :rtype: void
         """
         self.sqlite = sqlite
         self.connection = self.sqlite.connect(self.DB_NAME)
@@ -22,6 +24,8 @@ class LevelService:
     def ensure_completion_table(self):
         """
         Create if does not exist a table.
+
+        :rtype: void
         """
         self.cursor.execute("""
           CREATE TABLE IF NOT EXISTS {} (id INTEGER PRIMARY KEY AUTOINCREMENT, level_id INT,
@@ -32,6 +36,7 @@ class LevelService:
     def get_completions(self):
         """
         Get all level completed.
+
         :return: All level completed.
         """
         self.cursor.execute('SELECT * FROM {}'.format(self.TABLE_NAME))
@@ -41,6 +46,7 @@ class LevelService:
     def get_completion_by_id(self, level_id):
         """
         Get level completed with specified id.
+
         :param level_id:
         :return: Level completed.
         """
@@ -54,14 +60,16 @@ class LevelService:
     def edit_completion(self, current_entry, failed_attempts):
         """
         Edit completion detail.
+
         :param current_entry:
         :param failed_attempts:
+        :rtype: void
         """
         self.cursor.execute("""
             UPDATE {} SET failed_attempts = ?, successful_attempts = ? WHERE id = ?
             """.format(self.TABLE_NAME), (int(current_entry[3]) + failed_attempts,
-                                            int(current_entry[4]) + 1,
-                                            current_entry[0])
+                                          int(current_entry[4]) + 1,
+                                          current_entry[0])
         )
         self.connection.commit()
         Logger.info('Edited completion')
@@ -69,9 +77,11 @@ class LevelService:
     def insert_completion(self, level_id, resolution_time, failed_attempts):
         """
         Insert a completed level with details.
+
         :param level_id:
         :param resolution_time:
         :param failed_attempts:
+        :rtype: void
         """
         self.cursor.execute("""
             INSERT INTO {} (level_id, resolution_time, failed_attempts, successful_attempts)
@@ -83,8 +93,9 @@ class LevelService:
     def save_completion(self, completion_details):
         """
         Split up completion details and execute either a saving or an edition.
+
         :param completion_details:
-        :return:
+        :rtype: void
         """
         level_id = completion_details['level_id']
         resolution_time = completion_details['resolution_time']
@@ -93,7 +104,8 @@ class LevelService:
         current_entries = self.get_completion_by_id(level_id)
 
         if not current_entries:
-            return self.insert_completion(level_id, resolution_time, failed_attempts)
+            self.insert_completion(level_id, resolution_time, failed_attempts)
+            return
 
         current_entry = current_entries[0]
 
@@ -102,6 +114,7 @@ class LevelService:
     def get_last_level_unlocked(self):
         """
         Get last level unlocked.
+
         :return: level_id of the last level unlocked
         """
         completions = self.get_completions()
@@ -114,6 +127,7 @@ class LevelService:
     def get_resuming_level(self):
         """
         Get the resuming level.
+
         :return: level_id
         """
         last_level_id = self.get_last_level_unlocked()
@@ -124,8 +138,9 @@ class LevelService:
     def is_level_unlocked(self, level_id):
         """
         Check if level is unlocked.
+
         :param level_id:
-        :return: {boolean}
+        :rtype: boolean
         """
         completions = self.get_completions()
 
@@ -138,8 +153,9 @@ class LevelService:
     def is_level_playable(self, level_id):
         """
         Verify is the level can be played by the player.
+
         :param level_id:
-        :return: {boolean}
+        :rtype: boolean
         """
 
         if int(str(level_id)[1]) == 1:              # First of the set.
@@ -153,6 +169,7 @@ class LevelService:
     def get_next_level_id(level_id):
         """
         Logic to get the following level.
+
         :param level_id:
         :return: following level_id
         """
@@ -167,6 +184,7 @@ class LevelService:
     def does_level_exist(self, level_id):
         """
         Verify level exist.
+
         :param level_id:
         """
         set_id = int(str(level_id)[0])

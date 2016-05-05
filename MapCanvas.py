@@ -133,7 +133,7 @@ class MapCanvas(Widget):
         start_time = datetime.now()
 
         self.canvas.add(Color(None))
-        self.canvas.before.add(Rectangle(size=self.window.size, source="resources/other/fond.png"))
+        self.canvas.before.add(Rectangle(size=self.window.size, source="./resources/other/fond.png"))
 
         point_texture = self.textures['point']
         block_texture = self.textures['block']
