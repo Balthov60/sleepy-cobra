@@ -1,14 +1,13 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from Level import Level
-from Menu import Menu, Menu_level
+from Menu import Menu, MenuLevel
 from Configurations import textures, authorizations
-from MyEventDispatcher import MyEventDispatcher
+from MyEventDispatcher import MenusEventDispatcher
 
 
 class GameApp(App):
-
-    def do_change_screen (self, instance, value, *args):
+    def do_change_screen(self, instance, value, *args):
         self.screen_manager.current = value
 
     def __init__(self, **kwargs):
@@ -20,7 +19,7 @@ class GameApp(App):
         super(GameApp, self).__init__(**kwargs)
         self.textures = textures
         self.authorizations = authorizations
-        self.my_event_dispatcher = MyEventDispatcher()
+        self.my_event_dispatcher = MenusEventDispatcher()
         self.screen_manager = ScreenManager()
 
         self.menu_widget = Menu(self.my_event_dispatcher)
@@ -33,7 +32,7 @@ class GameApp(App):
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)
 
-        self.menu_level_widget = Menu_level(self.my_event_dispatcher)
+        self.menu_level_widget = MenuLevel(self.my_event_dispatcher)
         self.menu_level_screen = Screen(name="Menu_level")
         self.menu_level_screen.add_widget(self.menu_level_widget)
         self.screen_manager.add_widget(self.menu_level_screen)
@@ -47,6 +46,7 @@ class GameApp(App):
         """
         self.screen_manager.current = 'Menu'
         return self.screen_manager
+
 
 if __name__ == '__main__':
     GameApp().run()

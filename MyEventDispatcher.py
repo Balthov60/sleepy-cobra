@@ -1,17 +1,22 @@
-from kivy.uix.button import Button
-from kivy.uix.floatlayout import FloatLayout
-from kivy.graphics import Rectangle
-from kivy.core.window import Window
-from kivy.uix.label import Label
 from kivy._event import EventDispatcher
 
 
-
-
-class MyEventDispatcher(EventDispatcher):
+class MenusEventDispatcher(EventDispatcher):
     def __init__(self, **kwargs):
+        """
+
+        :param kwargs:
+        :rtype: void
+        """
+
         self.register_event_type('on_change_screen')
-        super(MyEventDispatcher, self).__init__(**kwargs)
+        super(MenusEventDispatcher, self).__init__(**kwargs)
 
     def on_change_screen(self, *args):
+        """
+
+        :param args:
+        :rtype: void
+        """
+
         pass
