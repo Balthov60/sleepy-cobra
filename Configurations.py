@@ -1,5 +1,4 @@
 from kivy.uix.image import Image as CoreImage
-from kivy.graphics import Color
 
 import os.path
 
@@ -21,7 +20,8 @@ sources = {
     'double_wall_horizontal': 'resources/blocks/double_wall_horizontal.png',
     'double_wall_vertical': 'resources/blocks/double_wall_vertical.png',
     'point': 'resources/other/point.png',
-    'block': 'resources/other/block.png'
+    'block': 'resources/other/block.png',
+    'trace': 'resources/other/trace.png'
 }
 
 for source_name in sorted(sources):
@@ -30,6 +30,7 @@ for source_name in sorted(sources):
 
 # textures dictionary, format : textures path
 textures = dict([
+    ('trace', CoreImage(source=sources['trace']).texture),
     ('block', CoreImage(source=sources['block']).texture),
     ('point', CoreImage(source=sources['point']).texture),
     ('W', CoreImage(source=sources['wall']).texture),
@@ -50,11 +51,6 @@ textures = dict([
     ('V', CoreImage(source=sources['double_wall_vertical']).texture)
 ])
 
-# color dictionary, format : color (rgb / 256)
-colors = dict([
-    ('block_color_1', Color(0.37, 0.69, 0.73, 1)),
-    ('block_color_2', Color(0.19, 0.19, 0.19, 1)),
-])
 # authorization dictionary, format boolean list : {left, right, top, bot, start/stop}
 authorizations = dict([
     ('W', [False, False, False, False]),

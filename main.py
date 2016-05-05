@@ -1,11 +1,16 @@
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.audio import SoundLoader
 
+from Menu import Menu, MenuLevel
+from Configurations import textures, authorizations
+from EventDispatchers import MenusEventDispatcher
 from LevelManager import LevelManager
-from Menu import Menu
 
 
 class GameApp(App):
+    # sound = None
+
     def __init__(self, **kwargs):
         """
 
@@ -13,9 +18,12 @@ class GameApp(App):
         :return:
         """
         super(GameApp, self).__init__(**kwargs)
+        self.textures = textures
+        self.authorizations = authorizations
+        self.my_event_dispatcher = MenusEventDispatcher()
         self.screen_manager = ScreenManager()
 
-        self.menu_widget = Menu()
+        self.menu_widget = Menu(self.my_event_dispatcher)
         self.menu_screen = Screen(name="Menu")
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)
@@ -25,14 +33,38 @@ class GameApp(App):
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)
 
+        self.menu_level_widget = MenuLevel(self.my_event_dispatcher)
+        self.menu_level_screen = Screen(name="Menu_level")
+        self.menu_level_screen.add_widget(self.menu_level_widget)
+        self.screen_manager.add_widget(self.menu_level_screen)
+
+        self.my_event_dispatcher.bind(on_change_screen=self.do_change_screen)
+
     def build(self):
         """
 
-        :return:
+        :rtype: void
         """
+
+        # self.sound = SoundLoader.load('resources/music/test.mp3')
+        # if self.sound:
+        #     self.sound.play()
+
+        self.icon = './resources/other/logo.png'
+        self.title = "'Scape Me"
         self.game_widget.load_resuming_level()
-        self.screen_manager.current = 'LevelManager'
+        self.screen_manager.current = 'Menu'
         return self.screen_manager
+
+    def do_change_screen(self, instance, value, *args):
+        """
+
+        :param instance:
+        :param value:
+        :param args:
+        :rtype: void
+        """
+        self.screen_manager.current = value
 
 
 if __name__ == '__main__':
