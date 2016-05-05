@@ -67,19 +67,10 @@ class MenuLevel(FloatLayout):
         super(MenuLevel, self).__init__(**kwargs)
 
         self.event_dispatcher = event_dispatcher
-
-        def switch_to_menu_screen(*args):
-            """
-
-            :param args:
-            :rtype: void
-            """
-            self.propagate_event('Menu')
-
         self.canvas.add(Rectangle(source='resources/test_im7.jpeg', size=Window.size))
 
         self.add_widget(Button(text="Back to Menu", pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
-                               font_name=self.FONT_MENU_LEVEL, on_press=switch_to_menu_screen,
+                               font_name=self.FONT_MENU_LEVEL, on_press=self.switch_to_menu_screen,
                                background_color=(0.8, 0, 0, 0.85)))
 
         set_list = os.listdir('./resources/maps/')
@@ -97,6 +88,14 @@ class MenuLevel(FloatLayout):
             else:
                 menu_level_grid.add_widget(Button(text="Level " + str(index + 1), background_color=(0.8, 0, 0, 0.85),
                                                   font_name=self.FONT_MENU_LEVEL))
+
+    def switch_to_menu_screen(self, *args):
+        """
+
+        :param args:
+        :rtype: void
+        """
+        self.propagate_event('Menu')
 
     def propagate_event(self, value):
         """

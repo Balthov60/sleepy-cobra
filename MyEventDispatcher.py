@@ -8,7 +8,6 @@ class MenusEventDispatcher(EventDispatcher):
         :param kwargs:
         :rtype: void
         """
-
         self.register_event_type('on_change_screen')
         super(MenusEventDispatcher, self).__init__(**kwargs)
 
@@ -18,5 +17,4 @@ class MenusEventDispatcher(EventDispatcher):
         :param args:
         :rtype: void
         """
-
         pass

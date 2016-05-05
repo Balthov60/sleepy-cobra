@@ -8,6 +8,13 @@ from MyEventDispatcher import MenusEventDispatcher
 
 class GameApp(App):
     def do_change_screen(self, instance, value, *args):
+        """
+
+        :param instance:
+        :param value:
+        :param args:
+        :rtype: void
+        """
         self.screen_manager.current = value
 
     def __init__(self, **kwargs):
