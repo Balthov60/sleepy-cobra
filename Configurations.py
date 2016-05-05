@@ -3,25 +3,25 @@ from kivy.uix.image import Image as CoreImage
 import os.path
 
 sources = {
-    'wall': 'resources/blocks/wall.png',
-    'air': 'resources/blocks/air.png',
-    'wall_left': 'resources/blocks/wall_left.png',
-    'wall_right': 'resources/blocks/wall_right.png',
-    'wall_top': 'resources/blocks/wall_top.png',
-    'wall_bottom': 'resources/blocks/wall_bottom.png',
-    'angle_left_bottom': 'resources/blocks/angle_left_bottom.png',
-    'angle_left_top': 'resources/blocks/angle_left_top.png',
-    'angle_right_bottom': 'resources/blocks/angle_right_bottom.png',
-    'angle_right_top': 'resources/blocks/angle_right_top.png',
-    'angle_top': 'resources/blocks/angle_top.png',
-    'angle_bottom': 'resources/blocks/angle_bottom.png',
-    'angle_right': 'resources/blocks/angle_right.png',
-    'angle_left': 'resources/blocks/angle_left.png',
-    'double_wall_horizontal': 'resources/blocks/double_wall_horizontal.png',
-    'double_wall_vertical': 'resources/blocks/double_wall_vertical.png',
-    'point': 'resources/other/point.png',
-    'block': 'resources/other/block.png',
-    'trace': 'resources/other/trace.png'
+    'wall': './resources/blocks/wall.png',
+    'air': './resources/blocks/air.png',
+    'wall_left': './resources/blocks/wall_left.png',
+    'wall_right': './resources/blocks/wall_right.png',
+    'wall_top': './resources/blocks/wall_top.png',
+    'wall_bottom': './resources/blocks/wall_bottom.png',
+    'angle_left_bottom': './resources/blocks/angle_left_bottom.png',
+    'angle_left_top': './resources/blocks/angle_left_top.png',
+    'angle_right_bottom': './resources/blocks/angle_right_bottom.png',
+    'angle_right_top': './resources/blocks/angle_right_top.png',
+    'angle_top': './resources/blocks/angle_top.png',
+    'angle_bottom': './resources/blocks/angle_bottom.png',
+    'angle_right': './resources/blocks/angle_right.png',
+    'angle_left': './resources/blocks/angle_left.png',
+    'double_wall_horizontal': './resources/blocks/double_wall_horizontal.png',
+    'double_wall_vertical': './resources/blocks/double_wall_vertical.png',
+    'point': './resources/other/point.png',
+    'block': './resources/other/block.png',
+    'trace': './resources/other/trace.png'
 }
 
 for source_name in sorted(sources):

@@ -4,6 +4,7 @@ from kivy.graphics import Rectangle
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
+from kivy.logger import Logger
 
 import os
 
@@ -22,28 +23,38 @@ class Menu(FloatLayout):
         self.event_dispatcher = event_dispatcher
 
         # Add fond and title.
-        self.canvas.add(Rectangle(source='resources/menu/test_im1.jpeg', size=Window.size))
+        self.canvas.add(
+            Rectangle(source='./resources/menu/test_im1.jpeg', size=Window.size)
+        )
 
-        self.add_widget(Label(text="'Scape me", size_hint=(0.25, 0.1), pos_hint={'x': 0.37, 'y': 0.75},
-                              font_name=self.FONT_MENU, font_size='100sp'))
+        self.add_widget(
+            Label(text="'Scape me", font_name=self.FONT_MENU, font_size='100sp',
+                  size_hint=(0.25, 0.1), pos_hint={'x': 0.37, 'y': 0.75})
+        )
 
         # Add buttons.
-        self.add_widget(Button(text="Play !", size_hint=(.45, .15), pos_hint={'x': .3, 'y': .4},
-                               on_press=self.switch_to_menu_level_screen, font_name=self.FONT_MENU,
-                               background_color=(0, 0, 0, 0), font_size='80sp'))
+        self.add_widget(
+            Button(text="Play !", font_name=self.FONT_MENU, font_size='80sp',
+                   size_hint=(.45, .15), pos_hint={'x': .3, 'y': .4}, background_color=(0, 0, 0, 0),
+                   on_press=self.switch_to_menu_level_screen)
+        )
 
-        self.add_widget(Button(text="Credits", size_hint=(.25, .1), pos_hint={'x': 0.4, 'y': 0.2},
-                               font_name=self.FONT_MENU, background_color=(0, 0, 0, 0),
-                               font_size='40sp'))
+        self.add_widget(
+            Button(text="Credits", font_name=self.FONT_MENU, font_size='40sp',
+                   size_hint=(.25, .1), pos_hint={'x': 0.4, 'y': 0.2}, background_color=(0, 0, 0, 0))
+        )
 
-        self.add_widget(Button(text="Options", size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0},
-                               font_name=self.FONT_MENU, background_color=(0, 0, 0, 0), font_size='25sp'))
+        self.add_widget(
+            Button(text="Options", font_name=self.FONT_MENU, font_size='25sp',
+                   size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0}, background_color=(0, 0, 0, 0))
+        )
 
     def switch_to_menu_level_screen(self, *args):
         """
         Required method.
         """
-        propagate_event('Menu_level', self)
+        Logger.info("propagate MenuLevel")
+        propagate_event('MenuLevel', self)
 
 
 class MenuLevel(FloatLayout):
@@ -61,33 +72,44 @@ class MenuLevel(FloatLayout):
         self.event_dispatcher = event_dispatcher
 
         # Add fond.
-        self.canvas.add(Rectangle(source='./resources/menu/test_im7.jpeg', size=Window.size))
+        self.canvas.add(
+            Rectangle(source='./resources/menu/test_im7.jpeg', size=Window.size)
+        )
 
         # Add button
-        self.add_widget(Button(text="Back to Menu", pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
-                               font_name=self.FONT_MENU_LEVEL, on_press=self.switch_to_menu_screen,
-                               background_color=(0.8, 0, 0, 0.85)))
-
-        set_list = os.listdir('./resources/maps/')
-        set_number = len(set_list)
+        self.add_widget(
+            Button(text="Back to Menu", font_name=self.FONT_MENU_LEVEL, background_color=(0.8, 0, 0, 0.85),
+                   pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
+                   on_press=self.switch_to_menu_screen)
+        )
 
         menu_level_grid = GridLayout(size_hint=(0.7, 0.45), pos_hint={'x': 0.15, 'y': 0.3}, row=2)
         self.add_widget(menu_level_grid)
+
+        set_list = os.listdir('./resources/maps/')
+        set_number = len(set_list)
         menu_level_grid.cols = set_number / 2
 
         for index in range(set_number):
             if index % 2 == 0:
-                menu_level_grid.add_widget(Button(text="Level " + str(index + 1), background_color=(0.1, 0, 0, 0.85),
-                                                  font_name=self.FONT_MENU_LEVEL))
+                button_title = "Level " + str(index + 1)
+                menu_level_grid.add_widget(
+                    Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
+                           background_color=(0.1, 0, 0, 0.85))
+                )
 
             else:
-                menu_level_grid.add_widget(Button(text="Level " + str(index + 1), background_color=(0.8, 0, 0, 0.85),
-                                                  font_name=self.FONT_MENU_LEVEL))
+                button_title = "Level " + str(index + 1)
+                menu_level_grid.add_widget(
+                    Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
+                           background_color=(0.8, 0, 0, 0.85))
+                )
 
     def switch_to_menu_screen(self, *args):
         """
         Required method.
         """
+        Logger.info("propagate Menu")
         propagate_event('Menu', self)
 
 
