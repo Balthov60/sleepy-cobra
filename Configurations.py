@@ -1,5 +1,4 @@
 from kivy.uix.image import Image as CoreImage
-from kivy.graphics import Color
 
 import os.path
 

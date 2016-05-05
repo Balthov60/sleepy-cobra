@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg3756"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="point.svg"
+   inkscape:export-filename="/media/DATA/Dev/School/sleepy-cobra/resources/other/point.png"
+   inkscape:export-xdpi="25.600002"
+   inkscape:export-ydpi="25.600002">
+  <defs
+     id="defs3758">
+    <linearGradient
+       id="linearGradient6033"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop6035" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient6027"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0"
+         id="stop6029" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#000000"
+     bordercolor="#ffffff"
+     borderopacity="0.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="0"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="-37.309238"
+     inkscape:cy="694.65189"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     borderlayer="false" />
+  <metadata
+     id="metadata3761">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ff2a2a;fill-opacity:1;fill-rule:nonzero;stroke:none;opacity:0"
+       id="rect6095"
+       width="900"
+       height="900"
+       x="-774.28571"
+       y="-37.72319"
+       rx="33.167023"
+       ry="18.109991"
+       inkscape:export-filename="/media/DATA/Dev/School/sleepy-cobra/resources/other/point.png"
+       inkscape:export-xdpi="25.600002"
+       inkscape:export-ydpi="25.600002" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m -328.2543,311.55616 c -54.39025,0 -98.51818,44.12794 -98.51818,98.51818 0,54.39024 44.12793,98.51817 98.51818,98.51817 54.39023,0 98.51818,-44.12793 98.51818,-98.51817 0,-54.39024 -44.12795,-98.51818 -98.51818,-98.51818 z"
+       id="path3742-3"
+       style="fill:#ffffff"
+       inkscape:export-filename="/media/DATA/Dev/School/sleepy-cobra/resources/other/point.png"
+       inkscape:export-xdpi="25.600002"
+       inkscape:export-ydpi="25.600002" />
+    <path
+       d="m -327.14732,113.88852 c -163.51404,0 -296.17845,132.6644 -296.17845,296.17844 0,163.51402 132.66441,296.17845 296.17845,296.17845 163.51402,0 296.178444,-132.66443 296.178444,-296.17845 0,-163.51404 -132.664424,-296.17844 -296.178444,-296.17844 z m 0,82.17597 c 116.92186,0 211.792,94.87013 211.792,211.792 0,116.92186 -94.87014,211.792 -211.792,211.792 -116.92186,0 -211.76771,-94.87014 -211.76771,-211.792 0,-116.92187 94.84585,-211.792 211.76771,-211.792 z"
+       id="path3742"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff"
+       inkscape:export-xdpi="25.600002"
+       inkscape:export-ydpi="25.600002"
+       inkscape:export-filename="/media/DATA/Dev/School/sleepy-cobra/resources/other/point.png" />
+  </g>
+</svg>
