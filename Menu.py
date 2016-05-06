@@ -6,6 +6,9 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.logger import Logger
 
+from LevelService import LevelService
+from LevelManager import LevelManager
+
 import os
 
 
@@ -15,7 +18,6 @@ class Menu(FloatLayout):
     def __init__(self, event_dispatcher, **kwargs):
         """
         Initialize menu's button and textures.
-
         :param kwargs: Args of Layout
         :rtype: void
         """
@@ -63,13 +65,14 @@ class MenuLevel(FloatLayout):
     def __init__(self, event_dispatcher, **kwargs):
         """
         Initialize button and textures of MenuLevel.
-
         :param event_dispatcher:
         :param kwargs: args of layout
         :rtype: void
         """
         super(MenuLevel, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
+        self.level_service = LevelService()
+        self.level_manager = LevelManager()
 
         # Add fond.
         self.canvas.add(
@@ -90,19 +93,19 @@ class MenuLevel(FloatLayout):
         set_number = len(set_list)
         menu_level_grid.cols = set_number / 2
 
-        for index in range(set_number):
+        for index in range(1,set_number+1):
             if index % 2 == 0:
-                button_title = "Level " + str(index + 1)
+                button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
                     Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
-                           background_color=(0.1, 0, 0, 0.85))
+                           background_color=(0.1, 0, 0, 0.85), on_press=self.launch_level, cls=[index])
                 )
 
             else:
-                button_title = "Level " + str(index + 1)
+                button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
                     Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
-                           background_color=(0.8, 0, 0, 0.85))
+                           background_color=(0.8, 0, 0, 0.85), on_press=self.launch_level, cls=[index])
                 )
 
     def switch_to_menu_screen(self, *args):
@@ -112,12 +115,29 @@ class MenuLevel(FloatLayout):
         Logger.info("propagate Menu")
         propagate_event('Menu', self)
 
-
-def propagate_event(value, current_class):
+    def launch_level(self, value):
         """
-
-        :param value: screen's name.
-        :param current_class: Current active class.
+        Check if player can play this level and in case: load it.
+        :param value:
         :rtype: void
         """
-        current_class.event_dispatcher.dispatch('on_change_screen', value)
+        level_id = str(value.cls[0]) + str(1)
+        # la on recuperer un string avec set + level
+
+        # maintenant je crois qu'il y a des bugs dans ton truc donc je te laisse enjoy tout ca c'est plus ma partie ^^
+        # Sachant qu'il y a ces conditions a check et a retourner des message ducout surement dans le level manager mais en gros : Si le level n'existe pas, Si le set n'est pas unlock
+
+        # il faut test le set pas le level, le mec recommence de zero son set si il deco pendant ce temps je pense
+        self.level_manager.load_level(level_id)
+
+        # si jamais l'event est bon il faut le propager
+        propagate_event('LevelManager', self)
+
+
+def propagate_event(value, current_class):
+    """
+    :param value: screen's name.
+    :param current_class: Current active class.
+    :rtype: void
+    """
+    current_class.event_dispatcher.dispatch('on_change_screen', value)

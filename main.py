@@ -54,7 +54,7 @@ class GameApp(App):
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
         self.game_widget.load_resuming_level()
-        self.screen_manager.current = 'LevelManager'
+        self.screen_manager.current = 'Menu'
         return self.screen_manager
 
     def do_change_screen(self, instance, value, *args):

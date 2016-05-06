@@ -47,7 +47,7 @@ class LevelService:
         """
         Get level completed with specified id.
 
-        :param level_id:
+        :param level_id: str(set)+str(level_in_set)
         :return: Level completed.
         """
         self.cursor.execute(
@@ -78,7 +78,7 @@ class LevelService:
         """
         Insert a completed level with details.
 
-        :param level_id:
+        :param level_id: str(set)+str(level_in_set)
         :param resolution_time:
         :param failed_attempts:
         :rtype: void
@@ -128,7 +128,7 @@ class LevelService:
         """
         Get the resuming level.
 
-        :return: level_id
+        :return: level_id: (format :str(set)+str(level_in_set))
         """
         last_level_id = self.get_last_level_unlocked()
         if not last_level_id:
@@ -139,7 +139,7 @@ class LevelService:
         """
         Check if level is unlocked.
 
-        :param level_id:
+        :param level_id: str(set)+str(level_in_set)
         :rtype: boolean
         """
         completions = self.get_completions()
@@ -154,7 +154,7 @@ class LevelService:
         """
         Verify is the level can be played by the player.
 
-        :param level_id:
+        :param level_id: str(set)+str(level_in_set)
         :rtype: boolean
         """
 
@@ -170,7 +170,7 @@ class LevelService:
         """
         Logic to get the following level.
 
-        :param level_id:
+        :param level_id: str(set)+str(level_in_set)
         :return: following level_id
         """
         set_id = int(str(level_id)[0])
@@ -185,7 +185,7 @@ class LevelService:
         """
         Verify level exist.
 
-        :param level_id:
+        :param level_id: str(set)+str(level_in_set)
         """
         set_id = int(str(level_id)[0])
         level_id_in_set = int(str(level_id)[1])
