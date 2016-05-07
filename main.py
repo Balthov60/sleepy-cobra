@@ -34,7 +34,7 @@ class GameApp(App):
         self.screen_manager.add_widget(self.game_screen)
 
         self.menu_level_widget = MenuLevel(self.my_event_dispatcher)
-        self.menu_level_screen = Screen(name="Menu_level")
+        self.menu_level_screen = Screen(name="MenuLevel")
         self.menu_level_screen.add_widget(self.menu_level_widget)
         self.screen_manager.add_widget(self.menu_level_screen)
 
@@ -42,6 +42,7 @@ class GameApp(App):
 
     def build(self):
         """
+        Launch game.
 
         :rtype: void
         """
@@ -52,12 +53,13 @@ class GameApp(App):
 
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
-        self.game_widget.load_resuming_level()
-        self.screen_manager.current = 'Menu'
+        self.game_widget.load_set()
+        self.screen_manager.current = 'LevelManager'
         return self.screen_manager
 
     def do_change_screen(self, instance, value, *args):
         """
+        When player change screen.
 
         :param instance:
         :param value:
@@ -65,6 +67,9 @@ class GameApp(App):
         :rtype: void
         """
         self.screen_manager.current = value
+
+    def on_pause(self):
+        return True
 
 
 if __name__ == '__main__':
