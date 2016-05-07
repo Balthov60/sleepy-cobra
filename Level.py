@@ -12,7 +12,7 @@ class Level(FloatLayout):
 
     trace_texture = textures['trace']
 
-    def __init__(self, level_event_dispatcher, level_id, **kwargs):
+    def __init__(self, level_event_dispatcher, set_id, level_id_in_set, **kwargs):
         """
         Load map in a layout then load level and touch properties.
 
@@ -24,10 +24,9 @@ class Level(FloatLayout):
         super(Level, self).__init__(**kwargs)
 
         # Load map.
-        self.level_id = level_id
-        level_set = str(self.level_id)[0]
-        level_id_in_set = str(self.level_id)[1]
-        map_file_path = "./resources/maps/set{0}/level{0}_{1}.cfg".format(level_set, level_id_in_set)
+        self.set_id = set_id
+        self.level_id_in_set = level_id_in_set
+        map_file_path = "./resources/maps/set{0}/level{0}_{1}.cfg".format(self.set_id, self.level_id_in_set)
         self.map_canvas = MapCanvas(map_file_path)
         self.add_widget(self.map_canvas)
 
@@ -239,13 +238,14 @@ class Level(FloatLayout):
 
     def propagate_level_up(self):
         """
-        Propagate level_up event.
+        Propagate level_completed event.
 
         :rtype: void
         """
 
         self.level_event_dispatcher.dispatch('on_level_completed', {
-            'level_id': self.level_id,
+            'set_id': self.set_id,
+            'level_id_in_set': self.level_id_in_set,
             'resolution_time': datetime.now() - self.start_time,
             'failed_attempts': self.failed_attempts
         })
