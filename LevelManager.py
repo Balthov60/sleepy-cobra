@@ -55,7 +55,7 @@ class LevelManager(Widget):
         for level_completed in self.levels_completed_pool:
             self.level_service.save_completion(level_completed)
 
-    def load_set(self, set_id):
+    def load_set(self, set_id=None):
         """
         Load level in set
         :param set_id:
