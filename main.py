@@ -53,7 +53,7 @@ class GameApp(App):
 
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
-        self.game_widget.load_resuming_level()
+        self.game_widget.load_set()
         self.screen_manager.current = 'LevelManager'
         return self.screen_manager
 
@@ -67,6 +67,9 @@ class GameApp(App):
         :rtype: void
         """
         self.screen_manager.current = value
+
+    def on_pause(self):
+        return True
 
 
 if __name__ == '__main__':

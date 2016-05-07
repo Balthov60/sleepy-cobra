@@ -16,6 +16,7 @@ class LevelManager(Widget):
         self.level_service = LevelService()
         self.level_event_dispatcher = LevelEventDispatcher()
         self.level_event_dispatcher.bind(on_level_completed=self.do_level_up)
+        self.levels_completed_pool = list()
 
     def add_widget(self, widget, index=0):
         """
@@ -35,31 +36,42 @@ class LevelManager(Widget):
         :param args:
         :return:
         """
-        self.level_service.save_completion(completion_details)
-        self.load_level(self.level_service.get_next_level_id(completion_details['level_id']))
+        self.levels_completed_pool.append(completion_details)
+        if completion_details['level_id_in_set'] >= 5:
+            self.do_set_up()
+            self.load_level_in_set()
+            return
+        self.load_level_in_set(completion_details['set_id'], completion_details['level_id_in_set'] + 1)
 
-    def load_resuming_level(self):
-        """
-        Load resuming level.
-        :return:
-        """
-        level_id = self.level_service.get_resuming_level()
-        self.add_widget(Level(self.level_event_dispatcher, level_id))
+    def do_set_up(self):
 
-    def load_level(self, level_id=None):
-        """
-        Load given level with checking.
-        :param level_id:
-        :return:
-        """
-
-        if not level_id:
-            return self.load_resuming_level()
-
-        if not self.level_service.is_level_playable(level_id):
+        if len(self.levels_completed_pool) > 5:
+            self.levels_completed_pool = list()
             return
 
-        if not self.level_service.does_level_exist(level_id):
+        if len(self.levels_completed_pool) < 5:
             return
 
-        return self.add_widget(Level(self.level_event_dispatcher, level_id))
+        for level_completed in self.levels_completed_pool:
+            self.level_service.save_completion(level_completed)
+
+    def load_set(self, set_id):
+        """
+        Load level in set
+        :param set_id:
+        :return:
+        """
+        self.load_level_in_set(set_id)
+
+    def load_level_in_set(self, set_id=None, level_id_in_set=1):
+        """
+        Load given level in given set with checking.
+        :param set_id:
+        :param level_id_in_set:
+        :return:
+        """
+
+        if not self.level_service.does_set_exist(set_id) or not set_id:
+                set_id = self.level_service.get_resuming_set()
+
+        self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
