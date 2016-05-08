@@ -37,3 +37,13 @@ class MenusEventDispatcher(EventDispatcher):
         Required method
         """
         pass
+
+
+def propagate_event(value, current_class, set_id=None):
+    """
+    :param value: screen's name.
+    :param current_class: Current active class.
+    :param set_id:
+    :rtype: void
+    """
+    current_class.event_dispatcher.dispatch('on_change_screen', value, set_id)

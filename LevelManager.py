@@ -1,20 +1,24 @@
 from kivy.uix.widget import Widget
 from kivy.logger import Logger
+from kivy.uix.button import Button
 
 from Level import Level
 from LevelService import LevelService
-from EventDispatchers import LevelEventDispatcher, MenusEventDispatcher
+from EventDispatchers import LevelEventDispatcher, propagate_event
 
 
 class LevelManager(Widget):
 
-    def __init__(self, **kwargs):
+    def __init__(self, event_dispatcher, **kwargs):
         """
         Instantiate the LevelManager with event listener.
+
+        :param event_dispatcher: dispatcher
         :param kwargs:
         """
         super(LevelManager, self).__init__(**kwargs)
         self.level_service = LevelService()
+        self.event_dispatcher = event_dispatcher
         self.level_event_dispatcher = LevelEventDispatcher()
         self.level_event_dispatcher.bind(on_level_completed=self.do_level_up)
         self.levels_completed_pool = list()
@@ -26,7 +30,6 @@ class LevelManager(Widget):
         :param index:
         :return:
         """
-        self.clear_widgets()
         super(LevelManager, self).add_widget(widget, index)
 
     def do_level_up(self, instance, completion_details, *args):
@@ -99,4 +102,15 @@ class LevelManager(Widget):
         if not set_id or not self.level_service.does_set_exist(set_id):
                 set_id = self.level_service.get_resuming_set()
 
+        self.clear_widgets()
         self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
+        self.add_widget(
+            Button(text="Menu", background_color=(0, 0, 0, 1), on_press=self.switch_to_menu_screen)
+        )
+
+    def switch_to_menu_screen(self, *args):
+        """
+        Required method.
+        """
+        Logger.info("propagate Menu")
+        propagate_event('Menu', self)
