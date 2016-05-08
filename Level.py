@@ -9,8 +9,11 @@ from datetime import datetime
 
 
 class Level(FloatLayout):
+    """
+    Touch methods and map utilisation.
+    """
 
-    trace_texture = textures['trace']
+    _trace_texture = textures['trace']
 
     def __init__(self, level_event_dispatcher, set_id, level_id_in_set, **kwargs):
         """
@@ -73,10 +76,7 @@ class Level(FloatLayout):
 
         # get if player can draw here
         self.tile_identifier = get_tile_identifier(self, touch.x, touch.y)
-        if self.tile_identifier is None:
-            can_draw = False
-        else:
-            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
+        can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if not can_draw:
             self.failed_attempts += 1
