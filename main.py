@@ -25,7 +25,7 @@ class GameApp(App):
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)
 
-        self.game_widget = LevelManager()
+        self.game_widget = LevelManager(self.menus_event_dispatcher)
         self.game_screen = Screen(name="LevelManager")
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)

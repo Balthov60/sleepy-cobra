@@ -9,6 +9,7 @@ from kivy.logger import Logger
 from LevelService import LevelService
 from LevelManager import LevelManager
 from Configurations import color
+from EventDispatchers import propagate_event
 
 import os
 
@@ -19,11 +20,14 @@ class Menu(FloatLayout):
     def __init__(self, event_dispatcher, **kwargs):
         """
         Initialize menu's button and textures.
+
+        :param event_dispatcher: dispatcher
         :param kwargs: Args of Layout
         :rtype: void
         """
         super(Menu, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
+
         # Add fond and title.
         self.canvas.add(
             Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
@@ -69,14 +73,15 @@ class MenuLevel(FloatLayout):
     def __init__(self, event_dispatcher, **kwargs):
         """
         Initialize button and textures of MenuLevel.
-        :param event_dispatcher:
+
+        :param event_dispatcher: dispatcher
         :param kwargs: args of layout
         :rtype: void
         """
         super(MenuLevel, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
         self.level_service = LevelService()
-        self.level_manager = LevelManager()
+        self.level_manager = LevelManager(event_dispatcher)
 
         # Add fond.
         self.canvas.add(
@@ -128,13 +133,3 @@ class MenuLevel(FloatLayout):
         set_id = value.cls[0]
         if self.level_manager.can_load_set(set_id):
             propagate_event('LevelManager', self, set_id)
-
-
-def propagate_event(value, current_class, set_id=None):
-    """
-    :param value: screen's name.
-    :param current_class: Current active class.
-    :param set_id:
-    :rtype: void
-    """
-    current_class.event_dispatcher.dispatch('on_change_screen', value, set_id)
