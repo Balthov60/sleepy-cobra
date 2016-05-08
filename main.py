@@ -8,7 +8,7 @@ from LevelManager import LevelManager
 
 
 class GameApp(App):
-    # sound = None
+    sound = None
 
     def __init__(self, **kwargs):
         """
@@ -44,9 +44,9 @@ class GameApp(App):
         :rtype: void
         """
 
-        # self.sound = SoundLoader.load('resources/music/test.mp3')
-        # if self.sound:
-        #     self.sound.play()
+        self.sound = SoundLoader.load('./resources/other/scape-me.wav')
+        if self.sound:
+            self.sound.play()
 
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
@@ -74,7 +74,6 @@ class GameApp(App):
         Required method
         """
         return True
-
 
 if __name__ == '__main__':
     GameApp().run()
