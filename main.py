@@ -3,12 +3,12 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.audio import SoundLoader
 
 from Menu import Menu, MenuLevel
-from EventDispatchers import MenusEventDispatcher
+from EventDispatchers import MenusEventDispatcher, SoundEventDispatcher
 from LevelManager import LevelManager
 
 
 class GameApp(App):
-    # sound = None
+    sound = None
 
     def __init__(self, **kwargs):
         """
@@ -18,6 +18,7 @@ class GameApp(App):
         """
         super(GameApp, self).__init__(**kwargs)
         self.menus_event_dispatcher = MenusEventDispatcher()
+        self.sound_event_dispatcher = SoundEventDispatcher()
         self.screen_manager = ScreenManager()
 
         self.menu_widget = Menu(self.menus_event_dispatcher)
@@ -44,9 +45,9 @@ class GameApp(App):
         :rtype: void
         """
 
-        # self.sound = SoundLoader.load('resources/music/test.mp3')
-        # if self.sound:
-        #     self.sound.play()
+        self.sound = SoundLoader.load('./resources/other/scape-me.wav')
+        if self.sound:
+            self.sound.play()
 
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
@@ -74,7 +75,6 @@ class GameApp(App):
         Required method
         """
         return True
-
 
 if __name__ == '__main__':
     GameApp().run()
