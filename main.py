@@ -50,7 +50,7 @@ class GameApp(App):
 
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
-        self.screen_manager.current = 'MenuLevel'
+        self.screen_manager.current = 'Menu'
         return self.screen_manager
 
     def do_change_screen(self, instance, value, *args):
