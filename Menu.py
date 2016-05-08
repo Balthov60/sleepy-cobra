@@ -14,7 +14,7 @@ import os
 
 
 class Menu(FloatLayout):
-    FONT_MENU = './resources/menu/Eraser.ttf'
+    FONT_MENU = './resources/menu/test19.ttf'
 
     def __init__(self, event_dispatcher, **kwargs):
         """
@@ -62,7 +62,7 @@ class Menu(FloatLayout):
 
 
 class MenuLevel(FloatLayout):
-    FONT_MENU_LEVEL = './resources/menu/Eraser.ttf'
+    FONT_MENU_LEVEL = './resources/menu/test19.ttf'
     color_1 = color['blue_color']
     color_2 = color['darck_blue_color']
 
@@ -126,14 +126,14 @@ class MenuLevel(FloatLayout):
         :rtype: void
         """
         set_id = value.cls[0]
-        self.level_manager.load_set(set_id)
-        propagate_event('LevelManager', self)
+        propagate_event('LevelManager', self, set_id)
 
 
-def propagate_event(value, current_class):
+def propagate_event(value, current_class, set_id=None):
     """
     :param value: screen's name.
     :param current_class: Current active class.
+    :param set_id:
     :rtype: void
     """
-    current_class.event_dispatcher.dispatch('on_change_screen', value)
+    current_class.event_dispatcher.dispatch('on_change_screen', value, set_id)

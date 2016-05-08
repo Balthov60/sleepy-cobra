@@ -66,7 +66,11 @@ class GameApp(App):
         :param args:
         :rtype: void
         """
+
         self.screen_manager.current = value
+
+        if args[0]:
+            self.game_widget.load_set(args[0])
 
     def on_pause(self):
         return True
