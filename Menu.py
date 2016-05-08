@@ -64,7 +64,7 @@ class Menu(FloatLayout):
 class MenuLevel(FloatLayout):
     FONT_MENU_LEVEL = './resources/menu/test19.ttf'
     color_1 = color['blue_color']
-    color_2 = color['darck_blue_color']
+    color_2 = color['dark_blue_color']
 
     def __init__(self, event_dispatcher, **kwargs):
         """

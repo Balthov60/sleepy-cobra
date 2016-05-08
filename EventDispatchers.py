@@ -23,7 +23,7 @@ class LevelEventDispatcher(EventDispatcher):
 class MenusEventDispatcher(EventDispatcher):
     def __init__(self, **kwargs):
         """
-        Instantiate the Menu event dispatcher with its custom property. (in main)
+        Instantiate the Menu event dispatcher with its custom property.
 
         :param kwargs:
         :rtype: void
