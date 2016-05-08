@@ -3,7 +3,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.audio import SoundLoader
 
 from Menu import Menu, MenuLevel
-from EventDispatchers import MenusEventDispatcher, SoundEventDispatcher
+from EventDispatchers import MenusEventDispatcher
 from LevelManager import LevelManager
 
 
@@ -18,7 +18,6 @@ class GameApp(App):
         """
         super(GameApp, self).__init__(**kwargs)
         self.menus_event_dispatcher = MenusEventDispatcher()
-        self.sound_event_dispatcher = SoundEventDispatcher()
         self.screen_manager = ScreenManager()
 
         self.menu_widget = Menu(self.menus_event_dispatcher)
