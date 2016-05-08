@@ -14,6 +14,7 @@ import os
 
 class Menu(FloatLayout):
     FONT_MENU = './resources/menu/test19.ttf'
+
     def __init__(self, event_dispatcher, **kwargs):
         """
         Initialize menu's button and textures.
