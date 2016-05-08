@@ -47,6 +47,7 @@ class GameApp(App):
         self.sound = SoundLoader.load('./resources/other/scape-me.wav')
         if self.sound:
             self.sound.play()
+            self.sound.loop = True
 
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
