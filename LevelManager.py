@@ -79,7 +79,7 @@ class LevelManager(Widget):
         :rtype: Boolean
         """
         if not self.level_service.does_set_exist(set_id):
-            Logger.info("Set did not existed.")
+            Logger.info("Set does not exist.")
             return False
 
         if not self.level_service.is_set_unlocked(set_id):
