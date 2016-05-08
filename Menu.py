@@ -126,7 +126,8 @@ class MenuLevel(FloatLayout):
         :rtype: void
         """
         set_id = value.cls[0]
-        propagate_event('LevelManager', self, set_id)
+        if self.level_manager.can_load_set(set_id):
+            propagate_event('LevelManager', self, set_id)
 
 
 def propagate_event(value, current_class, set_id=None):

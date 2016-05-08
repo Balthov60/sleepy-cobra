@@ -166,12 +166,14 @@ class LevelService:
         :param set_id:
         :rtype: boolean
         """
-        set_completion = self.get_completion_by_set_id(set_id) # would be better to call a count
+        last_set_unlocked = self.get_last_set_unlocked()
+        if not last_set_unlocked:
+            last_set_unlocked = 1
 
-        if not set_completion:
-            return False
+        if last_set_unlocked + 1 >= set_id:
+            return True
 
-        return True
+        return False
 
     def does_set_exist(self, set_id):
         """

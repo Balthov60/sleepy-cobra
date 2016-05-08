@@ -3,7 +3,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.audio import SoundLoader
 
 from Menu import Menu, MenuLevel
-from Configurations import textures, authorizations
 from EventDispatchers import MenusEventDispatcher
 from LevelManager import LevelManager
 
@@ -15,11 +14,9 @@ class GameApp(App):
         """
 
         :param kwargs:
-        :return:
+        :rtype: void
         """
         super(GameApp, self).__init__(**kwargs)
-        self.textures = textures
-        self.authorizations = authorizations
         self.menus_event_dispatcher = MenusEventDispatcher()
         self.screen_manager = ScreenManager()
 
@@ -53,7 +50,6 @@ class GameApp(App):
 
         self.icon = './resources/other/logo.png'
         self.title = "'Scape Me"
-        self.game_widget.load_set()
         self.screen_manager.current = 'MenuLevel'
         return self.screen_manager
 
@@ -69,10 +65,14 @@ class GameApp(App):
 
         self.screen_manager.current = value
 
+        # when load level
         if args[0]:
             self.game_widget.load_set(args[0])
 
     def on_pause(self):
+        """
+        Required method
+        """
         return True
 
 
