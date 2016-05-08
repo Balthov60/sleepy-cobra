@@ -8,12 +8,13 @@ from kivy.logger import Logger
 
 from LevelService import LevelService
 from LevelManager import LevelManager
+from Configurations import color
 
 import os
 
 
 class Menu(FloatLayout):
-    FONT_MENU = './resources/menu/test19.ttf'
+    FONT_MENU = './resources/menu/Eraser.ttf'
 
     def __init__(self, event_dispatcher, **kwargs):
         """
@@ -28,7 +29,7 @@ class Menu(FloatLayout):
             Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
         )
         self.canvas.add(
-                Rectangle(source='./resources/other/logo.png', size_hint=0.2, pos_hint={'x':0.4, 'y':0.4})
+            Rectangle(source='./resources/other/logo.png', size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
         )
         self.add_widget(
             Label(text="'Scape me", font_name=self.FONT_MENU, font_size='100sp',
@@ -61,11 +62,11 @@ class Menu(FloatLayout):
 
 
 class MenuLevel(FloatLayout):
-    FONT_MENU_LEVEL = './resources/menu/test19.ttf'
-    color_1 = 0.37, 0.69, 0.73, 0.8
-    color_2 = 0.19, 0.19, 0.19, 0.8
+    FONT_MENU_LEVEL = './resources/menu/Eraser.ttf'
+    color_1 = color['blue_color']
+    color_2 = color['darck_blue_color']
 
-    def __init__(self, event_dispatcher, level_service, **kwargs):
+    def __init__(self, event_dispatcher, **kwargs):
         """
         Initialize button and textures of MenuLevel.
         :param event_dispatcher:
@@ -74,17 +75,17 @@ class MenuLevel(FloatLayout):
         """
         super(MenuLevel, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
-        self.level_service = level_service
+        self.level_service = LevelService()
         self.level_manager = LevelManager()
 
         # Add fond.
         self.canvas.add(
-            Rectangle(source='./resources/menu/fond_menu2.jpeg', size=Window.size)
+            Rectangle(source='./resources/menu/fond_menu2.png', size=Window.size)
         )
 
         # Add button
         self.add_widget(
-            Button(text="Back to Menu", font_name=self.FONT_MENU_LEVEL, background_color=(self.color_2),
+            Button(text="Back to Menu", font_name=self.FONT_MENU_LEVEL, background_color=self.color_2,
                    pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
                    on_press=self.switch_to_menu_screen)
         )
@@ -96,19 +97,19 @@ class MenuLevel(FloatLayout):
         set_number = len(set_list)
         menu_level_grid.cols = set_number / 2
 
-        for index in range(1, set_number+1):
+        for index in range(1, set_number + 1):
             if index % 2 == 0:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
                     Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
-                           background_color=(self.color_1), on_press=self.launch_level, cls=[index])
+                           background_color=self.color_1, on_press=self.launch_level, cls=[index])
                 )
 
             else:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
                     Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
-                           background_color=(self.color_2), on_press=self.launch_level, cls=[index])
+                           background_color=self.color_2, on_press=self.launch_level, cls=[index])
                 )
 
     def switch_to_menu_screen(self, *args):
