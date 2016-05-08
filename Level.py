@@ -13,7 +13,7 @@ class Level(FloatLayout):
     Touch methods and map utilisation.
     """
 
-    _trace_texture = textures['trace']
+    trace_texture = textures['trace']
 
     def __init__(self, level_event_dispatcher, set_id, level_id_in_set, **kwargs):
         """
@@ -84,7 +84,7 @@ class Level(FloatLayout):
             return
 
         self.canvas.after.add(
-            Point(points=(touch.x, touch.y), texture=self._trace_texture, pointsize=self.touch_width)
+            Point(points=(touch.x, touch.y), texture=self.trace_texture, pointsize=self.touch_width)
         )
 
         # Save tile.
@@ -135,7 +135,7 @@ class Level(FloatLayout):
             x = points_list[index][0]
             y = points_list[index][1]
             self.canvas.after.add(
-                Point(points=(x, y), texture=self._trace_texture, pointsize=self.touch_width)
+                Point(points=(x, y), texture=self.trace_texture, pointsize=self.touch_width)
             )
 
         # Save tile.
