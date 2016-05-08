@@ -82,8 +82,8 @@ class LevelService:
         """
         self.cursor.execute("""
             UPDATE {} SET failed_attempts = ?, successful_attempts = ? WHERE id = ?
-            """.format(self.TABLE_NAME), (int(current_entry[3]) + failed_attempts,
-                                          int(current_entry[4]) + 1,
+            """.format(self.TABLE_NAME), (int(current_entry[4]) + failed_attempts,
+                                          int(current_entry[5]) + 1,
                                           current_entry[0])
         )
         self.connection.commit()
