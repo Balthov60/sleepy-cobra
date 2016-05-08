@@ -71,3 +71,9 @@ authorizations = dict([
     ('V', [False, False, True, True]),
 ])
 
+# colos dictionary
+color = dict([
+    ('blue_color', [0.37, 0.69, 0.73, 0.9]),
+    ('dark_blue_color', [0.19, 0.19, 0.19, 0.9])
+])
+

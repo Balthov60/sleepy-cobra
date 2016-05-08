@@ -69,7 +69,7 @@ def get_touch_direction(tile_identifier, old_tile_identifier):
 
 def can_start_stop(tile_type, points_list):
     """
-    Test if player can start is path.
+    Test if player can start his drawing
 
     :param points_list: list of tile for start and stop
     :param tile_type: key of the texture (string)
