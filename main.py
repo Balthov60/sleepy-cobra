@@ -44,7 +44,7 @@ class GameApp(App):
         :rtype: void
         """
 
-        self.sound = SoundLoader.load('./resources/other/scape-me.wav')
+        self.sound = SoundLoader.load('./resources/other/2TalkToMe.mp3')
         if self.sound:
             self.sound.play()
             self.sound.loop = True
