@@ -39,6 +39,10 @@ class LevelManager(Widget):
         """
         super(LevelManager, self).add_widget(widget, index)
 
+#####
+# Save and Level Up
+#####
+
     def do_level_up(self, instance, completion_details, *args):
         """
         Save level up and open popup.
@@ -46,7 +50,7 @@ class LevelManager(Widget):
         :param instance:
         :param completion_details:
         :param args:
-        :return:
+        :rtype: void
         """
         current_level_list = self.save_level_up(completion_details)
         self.open_pop_up(current_level_list[0], current_level_list[1], 'end_level', completion_details)
@@ -54,34 +58,31 @@ class LevelManager(Widget):
     def save_level_up(self, completion_details):
         """
         Save advancement.
+
         :param completion_details:
         :return: set_id, level_id (current)
         """
-        self.levels_completed_pool.append(completion_details)
         if completion_details['level_id_in_set'] >= 5:
-            set_id = self.do_set_up()
+            set_id = self.do_set_up(completion_details)
             return set_id, 1
 
+        self.level_service.save_completion(completion_details)
         return completion_details['set_id'], completion_details['level_id_in_set'] + 1
 
-    def do_set_up(self):
+    def do_set_up(self, completion_details):
+        """
+        Save and level up.
+
+        :param completion_details:
+        :return: set_id (integer)
         """
 
-        :return:
-        """
+        self.level_service.save_completion(completion_details)
+        return completion_details['set_id'] + 1
 
-        if len(self.levels_completed_pool) > 5:
-            self.levels_completed_pool = list()
-            return self.level_service.get_resuming_set()
-
-        if len(self.levels_completed_pool) < 5:
-            return self.level_service.get_resuming_set()
-
-        for level_completed in self.levels_completed_pool:
-            self.level_service.save_completion(level_completed)
-
-        self.levels_completed_pool = list()
-        return self.level_service.get_resuming_set()
+#####
+# Set loading
+####
 
     def can_load_set(self, set_id=None):
         """
@@ -105,20 +106,22 @@ class LevelManager(Widget):
         Load given level in given set with checking.
         :param set_id:
         :param level_id_in_set:
-        :return:
+        :rtype: void
         """
 
         if not set_id or not self.level_service.does_set_exist(set_id):
-                set_id = self.level_service.get_resuming_set()
+                set_id = self.level_service.get_last_set_unlocked()
 
         self.clear_widgets()
-        print(set_id, level_id_in_set)
+
+        # add map
         self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
-        self.add_widget(
-            Button(text="Menu", background_color=(0, 0, 0, 1), on_press=self.switch_to_menu_screen)
-        )
+
+        # test popup
         self.open_pop_up(set_id, level_id_in_set, 'open_level')
-        self.update_level_label(set_id, level_id_in_set)
+
+        # add menu level
+        self.update_menu_level_label(set_id, level_id_in_set)
 
 #####
 # Pop Up
@@ -138,16 +141,14 @@ class LevelManager(Widget):
             return
 
         elif state == 'end_level':
-
             self.create_raw_popup()
 
-            self.grid_layout.add_widget(Label())
-            self.grid_layout.add_widget(Label(text="You win !"))
-
-            self.add_infos_labels(completion_details)
+            self.add_popup_title()
+            self.add_popup_infos_labels(completion_details)
             self.add_popup_buttons(set_id, level_id)
 
             self.popup.open()
+
         else:
             raise Exception("Pop up error.")
 
@@ -165,10 +166,38 @@ class LevelManager(Widget):
                                       spacing=[0, popup_size[1] / 10], padding=popup_size[0] / 10)
         self.popup.add_widget(self.grid_layout)
 
+    def add_popup_title(self):
+        """
+        Add Popup title.
+
+        :rtype: void
+        """
+        self.grid_layout.add_widget(Label())
+        self.grid_layout.add_widget(Label(text="You win !"))
+
+    def add_popup_infos_labels(self, completion_details):
+        """
+        Add attemps and time infos.
+
+        :param completion_details:
+        :rtype: void
+        """
+        self.grid_layout.add_widget(Label())
+
+        time = str(completion_details['resolution_time'])
+        self.grid_layout.add_widget(Label(text="Time : " + time))
+
+        self.grid_layout.add_widget(Label())
+
+        attempts = str(completion_details['failed_attempts'])
+        self.grid_layout.add_widget(Label(text="Attempts : " + attempts))
+
     def add_popup_buttons(self, set_id, level_id):
         """
         Add buttons Next, again and menu in pop up.
 
+        :type level_id: object
+        :param set_id:
         :rtype: void
         """
         again_button = Button(text='Play Again', cls=[set_id, level_id])
@@ -183,28 +212,12 @@ class LevelManager(Widget):
         next_button.bind(on_press=self.pop_up_next)
         self.grid_layout.add_widget(next_button)
 
-    def add_infos_labels(self, completion_details):
-        """
-        Add attemps and time infos.
-
-        :rtype: void
-        """
-        self.grid_layout.add_widget(Label())
-
-        time = str(completion_details['resolution_time'])
-        self.grid_layout.add_widget(Label(text="Time : " + time))
-
-        self.grid_layout.add_widget(Label())
-
-        attempts = str(completion_details['failed_attempts'])
-        self.grid_layout.add_widget(Label(text="Attempts : " + attempts))
-
     def pop_up_next(self, instance):
         """
         When player click on next button in pop up.
 
         :param instance:
-        :return:
+        :rtype: void
         """
         level_list = instance.cls
         self.load_level_in_set(level_list[0], level_list[1])
@@ -215,7 +228,7 @@ class LevelManager(Widget):
         When player click on replay button in pop up.
 
         :param instance:
-        :return:
+        :rtype: void
         """
         level_list = instance.cls
         if level_list[1] == 1:
@@ -232,16 +245,16 @@ class LevelManager(Widget):
         When player click on menu button in pop up.
 
         :param instance:
-        :return:
+        :rtype: void
         """
         self.popup.dismiss()
         self.switch_to_menu_screen()
 
 #####
-# Menu
+# Menu relatives
 #####
 
-    def update_level_label(self, set_id, level_id_in_set):
+    def update_menu_level_label(self, set_id, level_id):
         """
         Update the menu label of the level.
 
@@ -249,7 +262,9 @@ class LevelManager(Widget):
         :param level_id:
         :rtype: void
         """
-        pass
+        self.add_widget(
+            Button(text="Menu", background_color=(0, 0, 0, 1), on_press=self.switch_to_menu_screen)
+        )
 
     def switch_to_menu_screen(self, *args):
         """

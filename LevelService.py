@@ -135,29 +135,12 @@ class LevelService:
         :return: set_id of the last level unlocked
         """
         completions = self.get_completions()
-        higher_set = None
+        higher_set = 1
         for completion in completions:
             if completion[1] > higher_set:
                 higher_set = completion[1]
+
         return higher_set
-
-    def get_resuming_set(self):
-        """
-        Get the resuming set.
-
-        :return: level_id
-        """
-        last_set_id = self.get_last_set_unlocked()
-
-        if not last_set_id:
-            return 1
-
-        resuming_set = last_set_id + 1
-
-        if not self.does_set_exist(resuming_set):
-            return last_set_id
-
-        return resuming_set
 
     def is_set_unlocked(self, set_id):
         """
@@ -169,8 +152,10 @@ class LevelService:
         last_set_unlocked = self.get_last_set_unlocked()
         if not last_set_unlocked:
             last_set_unlocked = 1
+        else:
+            last_set_unlocked += 1
 
-        if last_set_unlocked + 1 >= set_id:
+        if last_set_unlocked >= set_id:
             return True
 
         return False
