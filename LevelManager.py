@@ -5,7 +5,7 @@ from kivy.uix.button import Button
 from Level import Level
 from LevelService import LevelService
 from EventDispatchers import LevelEventDispatcher, propagate_event
-from PopUp import open_level_pop_up
+from PopUpProvider import open_level_pop_up
 
 
 class LevelManager(Widget):

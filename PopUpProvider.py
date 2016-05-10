@@ -68,13 +68,16 @@ def add_popup_infos_labels(current_class, completion_details):
     """
     current_class.grid_layout.add_widget(Label())
 
-    time = str(completion_details['resolution_time'])
-    current_class.grid_layout.add_widget(Label(text="Time : " + time))
+    time = completion_details['resolution_time']
+    time = time.microseconds * 10**-6
+    time_text = "Time : " + str(time) + " sec."
+    current_class.grid_layout.add_widget(Label(text=time_text))
 
     current_class.grid_layout.add_widget(Label())
 
-    attempts = str(completion_details['failed_attempts'])
-    current_class.grid_layout.add_widget(Label(text="Attempts : " + attempts))
+    attempts = completion_details['failed_attempts'] + 1
+    attempts_text = "Attempts : " + str(attempts)
+    current_class.grid_layout.add_widget(Label(text=attempts_text))
 
 
 def add_popup_buttons(current_class, set_id, level_id):
