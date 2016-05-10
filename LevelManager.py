@@ -78,7 +78,18 @@ class LevelManager(Widget):
         """
 
         self.level_service.save_completion(completion_details)
-        return completion_details['set_id'] + 1
+
+        set_id = completion_details['set_id'] + 1
+        level_id_in_set = 0
+        new_set_save = {
+            'set_id': set_id,
+            'level_id_in_set': level_id_in_set,
+            'resolution_time': None,
+            'failed_attempts' : None,
+        }
+        self.level_service.save_completion(new_set_save)
+
+        return new_set_save['set_id']
 
 #####
 # Set loading
@@ -110,7 +121,7 @@ class LevelManager(Widget):
         """
 
         if not set_id or not self.level_service.does_set_exist(set_id):
-                set_id = self.level_service.get_last_set_unlocked()
+            set_id = self.level_service.get_last_set_unlocked()
 
         self.clear_widgets()
 
@@ -127,7 +138,7 @@ class LevelManager(Widget):
 # Pop Up
 #####
 
-    def open_pop_up(self, set_id, level_id, state, completion_details = None):
+    def open_pop_up(self, set_id, level_id, state, completion_details=None):
         """
         Try if this event need a pop up.
 

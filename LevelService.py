@@ -152,8 +152,6 @@ class LevelService:
         last_set_unlocked = self.get_last_set_unlocked()
         if not last_set_unlocked:
             last_set_unlocked = 1
-        else:
-            last_set_unlocked += 1
 
         if last_set_unlocked >= set_id:
             return True
