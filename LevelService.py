@@ -126,7 +126,8 @@ class LevelService:
 
         current_entry = current_entries[0]
 
-        self.edit_completion(current_entry, failed_attempts)
+        if failed_attempts is not None:
+            self.edit_completion(current_entry, failed_attempts)
 
     def get_last_set_unlocked(self):
         """

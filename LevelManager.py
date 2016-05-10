@@ -1,13 +1,11 @@
 from kivy.uix.widget import Widget
 from kivy.logger import Logger
 from kivy.uix.button import Button
-from kivy.uix.modalview import ModalView
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
 
 from Level import Level
 from LevelService import LevelService
 from EventDispatchers import LevelEventDispatcher, propagate_event
+from PopUp import open_level_pop_up
 
 
 class LevelManager(Widget):
@@ -53,7 +51,7 @@ class LevelManager(Widget):
         :rtype: void
         """
         current_level_list = self.save_level_up(completion_details)
-        self.open_pop_up(current_level_list[0], current_level_list[1], 'end_level', completion_details)
+        open_level_pop_up(self, current_level_list[0], current_level_list[1], 'end_level', completion_details)
 
     def save_level_up(self, completion_details):
         """
@@ -85,7 +83,7 @@ class LevelManager(Widget):
             'set_id': set_id,
             'level_id_in_set': level_id_in_set,
             'resolution_time': None,
-            'failed_attempts' : None,
+            'failed_attempts': None,
         }
         self.level_service.save_completion(new_set_save)
 
@@ -129,99 +127,14 @@ class LevelManager(Widget):
         self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
 
         # test popup
-        self.open_pop_up(set_id, level_id_in_set, 'open_level')
+        open_level_pop_up(self, set_id, level_id_in_set, 'open_level')
 
         # add menu level
         self.update_menu_level_label(set_id, level_id_in_set)
 
 #####
-# Pop Up
+# Pop up
 #####
-
-    def open_pop_up(self, set_id, level_id, state, completion_details=None):
-        """
-        Try if this event need a pop up.
-
-        :param completion_details:
-        :param set_id:
-        :param level_id:
-        :param state: if player open or end a level
-        :rtype: void
-        """
-        if state == 'open_level':
-            return
-
-        elif state == 'end_level':
-            self.create_raw_popup()
-
-            self.add_popup_title()
-            self.add_popup_infos_labels(completion_details)
-            self.add_popup_buttons(set_id, level_id)
-
-            self.popup.open()
-
-        else:
-            raise Exception("Pop up error.")
-
-    def create_raw_popup(self):
-        """
-        Create a raw popup with windows size parameter.
-
-        :rtype: void
-        """
-        window = self.get_parent_window()
-        window_size = window.size
-        popup_size = window_size[0] / 2, window_size[1] / 2
-        self.popup = ModalView(size_hint=(None, None), size=popup_size)
-        self.grid_layout = GridLayout(cols=3, raws=3,
-                                      spacing=[0, popup_size[1] / 10], padding=popup_size[0] / 10)
-        self.popup.add_widget(self.grid_layout)
-
-    def add_popup_title(self):
-        """
-        Add Popup title.
-
-        :rtype: void
-        """
-        self.grid_layout.add_widget(Label())
-        self.grid_layout.add_widget(Label(text="You win !"))
-
-    def add_popup_infos_labels(self, completion_details):
-        """
-        Add attemps and time infos.
-
-        :param completion_details:
-        :rtype: void
-        """
-        self.grid_layout.add_widget(Label())
-
-        time = str(completion_details['resolution_time'])
-        self.grid_layout.add_widget(Label(text="Time : " + time))
-
-        self.grid_layout.add_widget(Label())
-
-        attempts = str(completion_details['failed_attempts'])
-        self.grid_layout.add_widget(Label(text="Attempts : " + attempts))
-
-    def add_popup_buttons(self, set_id, level_id):
-        """
-        Add buttons Next, again and menu in pop up.
-
-        :type level_id: object
-        :param set_id:
-        :rtype: void
-        """
-        again_button = Button(text='Play Again', cls=[set_id, level_id])
-        again_button.bind(on_press=self.pop_up_replay)
-        self.grid_layout.add_widget(again_button)
-
-        menu_button = Button(text='Menu')
-        menu_button.bind(on_press=self.pop_up_menu)
-        self.grid_layout.add_widget(menu_button)
-
-        next_button = Button(text='Next Level', cls=[set_id, level_id])
-        next_button.bind(on_press=self.pop_up_next)
-        self.grid_layout.add_widget(next_button)
 
     def pop_up_next(self, instance):
         """
