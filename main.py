@@ -68,7 +68,7 @@ class GameApp(App):
 
         # when load level
         if args[0]:
-            self.game_widget.load_set(args[0])
+            self.game_widget.load_level_in_set(args[0])
 
     def on_pause(self):
         """

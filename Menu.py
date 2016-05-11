@@ -10,6 +10,7 @@ from LevelService import LevelService
 from LevelManager import LevelManager
 from Configurations import color
 from EventDispatchers import propagate_event
+from PopUpProvider import open_pop_up
 
 import os
 
@@ -49,7 +50,8 @@ class Menu(FloatLayout):
 
         self.add_widget(
             Button(text="Credits", font_name=self.FONT_MENU, font_size='40sp',
-                   size_hint=(.25, .1), pos_hint={'x': 0.4, 'y': 0.2}, background_color=(0, 0, 0, 0))
+                   size_hint=(.25, .1), pos_hint={'x': 0.4, 'y': 0.2}, background_color=(0, 0, 0, 0),
+                   on_press=self.credit_button_callback)
         )
 
         self.add_widget(
@@ -63,6 +65,15 @@ class Menu(FloatLayout):
         """
         Logger.info("propagate MenuLevel")
         propagate_event('MenuLevel', self)
+
+    def credit_button_callback(self, instance):
+        """
+        When player click on credit button (Required method).
+
+        :param instance:
+        :rtype: void
+        """
+        open_pop_up(self, 'Credits')
 
 
 class MenuLevel(FloatLayout):
@@ -133,3 +144,5 @@ class MenuLevel(FloatLayout):
         set_id = value.cls[0]
         if self.level_manager.can_load_set(set_id):
             propagate_event('LevelManager', self, set_id)
+        else:
+            open_pop_up(self, 'not_unlocked', set_id)
