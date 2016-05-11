@@ -98,6 +98,7 @@ class LevelManager(Widget):
         # add menu level
         self.update_menu_level_label(set_id, level_id_in_set)
 
+        # display popup if level need popup
         open_pop_up(self, 'open_level', set_id, level_id_in_set)
 
     #####
