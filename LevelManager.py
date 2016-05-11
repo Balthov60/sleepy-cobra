@@ -9,7 +9,6 @@ from PopUpProvider import open_pop_up
 
 
 class LevelManager(Widget):
-
     popup = None
     grid_layout = None
 
@@ -25,7 +24,6 @@ class LevelManager(Widget):
         self.event_dispatcher = event_dispatcher
         self.level_event_dispatcher = LevelEventDispatcher()
         self.level_event_dispatcher.bind(on_level_completed=self.do_level_up)
-        self.levels_completed_pool = list()
 
     def add_widget(self, widget, index=0):
         """
@@ -37,61 +35,33 @@ class LevelManager(Widget):
         """
         super(LevelManager, self).add_widget(widget, index)
 
-#####
-# Save and Level Up
-#####
+    #####
+    # Save and Level Up
+    #####
 
     def do_level_up(self, instance, completion_details, *args):
         """
-        Save level up and open popup.
+        Save level up in the completed pool and open popup.
 
         :param instance:
         :param completion_details:
         :param args:
         :rtype: void
         """
-        current_level_list = self.save_level_up(completion_details)
-        open_pop_up(self, 'end_level', current_level_list[0], current_level_list[1], completion_details)
-
-    def save_level_up(self, completion_details):
-        """
-        Save advancement.
-
-        :param completion_details:
-        :return: set_id, level_id (current)
-        """
-        if completion_details['level_id_in_set'] >= 5:
-            set_id = self.do_set_up(completion_details)
-            return set_id, 1
-
-        self.level_service.save_completion(completion_details)
-        return completion_details['set_id'], completion_details['level_id_in_set'] + 1
-
-    def do_set_up(self, completion_details):
-        """
-        Save and level up.
-
-        :param completion_details:
-        :return: set_id (integer)
-        """
-
         self.level_service.save_completion(completion_details)
 
-        set_id = completion_details['set_id'] + 1
-        level_id_in_set = 0
-        new_set_save = {
-            'set_id': set_id,
-            'level_id_in_set': level_id_in_set,
-            'resolution_time': None,
-            'failed_attempts': None,
-        }
-        self.level_service.save_completion(new_set_save)
+        set_id_to_load = completion_details['set_id']
+        level_id_in_set_to_load = completion_details['level_id_in_set'] + 1
 
-        return new_set_save['set_id']
+        if level_id_in_set_to_load >= 5:
+            set_id_to_load = completion_details['set_id'] + 1
+            level_id_in_set_to_load = 1
 
-#####
-# Set loading
-####
+        open_pop_up(self, 'end_level', set_id_to_load, level_id_in_set_to_load, completion_details)
+
+    #####
+    # Set loading
+    ####
 
     def can_load_set(self, set_id=None):
         """
@@ -125,15 +95,12 @@ class LevelManager(Widget):
         # add map
         self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
 
-        # check if level need popup
-        open_pop_up(self, 'open_level', set_id, level_id_in_set)
-
         # add menu level
         self.update_menu_level_label(set_id, level_id_in_set)
 
-#####
-# Pop up
-#####
+    #####
+    # Pop up
+    #####
 
     def pop_up_next(self, instance):
         """
@@ -175,9 +142,9 @@ class LevelManager(Widget):
         self.popup.dismiss()
         self.switch_to_menu_screen()
 
-#####
-# Menu relatives
-#####
+    #####
+    # Menu relatives
+    #####
 
     def update_menu_level_label(self, set_id, level_id):
         """
