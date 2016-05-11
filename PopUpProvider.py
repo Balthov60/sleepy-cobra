@@ -33,6 +33,7 @@ def open_pop_up(current_class, state, set_id=None, level_id=None, completion_det
 
     elif state == 'end_level':
         create_raw_popup(current_class, 3, 3)
+        current_class.popup.auto_dismiss = False
 
         add_popup_title(current_class)
         add_popup_infos_labels(current_class, completion_details)
