@@ -81,9 +81,6 @@ class LevelService:
         :param failed_attempts:
         :rtype: void
         """
-        print(current_entry)
-        print(type(current_entry[0]))
-        print(current_entry[0])
         self.cursor.execute("""
             UPDATE {} SET resolution_time = ?, failed_attempts = ?, successful_attempts = ? WHERE id = ?
             """.format(self.TABLE_NAME), (str(resolution_time),
@@ -91,7 +88,6 @@ class LevelService:
                                           int(current_entry[5]) + 1,
                                           current_entry[0])
                             )
-        print(self.cursor)
         self.connection.commit()
         Logger.info('Edited completion')
 

@@ -11,7 +11,7 @@
   To the extent possible under law,
   <a rel="dct:publisher"
      href="https://github.com/ISNABE/scape-me">
-    <span property="dct:title">'Scape ME</span></a>
+    <span property="dct:title">'Scape Me</span></a>
   has waived all copyright and related or neighboring rights to
   this work.
 This work is published from:

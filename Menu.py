@@ -63,7 +63,7 @@ class Menu(FloatLayout):
         """
         Required method.
         """
-        Logger.info("propagate MenuLevel")
+        Logger.info("Propagate MenuLevel")
         propagate_event('MenuLevel', self)
 
     def credit_button_callback(self, instance):
@@ -132,7 +132,7 @@ class MenuLevel(FloatLayout):
         """
         Required method.
         """
-        Logger.info("propagate Menu")
+        Logger.info("Propagate Menu")
         propagate_event('Menu', self)
 
     def launch_level(self, value):
