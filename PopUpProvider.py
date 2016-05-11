@@ -72,9 +72,6 @@ def create_raw_popup(current_class, cols_quantity=1, raws_quantity=1):
 
     current_class.popup.add_widget(current_class.grid_layout)
 
-    for loop in range(3):
-        current_class.grid_layout.add_widget(Label())
-
 
 def add_popup_title(current_class, title_text=""):
     """
@@ -111,6 +108,9 @@ def add_popup_infos_labels(current_class, completion_details):
     attempts = completion_details['failed_attempts'] + 1
     attempts_text = "Attempts : " + str(attempts)
     current_class.grid_layout.add_widget(Label(text=attempts_text))
+
+    for loop in range(3):
+        current_class.grid_layout.add_widget(Label())
 
 
 def add_popup_buttons(current_class, set_id, level_id):
