@@ -142,9 +142,10 @@ class LevelManager(Widget):
         :param instance:
         :rtype: void
         """
+        self.popup.dismiss()
+
         level_list = instance.cls
         self.load_level_in_set(level_list[0], level_list[1])
-        self.popup.dismiss()
 
     def pop_up_replay(self, instance):
         """
@@ -153,6 +154,8 @@ class LevelManager(Widget):
         :param instance:
         :rtype: void
         """
+        self.popup.dismiss()
+
         level_list = instance.cls
         if level_list[1] == 1:
             level_list[0] -= 1
@@ -161,7 +164,6 @@ class LevelManager(Widget):
             level_list[1] -= 1
 
         self.load_level_in_set(level_list[0], level_list[1])
-        self.popup.dismiss()
 
     def pop_up_menu(self, instance):
         """

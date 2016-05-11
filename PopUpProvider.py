@@ -3,6 +3,8 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 
+from Configurations import messages
+
 
 def open_pop_up(current_class, state, set_id=None, level_id=None, completion_details=None):
     """
@@ -15,14 +17,20 @@ def open_pop_up(current_class, state, set_id=None, level_id=None, completion_det
     :param state: if player open or end a level
     :rtype: void
     """
+    current_class.popup = None
+
     if state == 'not_unlocked':
         create_raw_popup(current_class)
 
-        add_popup_error(current_class, state)
+        if add_unique_popup_message(current_class, state):
+            current_class.popup.open(current_class)
 
-        current_class.popup.open(current_class)
     elif state == 'open_level':
-        return
+        create_raw_popup(current_class)
+
+        if add_unique_popup_message(current_class, state, set_id, level_id):
+            current_class.popup.open(current_class)
+
     elif state == 'end_level':
         create_raw_popup(current_class, 3, 3)
 
@@ -109,16 +117,31 @@ def add_popup_buttons(current_class, set_id, level_id):
     current_class.grid_layout.add_widget(next_button)
 
 
-def add_popup_error(current_class, state):
+def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
     """
 
+    :param level_id:
+    :param set_id:
     :param current_class:
     :param state:
-    :rtype: void
+    :rtype: boolean
     """
 
     if state == 'not_unlocked':
-        button = Button(text="Level is not unlocked yet.")
-        button.bind(on_press=current_class.popup.dismiss)
-        current_class.grid_layout.add_widget(button)
+        pupup_label = Label(text="Level is not unlocked yet.")
+
+    elif state == 'open_level':
+
+        index = str(set_id) + str(level_id)
+        if messages.get(index) is None:
+            return False
+
+        label_text = messages[index]
+        pupup_label = Label(text=label_text)
+
+    else:
+        raise Exception("State did not exist.")
+
+    current_class.grid_layout.add_widget(pupup_label)
+    return True
 

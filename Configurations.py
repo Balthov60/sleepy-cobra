@@ -77,3 +77,9 @@ color = dict([
     ('dark_blue_color', [0.19, 0.19, 0.19, 0.9])
 ])
 
+# messages dictionary
+messages = dict([
+    ('11', "Welcome on 'Scape me, to win..."),
+    ('12', "OK")
+])
+
