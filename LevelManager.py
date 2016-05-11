@@ -125,7 +125,7 @@ class LevelManager(Widget):
         # add map
         self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
 
-        # test popup
+        # check if level need popup
         open_pop_up(self, 'open_level', set_id, level_id_in_set)
 
         # add menu level
