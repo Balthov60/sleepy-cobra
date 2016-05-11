@@ -72,20 +72,26 @@ class LevelService:
         self.connection.commit()
         return self.cursor.fetchall()
 
-    def edit_completion(self, current_entry, failed_attempts):
+    def edit_completion(self, current_entry, resolution_time, failed_attempts):
         """
         Edit completion detail.
 
         :param current_entry:
+        :param resolution_time:
         :param failed_attempts:
         :rtype: void
         """
+        print(current_entry)
+        print(type(current_entry[0]))
+        print(current_entry[0])
         self.cursor.execute("""
-            UPDATE {} SET failed_attempts = ?, successful_attempts = ? WHERE id = ?
-            """.format(self.TABLE_NAME), (int(current_entry[4]) + failed_attempts,
+            UPDATE {} SET resolution_time = ?, failed_attempts = ?, successful_attempts = ? WHERE id = ?
+            """.format(self.TABLE_NAME), (str(resolution_time),
+                                          int(current_entry[4]) + failed_attempts,
                                           int(current_entry[5]) + 1,
                                           current_entry[0])
-        )
+                            )
+        print(self.cursor)
         self.connection.commit()
         Logger.info('Edited completion')
 
@@ -127,7 +133,7 @@ class LevelService:
         current_entry = current_entries[0]
 
         if failed_attempts is not None:
-            self.edit_completion(current_entry, failed_attempts)
+            self.edit_completion(current_entry, resolution_time, failed_attempts)
 
     def get_last_set_unlocked(self):
         """
