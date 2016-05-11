@@ -64,10 +64,10 @@ def create_raw_popup(current_class, cols_quantity=1, raws_quantity=1):
     """
     window = current_class.get_parent_window()
     window_size = window.size
-    popup_size = window_size[0] / 2, window_size[1] / 2
+    popup_size = window_size[0] / 1.1, window_size[1] / 2.5
     current_class.popup = ModalView(size_hint=(None, None), size=popup_size)
     current_class.grid_layout = GridLayout(cols=cols_quantity, raws=raws_quantity,
-                                           spacing=[0, popup_size[1] / 10], padding=popup_size[0] / 10)
+                                           spacing=[popup_size[1] / 10, popup_size[1] / 10], padding=popup_size[0] / 10)
     current_class.popup.add_widget(current_class.grid_layout)
 
 
