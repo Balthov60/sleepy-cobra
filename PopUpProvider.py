@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 
 
-def open_level_pop_up(current_class, set_id, level_id, state, completion_details=None):
+def open_pop_up(current_class, state, set_id=None, level_id=None, completion_details=None):
     """
     Try if this event need a pop up.
 
@@ -15,11 +15,16 @@ def open_level_pop_up(current_class, set_id, level_id, state, completion_details
     :param state: if player open or end a level
     :rtype: void
     """
-    if state == 'open_level':
-        return
-
-    elif state == 'end_level':
+    if state == 'not_unlocked':
         create_raw_popup(current_class)
+
+        add_popup_error(current_class, state)
+
+        current_class.popup.open(current_class)
+    elif state == 'open_level':
+        return
+    elif state == 'end_level':
+        create_raw_popup(current_class, 3, 3)
 
         add_popup_title(current_class)
         add_popup_infos_labels(current_class, completion_details)
@@ -31,10 +36,12 @@ def open_level_pop_up(current_class, set_id, level_id, state, completion_details
         raise Exception("Pop up error.")
 
 
-def create_raw_popup(current_class):
+def create_raw_popup(current_class, cols_quantity=1, raws_quantity=1):
     """
     Create a raw popup with windows size parameter.
 
+    :param raws_quantity:
+    :param cols_quantity:
     :param current_class:
     :rtype: void
     """
@@ -42,7 +49,7 @@ def create_raw_popup(current_class):
     window_size = window.size
     popup_size = window_size[0] / 2, window_size[1] / 2
     current_class.popup = ModalView(size_hint=(None, None), size=popup_size)
-    current_class.grid_layout = GridLayout(cols=3, raws=3,
+    current_class.grid_layout = GridLayout(cols=cols_quantity, raws=raws_quantity,
                                            spacing=[0, popup_size[1] / 10], padding=popup_size[0] / 10)
     current_class.popup.add_widget(current_class.grid_layout)
 
@@ -100,4 +107,18 @@ def add_popup_buttons(current_class, set_id, level_id):
     next_button = Button(text='Next Level', cls=[set_id, level_id])
     next_button.bind(on_press=current_class.pop_up_next)
     current_class.grid_layout.add_widget(next_button)
+
+
+def add_popup_error(current_class, state):
+    """
+
+    :param current_class:
+    :param state:
+    :rtype: void
+    """
+
+    if state == 'not_unlocked':
+        button = Button(text="Level is not unlocked yet.")
+        button.bind(on_press=current_class.popup.dismiss)
+        current_class.grid_layout.add_widget(button)
 

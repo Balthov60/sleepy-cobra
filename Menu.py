@@ -10,6 +10,7 @@ from LevelService import LevelService
 from LevelManager import LevelManager
 from Configurations import color
 from EventDispatchers import propagate_event
+from PopUpProvider import open_pop_up
 
 import os
 
@@ -133,3 +134,5 @@ class MenuLevel(FloatLayout):
         set_id = value.cls[0]
         if self.level_manager.can_load_set(set_id):
             propagate_event('LevelManager', self, set_id)
+        else:
+            open_pop_up(self, 'not_unlocked', set_id)

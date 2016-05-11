@@ -5,7 +5,7 @@ from kivy.uix.button import Button
 from Level import Level
 from LevelService import LevelService
 from EventDispatchers import LevelEventDispatcher, propagate_event
-from PopUpProvider import open_level_pop_up
+from PopUpProvider import open_pop_up
 
 
 class LevelManager(Widget):
@@ -51,7 +51,7 @@ class LevelManager(Widget):
         :rtype: void
         """
         current_level_list = self.save_level_up(completion_details)
-        open_level_pop_up(self, current_level_list[0], current_level_list[1], 'end_level', completion_details)
+        open_pop_up(self, 'end_level', current_level_list[0], current_level_list[1], completion_details)
 
     def save_level_up(self, completion_details):
         """
@@ -101,8 +101,7 @@ class LevelManager(Widget):
         :rtype: Boolean
         """
         if not self.level_service.does_set_exist(set_id):
-            Logger.info("Set does not exist.")
-            return False
+            raise Exception("Set does not exist.")
 
         if not self.level_service.is_set_unlocked(set_id):
             Logger.info("Level is not unlocked yet.")
@@ -127,7 +126,7 @@ class LevelManager(Widget):
         self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
 
         # test popup
-        open_level_pop_up(self, set_id, level_id_in_set, 'open_level')
+        open_pop_up(self, 'open_level', set_id, level_id_in_set)
 
         # add menu level
         self.update_menu_level_label(set_id, level_id_in_set)
