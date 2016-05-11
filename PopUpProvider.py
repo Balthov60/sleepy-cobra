@@ -150,7 +150,7 @@ def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
             return False
 
         label_text = messages[index]
-        popup_label = Label(text=label_text)
+        popup_label = Label(text=label_text, font_size='15sp')
 
     else:
         raise Exception("State did not exist.")

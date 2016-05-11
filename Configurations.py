@@ -137,7 +137,7 @@ messages = dict([
     ('32', "Ok it was an easy one !"
            "\n"
            "\nlet's continue !"),
-    ('41', "Why those ***ing points always on the border ?"
+    ('41', "Why those ****ing points always on the border ?"
            "\n"
            "\nOk let's try this, yeah ! better !"),
     ('51', "My mums always told me to set my sight highter "
