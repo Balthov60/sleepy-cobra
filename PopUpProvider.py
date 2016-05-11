@@ -19,7 +19,15 @@ def open_pop_up(current_class, state, set_id=None, level_id=None, completion_det
     """
     current_class.popup = None
 
-    if state == 'not_unlocked':
+    if state == 'Credits':
+        create_raw_popup(current_class, 3, 5)
+
+        add_popup_title(current_class, "Credits :")
+        add_popup_credits(current_class)
+
+        current_class.popup.open(current_class)
+
+    elif state == 'not_unlocked':
         create_raw_popup(current_class)
 
         if add_unique_popup_message(current_class, state):
@@ -35,7 +43,7 @@ def open_pop_up(current_class, state, set_id=None, level_id=None, completion_det
         create_raw_popup(current_class, 3, 3)
         current_class.popup.auto_dismiss = False
 
-        add_popup_title(current_class)
+        add_popup_title(current_class, "You won !")
         add_popup_infos_labels(current_class, completion_details)
         add_popup_buttons(current_class, set_id, level_id)
 
@@ -63,15 +71,16 @@ def create_raw_popup(current_class, cols_quantity=1, raws_quantity=1):
     current_class.popup.add_widget(current_class.grid_layout)
 
 
-def add_popup_title(current_class):
+def add_popup_title(current_class, title_text=""):
     """
     Add Popup title.
 
+    :param title_text:
     :param current_class:
     :rtype: void
     """
     current_class.grid_layout.add_widget(Label())
-    current_class.grid_layout.add_widget(Label(text="You win !"))
+    current_class.grid_layout.add_widget(Label(text=title_text))
 
 
 def add_popup_infos_labels(current_class, completion_details):
@@ -146,3 +155,21 @@ def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
     current_class.grid_layout.add_widget(pupup_label)
     return True
 
+
+def add_popup_credits(current_class):
+    """
+
+    :param current_class:
+    :return:
+    """
+    for loop in range(2):
+        current_class.grid_layout.add_widget(Label())
+
+    dev_text = "Devs : ISNABE corp'"
+    current_class.grid_layout.add_widget(Label(text=dev_text))
+
+    for loop in range(2):
+        current_class.grid_layout.add_widget(Label())
+
+    music_text = "music : M.Shvangiradze"
+    current_class.grid_layout.add_widget(Label(text=music_text))
