@@ -138,7 +138,7 @@ def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
     """
 
     if state == 'not_unlocked':
-        pupup_label = Label(text="Level is not unlocked yet.")
+        popup_label = Label(text="Level is not unlocked yet.")
 
     elif state == 'open_level':
 
@@ -147,12 +147,12 @@ def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
             return False
 
         label_text = messages[index]
-        pupup_label = Label(text=label_text)
+        popup_label = Label(text=label_text)
 
     else:
         raise Exception("State did not exist.")
 
-    current_class.grid_layout.add_widget(pupup_label)
+    current_class.grid_layout.add_widget(popup_label)
     return True
 
 

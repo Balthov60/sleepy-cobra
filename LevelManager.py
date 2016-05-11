@@ -98,6 +98,8 @@ class LevelManager(Widget):
         # add menu level
         self.update_menu_level_label(set_id, level_id_in_set)
 
+        open_pop_up(self, 'open_level', set_id, level_id_in_set)
+
     #####
     # Pop up
     #####
@@ -162,5 +164,5 @@ class LevelManager(Widget):
         """
         Required method.
         """
-        Logger.info("propagate Menu")
+        Logger.info("Propagate Menu")
         propagate_event('Menu', self)
