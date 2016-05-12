@@ -129,7 +129,7 @@ messages = dict([
            "\n"
            "\nI hope you weren't thinking it's over..."
            "\nSo you see these white rectangles ?"
-           "\nDon't forget what we say for the Square then !"
+           "\nDon't forget what we said for the squares then !"
            "\n"
            "\nBe happy !"),
     ('32', "Ok it was an easy one !"
@@ -138,16 +138,16 @@ messages = dict([
     ('41', "Why those ****ing points always on the border ?"
            "\n"
            "\nOk let's try this, yeah ! better !"),
-    ('51', "My mums always told me to set my sight highter "
+    ('51', "My mum always told me to look out of the box."
            "\n"
            "\nNow I understand !"),
     ('52', "HARDER HARDER HARDER"),
     ('61', "Please do not cry cry I hate that !"),
     ('62', "\nAhahaha I love to see that"
            "\nYou know, I just need 2 minutes"
-           "\nto make this level ^^"
+           "\nto made this level ^^"
            "\nwhat about you ? to resolve it ?"
            "\n"
            "\nit's ok... it's ok move on..."),
-    ('63', "I say DO NOT CRY !!")
+    ('63', "I said DO NOT CRY !!")
 ])
