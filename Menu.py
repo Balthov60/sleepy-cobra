@@ -38,7 +38,7 @@ class Menu(FloatLayout):
             Rectangle(source='./resources/other/logo.png', size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
         )
         self.add_widget(
-            Label(text="'Scape me", font_name=self.FONT_MENU, font_size='100sp',
+            Label(text="'Scape me", font_name=self.FONT_MENU, font_size='90sp',
                   size_hint=(0.25, 0.1), pos_hint={'x': 0.37, 'y': 0.75})
         )
 
@@ -111,7 +111,7 @@ class MenuLevel(FloatLayout):
 
         # Add fond.
         self.canvas.add(
-            Rectangle(source='./resources/menu/fond_menu2.png', size=Window.size)
+            Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
         )
 
         # Add button
