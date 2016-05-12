@@ -141,7 +141,7 @@ def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
     """
 
     if state == 'not_unlocked':
-        popup_label = Label(text="Level is not unlocked yet.", font_size='50sp', color=(0.8, 0.5, 0, 1))
+        popup_label = Label(text="Level is not unlocked yet.", font_size='30sp', color=(0.8, 0.5, 0, 1))
 
     elif state == 'open_level':
 
