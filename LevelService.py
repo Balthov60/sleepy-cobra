@@ -63,7 +63,7 @@ class LevelService:
 
         :param set_id:
         :param level_id_in_set:
-        :return:
+        :return: completion by level.
         """
         self.cursor.execute(
             'SELECT * FROM {} WHERE set_id = ? AND level_id_in_set = ?'.format(self.TABLE_NAME),
@@ -135,7 +135,7 @@ class LevelService:
         """
         Get last set unlocked.
 
-        :return: set_id of the last level unlocked
+        :return: set_id of the last level unlocked.
         """
         completions = self.get_completions()
         higher_set = 1
@@ -166,6 +166,7 @@ class LevelService:
         Verify level exist.
 
         :param set_id:
+        :rtype: Boolean.
         """
 
         if set_id > self.set_number:

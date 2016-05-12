@@ -42,7 +42,7 @@ def get_tile_properties(matrix, tile_identifier):
 
 def get_touch_direction(tile_identifier, old_tile_identifier):
     """
-    Get the simple touch direction. {0 = left, 1 = right, 2 = top, 3 = bottom}
+    Get the simple touch direction. {0 = left, 1 = right, 2 = top, 3 = bottom}.
 
     :param old_tile_identifier: old tile coordinates
     :param tile_identifier: tile coordinates
@@ -69,7 +69,7 @@ def get_touch_direction(tile_identifier, old_tile_identifier):
 
 def can_start_stop(tile_type, points_list):
     """
-    Test if player can start his drawing
+    Test if player can start his drawing.
 
     :param points_list: list of tile for start and stop
     :param tile_type: key of the texture (string)
