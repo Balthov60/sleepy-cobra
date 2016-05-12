@@ -146,7 +146,7 @@ messages = dict([
     ('62', "\nAhahaha I love to see that"
            "\nYou know, I just need 2 minutes"
            "\nto made this level ^^"
-           "\nwhat about you ? to resolve it ?"
+           "\nwhat about you ?"
            "\n"
            "\nit's ok... it's ok move on..."),
     ('63', "I said DO NOT CRY !!")

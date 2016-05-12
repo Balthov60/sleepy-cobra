@@ -18,7 +18,7 @@ import os
 class Menu(FloatLayout):
     FONT_MENU = './resources/menu/test19.ttf'
 
-    def __init__(self, event_dispatcher, main, **kwargs):
+    def __init__(self, event_dispatcher, music, **kwargs):
         """
         Initialize menu's button and textures.
 
@@ -28,7 +28,7 @@ class Menu(FloatLayout):
         """
         super(Menu, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
-        self.main = main
+        self.music = music
 
         # Add fond and title.
         self.canvas.add(
@@ -84,12 +84,7 @@ class Menu(FloatLayout):
         :param instance:
         :rtype:
         """
-        if self.main.sound.state == 'play':
-            self.main.sound.stop()
-            Logger.info("Music stop.")
-        else:
-            self.main.sound.play()
-            Logger.info("Music start.")
+        self.music.update_sound_state()
 
 
 class MenuLevel(FloatLayout):
