@@ -84,23 +84,22 @@ messages = dict([
            "\nThe rules are really simple,"
            "\nYou must draw a line"
            "\nfrom a point to an other."
-           "\nTo win, you need to go on all the case,"
-           "\nbut don't go outside of the level !"
+           "\nTo win, you need to go through all squares,"
+           "\nbut don't go outside of the level borders !"
            "\n"
            "\nGood luck !"),
-    ('12', "I think you've understand the game !"
+    ('12', "I think you've got the idea !"
            "\n"
-           "\nWell, now i must told you,"
+           "\nWell, I must told you"
            "\nif you stop before"
-           "\nyou complete all the set,"
-           "\nyou will be force to replay"
-           "\nall the levels of this set"
-           "\nso take care !"
+           "\nyou complete all levels from a set,"
+           "\nyou will have to do it again."
+           "\nThus be careful"
            "\n"
-           "\nI really want to see this !"),
-    ('21', "Nice, you are pretty good !"
+           "\nLet's go !"),
+    ('21', "Nice, you're getting pretty good at this"
            "\n"
-           "\nBut it will be harder now,"
+           "\nBut it's gonna get a bit harder from now on,"
            "\nYou saw these black squares ?"
            "\ndon't touch them !"
            "\nwhy ? ahah Try ! you will see !"
@@ -108,7 +107,7 @@ messages = dict([
            "\nGood luck !"),
     ('22', "Good !"
            "\n"
-           "\nNow as for the first set,"
+           "\nNow like in the first set,"
            "\nYou must finish all of this !"
            "\n"
            "\nI will pray for you !"),
@@ -117,19 +116,18 @@ messages = dict([
            "\nThis one is not an easy one"
            "\nbut you could make it"
            "\n"
-           "\nlet's go !"),
+           "\nLet's go !"),
     ('23', "What this ? Something new ?"
            "\n"
            "\nYou can start where you want !"
            "\nand of course stop where you want."
-           "\nbut the rules doesn't change"
-           "\nyou must travel in all the case !"
+           "\nbut the rules don't change"
+           "\nthrough all squares."
            "\n"
-           "\nI hope you will win this !"),
+           "\nI hope you will achieve this one !"),
     ('31', "Wonderful !"
            "\n"
-           "\nI hope that you wasn't thinking"
-           "\nthat it was over !"
+           "\nI hope you weren't thinking it's over..."
            "\nSo you see these white rectangles ?"
            "\nDon't forget what we say for the Square then !"
            "\n"
@@ -144,13 +142,13 @@ messages = dict([
            "\n"
            "\nNow I understand !"),
     ('52', "HARDER HARDER HARDER"),
-    ('61', "Please don't cry I hate that !"),
+    ('61', "Please do not cry cry I hate that !"),
     ('62', "\nAhahaha I love to see that"
            "\nYou know, I just need 2 minutes"
            "\nto make this level ^^"
-           "\nand you ? to resolve it ?"
+           "\nwhat about you ? to resolve it ?"
            "\n"
            "\nit's ok... it's ok move on..."),
-    ('63', "I say DON'T CRY !!")
+    ('63', "I say DO NOT CRY !!")
 ])
 
