@@ -13,13 +13,18 @@ import os
 
 
 class MapCanvas(Widget):
+    """
+    Interpret config for map and put the maps in a canvas
+    """
 
     def __init__(self, map_file_path, **kwargs):
         """
         Charge et donne les instructions de constructions de la carte.
+
         :param map_file_path: {string} chemin vers le fichier de la carte
         :param textures: {dict} dictionnaire des textures
         :param kwargs: Arguments du widget
+        :rtype: void
         """
         super(MapCanvas, self).__init__(**kwargs)
 
@@ -57,6 +62,7 @@ class MapCanvas(Widget):
     def get_texture(self, token):
         """
         Retourne les textures compatible selon le dictionnaire de textures.
+
         :param token: {str} lettre
         :return: {CoreImage.texture} texture
         """
@@ -68,6 +74,12 @@ class MapCanvas(Widget):
         return texture
 
     def parse_pipe_delimited_file(self, map_file_path):
+        """
+        Interpreter for file configuration.
+
+        :param map_file_path:
+        :rtype: void
+        """
 
         map_file = None
 
