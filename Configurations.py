@@ -2,6 +2,7 @@ from kivy.uix.image import Image as CoreImage
 
 import os.path
 
+# Sources for maps textures.
 sources = {
     'wall': './resources/blocks/wall.png',
     'air': './resources/blocks/air.png',
@@ -28,7 +29,7 @@ for source_name in sorted(sources):
     if not os.path.isfile(sources[source_name]):
         raise ValueError("File %s does not exist." % sources[source_name])
 
-# textures dictionary, format : textures path
+# Textures dictionary, format : (key, texture).
 textures = dict([
     ('trace', CoreImage(source=sources['trace']).texture),
     ('block', CoreImage(source=sources['block']).texture),
@@ -51,7 +52,7 @@ textures = dict([
     ('V', CoreImage(source=sources['double_wall_vertical']).texture)
 ])
 
-# authorization dictionary, format boolean list : {left, right, top, bot, start/stop}
+# Authorization dictionary, format : boolean list {left, right, top, bot}
 authorizations = dict([
     ('W', [False, False, False, False]),
     ('A', [True, True, True, True]),
@@ -71,13 +72,13 @@ authorizations = dict([
     ('V', [False, False, True, True]),
 ])
 
-# colos dictionary
+# Color dictionary, format : (index, color). Color is R G B A / 360.
 color = dict([
     ('blue_color', [0.37, 0.69, 0.73, 0.9]),
     ('dark_blue_color', [0.19, 0.19, 0.19, 0.9])
 ])
 
-# messages dictionary
+# Messages dictionary, format : (index (level), string).
 messages = dict([
     ('11', "Welcome on 'Scape me !"
            "\n"
