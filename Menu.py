@@ -155,7 +155,7 @@ class MenuLevel(FloatLayout):
     def launch_level(self, value):
         """
         Load level.
-        
+
         :param value:
         :rtype: void
         """
