@@ -78,14 +78,27 @@ class Music:
     sound = None
 
     def __init__(self):
+        """
+
+        :rtype: void
+        """
         self.sound = SoundLoader.load('./resources/other/2TalkToMe.mp3')
 
     def start_sound(self):
+        """
+
+        :rtype: void
+        """
         if self.sound:
             self.sound.play()
             self.sound.loop = True
 
     def update_sound_state(self):
+        """
+        Update sound status when player click on music button.
+
+        :rtype: void
+        """
         if self.sound.state == 'play':
             self.sound.stop()
             Logger.info("Music stop.")
