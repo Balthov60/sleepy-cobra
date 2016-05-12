@@ -16,6 +16,9 @@ import os
 
 
 class Menu(FloatLayout):
+    """
+    Main menu class.
+    """
     FONT_MENU = './resources/menu/test19.ttf'
 
     def __init__(self, event_dispatcher, music, **kwargs):
@@ -82,12 +85,15 @@ class Menu(FloatLayout):
         Start/Stop music.
 
         :param instance:
-        :rtype:
+        :rtype: void
         """
         self.music.update_sound_state()
 
 
 class MenuLevel(FloatLayout):
+    """
+    Level Menu class.
+    """
     FONT_MENU_LEVEL = './resources/menu/test19.ttf'
     color_1 = color['blue_color']
     color_2 = color['dark_blue_color']
@@ -149,6 +155,7 @@ class MenuLevel(FloatLayout):
     def launch_level(self, value):
         """
         Load level.
+        
         :param value:
         :rtype: void
         """
