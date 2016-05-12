@@ -18,7 +18,7 @@ import os
 class Menu(FloatLayout):
     FONT_MENU = './resources/menu/test19.ttf'
 
-    def __init__(self, event_dispatcher, **kwargs):
+    def __init__(self, event_dispatcher, music, **kwargs):
         """
         Initialize menu's button and textures.
 
@@ -28,6 +28,7 @@ class Menu(FloatLayout):
         """
         super(Menu, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
+        self.music = music
 
         # Add fond and title.
         self.canvas.add(
@@ -37,7 +38,7 @@ class Menu(FloatLayout):
             Rectangle(source='./resources/other/logo.png', size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
         )
         self.add_widget(
-            Label(text="'Scape me", font_name=self.FONT_MENU, font_size='100sp',
+            Label(text="'Scape me", font_name=self.FONT_MENU, font_size='90sp',
                   size_hint=(0.25, 0.1), pos_hint={'x': 0.37, 'y': 0.75})
         )
 
@@ -55,8 +56,9 @@ class Menu(FloatLayout):
         )
 
         self.add_widget(
-            Button(text="Options", font_name=self.FONT_MENU, font_size='25sp',
-                   size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0}, background_color=(0, 0, 0, 0))
+            Button(text="Music", font_name=self.FONT_MENU, font_size='25sp',
+                   size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0}, background_color=(0, 0, 0, 0),
+                   on_press=self.music_callback)
         )
 
     def switch_to_menu_level_screen(self, *args):
@@ -74,6 +76,15 @@ class Menu(FloatLayout):
         :rtype: void
         """
         open_pop_up(self, 'Credits')
+
+    def music_callback(self, instance):
+        """
+        Start/Stop music.
+
+        :param instance:
+        :rtype:
+        """
+        self.music.update_sound_state()
 
 
 class MenuLevel(FloatLayout):
@@ -96,7 +107,7 @@ class MenuLevel(FloatLayout):
 
         # Add fond.
         self.canvas.add(
-            Rectangle(source='./resources/menu/fond_menu2.png', size=Window.size)
+            Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
         )
 
         # Add button

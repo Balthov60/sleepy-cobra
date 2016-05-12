@@ -125,7 +125,6 @@ class LevelManager(Widget):
         :rtype: void
         """
         self.popup.dismiss()
-
         level_list = instance.cls
         if level_list[1] == 1:
             level_list[0] -= 1

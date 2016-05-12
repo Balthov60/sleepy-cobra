@@ -79,6 +79,75 @@ color = dict([
 
 # messages dictionary
 messages = dict([
-    ('11', "Welcome on 'Scape me, to win...")
+    ('11', "Welcome on 'Scape me !"
+           "\n"
+           "\nThe rules are really simple,"
+           "\nYou must draw a line"
+           "\nfrom a point to an other."
+           "\nTo win, you need to go through all squares,"
+           "\nbut don't go outside of the level borders !"
+           "\n"
+           "\nGood luck !"),
+    ('12', "I think you've got the idea !"
+           "\n"
+           "\nWell, I must told you"
+           "\nif you stop before"
+           "\nyou complete all levels from a set,"
+           "\nyou will have to do it again."
+           "\nThus be careful"
+           "\n"
+           "\nLet's go !"),
+    ('21', "Nice, you're getting pretty good at this"
+           "\n"
+           "\nBut it's gonna get a bit harder from now on,"
+           "\nYou saw these black squares ?"
+           "\ndon't touch them !"
+           "\nwhy ? ahah Try ! you will see !"
+           "\n"
+           "\nGood luck !"),
+    ('22', "Good !"
+           "\n"
+           "\nNow like in the first set,"
+           "\nYou must finish all of this !"
+           "\n"
+           "\nI will pray for you !"),
+    ('25', "God !"
+           "\n"
+           "\nThis one is not an easy one"
+           "\nbut you could make it"
+           "\n"
+           "\nLet's go !"),
+    ('23', "What this ? Something new ?"
+           "\n"
+           "\nYou can start where you want !"
+           "\nand of course stop where you want."
+           "\nbut the rules don't change"
+           "\nthrough all squares."
+           "\n"
+           "\nI hope you will achieve this one !"),
+    ('31', "Wonderful !"
+           "\n"
+           "\nI hope you weren't thinking it's over..."
+           "\nSo you see these white rectangles ?"
+           "\nDon't forget what we said for the squares then !"
+           "\n"
+           "\nBe happy !"),
+    ('32', "Ok it was an easy one !"
+           "\n"
+           "\nlet's continue !"),
+    ('41', "Why those ****ing points always on the border ?"
+           "\n"
+           "\nOk let's try this, yeah ! better !"),
+    ('51', "My mum always told me to look out of the box."
+           "\n"
+           "\nNow I understand !"),
+    ('52', "HARDER HARDER HARDER"),
+    ('61', "Please do not cry cry I hate that !"),
+    ('62', "\nAhahaha I love to see that"
+           "\nYou know, I just need 2 minutes"
+           "\nto made this level ^^"
+           "\nwhat about you ?"
+           "\n"
+           "\nit's ok... it's ok move on..."),
+    ('63', "I said DO NOT CRY !!")
 ])
-

@@ -20,7 +20,7 @@ def open_pop_up(current_class, state, set_id=None, level_id=None, completion_det
     current_class.popup = None
 
     if state == 'Credits':
-        create_raw_popup(current_class, 3, 5)
+        create_raw_popup(current_class, 3, 3)
 
         add_popup_title(current_class, "Credits :")
         add_popup_credits(current_class)
@@ -64,10 +64,13 @@ def create_raw_popup(current_class, cols_quantity=1, raws_quantity=1):
     """
     window = current_class.get_parent_window()
     window_size = window.size
-    popup_size = window_size[0] / 2, window_size[1] / 2
+    popup_size = window_size[0], window_size[1] / 2
+
     current_class.popup = ModalView(size_hint=(None, None), size=popup_size)
     current_class.grid_layout = GridLayout(cols=cols_quantity, raws=raws_quantity,
-                                           spacing=[0, popup_size[1] / 10], padding=popup_size[0] / 10)
+                                           row_default_height=popup_size[1] / (raws_quantity * 10),
+                                           spacing=[popup_size[1] / 20, popup_size[1] / 10], padding=popup_size[0] / 25)
+
     current_class.popup.add_widget(current_class.grid_layout)
 
 
@@ -80,7 +83,9 @@ def add_popup_title(current_class, title_text=""):
     :rtype: void
     """
     current_class.grid_layout.add_widget(Label())
-    current_class.grid_layout.add_widget(Label(text=title_text))
+    current_class.grid_layout.add_widget(Label(text=title_text, font_size='40sp', color=(0, 0.6, 0.1, 1)))
+
+    current_class.grid_layout.add_widget(Label())
 
 
 def add_popup_infos_labels(current_class, completion_details):
@@ -91,18 +96,16 @@ def add_popup_infos_labels(current_class, completion_details):
     :param completion_details:
     :rtype: void
     """
-    current_class.grid_layout.add_widget(Label())
-
     time = completion_details['resolution_time']
     time = time.microseconds * 10**-6
-    time_text = "Time : " + str(time) + " sec."
-    current_class.grid_layout.add_widget(Label(text=time_text))
+    time_text = "Time\n" + str(time) + " sec."
+    current_class.grid_layout.add_widget(Label(text=time_text, font_size='20sp'))
 
     current_class.grid_layout.add_widget(Label())
 
     attempts = completion_details['failed_attempts'] + 1
-    attempts_text = "Attempts : " + str(attempts)
-    current_class.grid_layout.add_widget(Label(text=attempts_text))
+    attempts_text = "Attempts\n        " + str(attempts)
+    current_class.grid_layout.add_widget(Label(text=attempts_text, font_size='20sp'))
 
 
 def add_popup_buttons(current_class, set_id, level_id):
@@ -114,15 +117,15 @@ def add_popup_buttons(current_class, set_id, level_id):
     :param set_id:
     :rtype: void
     """
-    again_button = Button(text='Play Again', cls=[set_id, level_id])
+    again_button = Button(text='Play Again', cls=[set_id, level_id], background_color=(0.8, 0.5, 0, 1))
     again_button.bind(on_press=current_class.pop_up_replay)
     current_class.grid_layout.add_widget(again_button)
 
-    menu_button = Button(text='Menu')
+    menu_button = Button(text='Menu', background_color=(0, 0, 1, 1))
     menu_button.bind(on_press=current_class.pop_up_menu)
     current_class.grid_layout.add_widget(menu_button)
 
-    next_button = Button(text='Next Level', cls=[set_id, level_id])
+    next_button = Button(text='Next Level', cls=[set_id, level_id], background_color=(0, 0.6, 0.1, 1), size=[20, 20])
     next_button.bind(on_press=current_class.pop_up_next)
     current_class.grid_layout.add_widget(next_button)
 
@@ -138,7 +141,7 @@ def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
     """
 
     if state == 'not_unlocked':
-        popup_label = Label(text="Level is not unlocked yet.")
+        popup_label = Label(text="Level is not unlocked yet.", font_size='30sp', color=(0.8, 0.5, 0, 1))
 
     elif state == 'open_level':
 
@@ -147,7 +150,7 @@ def add_unique_popup_message(current_class, state, set_id=0, level_id=0):
             return False
 
         label_text = messages[index]
-        popup_label = Label(text=label_text)
+        popup_label = Label(text=label_text, font_size='15sp')
 
     else:
         raise Exception("State did not exist.")
@@ -160,16 +163,16 @@ def add_popup_credits(current_class):
     """
 
     :param current_class:
-    :return:
+    :rtype: void
     """
-    for loop in range(2):
-        current_class.grid_layout.add_widget(Label())
+    current_class.grid_layout.add_widget(Label())
 
     dev_text = "Devs : ISNABE corp'"
-    current_class.grid_layout.add_widget(Label(text=dev_text))
+    current_class.grid_layout.add_widget(Label(text=dev_text, font_size='20sp', color=(0.8, 0, 0, 1)))
 
     for loop in range(2):
         current_class.grid_layout.add_widget(Label())
 
-    music_text = "music : M.Shvangiradze"
-    current_class.grid_layout.add_widget(Label(text=music_text))
+    music_text = "Music : M.Shvangiradze"
+    current_class.grid_layout.add_widget(Label(text=music_text, font_size='20sp', color=(1, 0.5, 0, 1)))
+
