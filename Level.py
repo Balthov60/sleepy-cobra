@@ -274,5 +274,5 @@ class Level(FloatLayout):
             if entry not in self.player_path:
                 self.failed_attempts += 1
                 return False
-            
+
         return True

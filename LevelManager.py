@@ -12,6 +12,9 @@ class LevelManager(Widget):
     popup = None
     grid_layout = None
 
+    level_service = LevelService()
+    level_event_dispatcher = LevelEventDispatcher()
+
     def __init__(self, event_dispatcher, **kwargs):
         """
         Instantiate the LevelManager with event listener.
@@ -20,9 +23,7 @@ class LevelManager(Widget):
         :param kwargs:
         """
         super(LevelManager, self).__init__(**kwargs)
-        self.level_service = LevelService()
         self.event_dispatcher = event_dispatcher
-        self.level_event_dispatcher = LevelEventDispatcher()
         self.level_event_dispatcher.bind(on_level_completed=self.do_level_up)
 
     def add_widget(self, widget, index=0):
@@ -65,7 +66,7 @@ class LevelManager(Widget):
 
     def can_load_set(self, set_id=None):
         """
-        Test is player can play this set
+        Test is player can play this set.
 
         :param set_id:
         :rtype: Boolean
@@ -82,6 +83,7 @@ class LevelManager(Widget):
     def load_level_in_set(self, set_id=None, level_id_in_set=1):
         """
         Load given level in given set with checking.
+
         :param set_id:
         :param level_id_in_set:
         :rtype: void
