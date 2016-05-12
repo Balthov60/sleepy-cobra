@@ -20,7 +20,7 @@ class GameApp(App):
         self.menus_event_dispatcher = MenusEventDispatcher()
         self.screen_manager = ScreenManager()
 
-        self.menu_widget = Menu(self.menus_event_dispatcher)
+        self.menu_widget = Menu(self.menus_event_dispatcher, self)
         self.menu_screen = Screen(name="Menu")
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)

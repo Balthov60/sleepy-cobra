@@ -163,7 +163,7 @@ def add_popup_credits(current_class):
     """
 
     :param current_class:
-    :return:
+    :rtype: void
     """
     current_class.grid_layout.add_widget(Label())
 
@@ -175,3 +175,4 @@ def add_popup_credits(current_class):
 
     music_text = "Music : M.Shvangiradze"
     current_class.grid_layout.add_widget(Label(text=music_text, font_size='20sp', color=(1, 0.5, 0, 1)))
+

@@ -93,7 +93,7 @@ class LevelManager(Widget):
         self.clear_widgets()
 
         # add map
-        self.add_widget(Level(self.level_event_dispatcher, 4, 4))
+        self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
 
         # add menu level
         self.update_menu_level_label(set_id, level_id_in_set)
@@ -141,7 +141,6 @@ class LevelManager(Widget):
         :param instance:
         :rtype: void
         """
-        print("ok")
         self.popup.dismiss()
         self.switch_to_menu_screen()
 

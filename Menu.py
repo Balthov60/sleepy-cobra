@@ -18,7 +18,7 @@ import os
 class Menu(FloatLayout):
     FONT_MENU = './resources/menu/test19.ttf'
 
-    def __init__(self, event_dispatcher, **kwargs):
+    def __init__(self, event_dispatcher, main, **kwargs):
         """
         Initialize menu's button and textures.
 
@@ -28,6 +28,7 @@ class Menu(FloatLayout):
         """
         super(Menu, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
+        self.main = main
 
         # Add fond and title.
         self.canvas.add(
@@ -55,8 +56,9 @@ class Menu(FloatLayout):
         )
 
         self.add_widget(
-            Button(text="Options", font_name=self.FONT_MENU, font_size='25sp',
-                   size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0}, background_color=(0, 0, 0, 0))
+            Button(text="Music", font_name=self.FONT_MENU, font_size='25sp',
+                   size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0}, background_color=(0, 0, 0, 0),
+                   on_press=self.music_callback)
         )
 
     def switch_to_menu_level_screen(self, *args):
@@ -75,6 +77,19 @@ class Menu(FloatLayout):
         """
         open_pop_up(self, 'Credits')
 
+    def music_callback(self, instance):
+        """
+        Start/Stop music.
+
+        :param instance:
+        :rtype:
+        """
+        if self.main.sound.state == 'play':
+            self.main.sound.stop()
+            Logger.info("Music stop.")
+        else:
+            self.main.sound.play()
+            Logger.info("Music start.")
 
 class MenuLevel(FloatLayout):
     FONT_MENU_LEVEL = './resources/menu/test19.ttf'
