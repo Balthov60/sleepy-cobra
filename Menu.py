@@ -91,6 +91,7 @@ class Menu(FloatLayout):
             self.main.sound.play()
             Logger.info("Music start.")
 
+
 class MenuLevel(FloatLayout):
     FONT_MENU_LEVEL = './resources/menu/test19.ttf'
     color_1 = color['blue_color']
