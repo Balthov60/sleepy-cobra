@@ -12,9 +12,6 @@ class LevelManager(Widget):
     popup = None
     grid_layout = None
 
-    level_service = LevelService()
-    level_event_dispatcher = LevelEventDispatcher()
-
     def __init__(self, event_dispatcher, **kwargs):
         """
         Instantiate the LevelManager with event listener.
@@ -24,6 +21,8 @@ class LevelManager(Widget):
         """
         super(LevelManager, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
+        self.level_service = LevelService()
+        self.level_event_dispatcher = LevelEventDispatcher()
         self.level_event_dispatcher.bind(on_level_completed=self.do_level_up)
 
     def add_widget(self, widget, index=0):
