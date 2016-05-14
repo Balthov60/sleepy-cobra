@@ -83,7 +83,7 @@ class MusicProvider:
 
         :rtype: void
         """
-        self.sound = SoundLoader.load('./resources/other/2TalkToMe.mp3')
+        self.sound = SoundLoader.load('./resources/other/2TalkToMe.wav')
 
     def start_sound(self):
         """

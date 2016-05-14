@@ -13,7 +13,7 @@ package.domain = org.scapeme
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,kv,atlas,cfg,mp3,wav,ttf
+source.include_exts = py,png,kv,atlas,cfg,wav,ttf
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
