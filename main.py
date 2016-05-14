@@ -11,6 +11,10 @@ from LevelManager import LevelManager
 class GameApp(App):
     sound = None
 
+    LOGO_PATH = './resources/other/logo.png'
+
+    GAME_TITLE = "'Scape Me"
+
     def __init__(self, **kwargs):
         """
 
@@ -46,8 +50,8 @@ class GameApp(App):
         :rtype: void
         """
         self.music.start_sound()
-        self.icon = './resources/other/logo.png'
-        self.title = "'Scape Me"
+        self.icon = self.LOGO_PATH
+        self.title = self.GAME_TITLE
         self.screen_manager.current = 'Menu'
         return self.screen_manager
 
@@ -82,7 +86,7 @@ class Music:
 
         :rtype: void
         """
-        self.sound = SoundLoader.load('./resources/other/2TalkToMe.wav')
+        self.sound = SoundLoader.load('./resources/music/2TalkToMe.wav')
 
     def start_sound(self):
         """

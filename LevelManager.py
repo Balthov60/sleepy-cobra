@@ -44,7 +44,7 @@ class LevelManager(Widget):
         Save level up in the completed pool and open popup.
 
         :param instance:
-        :param completion_details:
+        :param completion_details: Player stats.
         :param args:
         :rtype: void
         """
@@ -67,7 +67,7 @@ class LevelManager(Widget):
         """
         Test is player can play this set.
 
-        :param set_id:
+        :param set_id: Id of the set.
         :rtype: Boolean
         """
         if not self.level_service.does_set_exist(set_id):
@@ -83,8 +83,8 @@ class LevelManager(Widget):
         """
         Load given level in given set with checking.
 
-        :param set_id:
-        :param level_id_in_set:
+        :param set_id: id of the set to load.
+        :param level_id_in_set: id of the level to load.
         :rtype: void
         """
 
