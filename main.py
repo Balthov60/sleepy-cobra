@@ -82,7 +82,7 @@ class Music:
 
         :rtype: void
         """
-        self.sound = SoundLoader.load('./resources/other/2TalkToMe.wav')
+        self.sound = SoundLoader.load('./resources/music/2TalkToMe.wav')
 
     def start_sound(self):
         """
