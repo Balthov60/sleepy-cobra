@@ -12,7 +12,6 @@ class GameApp(App):
     sound = None
 
     LOGO_PATH = './resources/other/logo.png'
-    MUSIC_PATH = './resources/music/2TalkToMe.wav'
 
     GAME_TITLE = "'Scape Me"
 
@@ -87,7 +86,7 @@ class Music:
 
         :rtype: void
         """
-        self.sound = SoundLoader.load(self.MUSIC_PATH)
+        self.sound = SoundLoader.load('./resources/music/2TalkToMe.wav')
 
     def start_sound(self):
         """

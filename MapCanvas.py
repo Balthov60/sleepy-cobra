@@ -17,6 +17,8 @@ class MapCanvas(Widget):
     Interpret config for map and put the maps in a canvas
     """
 
+    FOND_PATH = './resources/other/fond.png'
+
     def __init__(self, map_file_path, **kwargs):
         """
         Charge et donne les instructions de constructions de la carte.
@@ -145,7 +147,7 @@ class MapCanvas(Widget):
         start_time = datetime.now()
 
         self.canvas.add(Color(None))
-        self.canvas.before.add(Rectangle(size=self.window.size, source="./resources/other/fond.png"))
+        self.canvas.before.add(Rectangle(size=self.window.size, source=self.FOND_PATH))
 
         point_texture = self.textures['point']
         block_texture = self.textures['block']
