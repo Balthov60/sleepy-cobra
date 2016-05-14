@@ -10,11 +10,11 @@ def open_pop_up(current_class, state, set_id=None, level_id=None, completion_det
     """
     Try if this event need a pop up.
 
-    :param current_class:
-    :param completion_details:
-    :param set_id:
-    :param level_id:
-    :param state: if player open or end a level
+    :param current_class: Active class of popup.
+    :param state: Popup to display.
+    :param set_id: Current Set for Level messages.
+    :param level_id: Current Level for Level messages.
+    :param completion_details: Players score when level ending.
     :rtype: void
     """
     current_class.popup = None
@@ -61,8 +61,6 @@ def create_raw_popup(current_class):
     """
     Create a raw popup with windows size parameter.
 
-    :param raws_quantity:
-    :param cols_quantity:
     :param current_class:
     :rtype: void
     """
@@ -80,8 +78,8 @@ def add_popup_title(current_class, title_text=""):
     """
     Add Popup title.
 
-    :param title_text:
     :param current_class:
+    :param title_text: Title to display.
     :rtype: void
     """
     current_class.relative_layout.add_widget(Label(text=title_text, font_size='40sp', color=(0, 0.6, 0.1, 1),
@@ -106,9 +104,9 @@ def add_popup_credits(current_class):
 def add_unique_popup_message(current_class, state, index=0):
     """
 
-    :param index:
     :param current_class:
-    :param state:
+    :param state: Type of the message to display.
+    :param index: Index of the message.
     :rtype: void
     """
 
@@ -152,8 +150,8 @@ def add_popup_buttons(current_class, set_id, level_id):
     Add buttons Next, again and menu in pop up.
 
     :param current_class:
-    :type level_id: object
     :param set_id:
+    :param level_id
     :rtype: void
     """
     again_button = Button(text='Play Again', cls=[set_id, level_id], background_color=(0.8, 0.5, 0, 1),
@@ -166,7 +164,7 @@ def add_popup_buttons(current_class, set_id, level_id):
     menu_button.bind(on_press=current_class.pop_up_menu)
     current_class.relative_layout.add_widget(menu_button)
 
-    next_button = Button(text='Next Level', cls=[set_id, level_id], background_color=(0, 0.6, 0.1, 1), size_hint=[0.2, 0.2],
-                         pos_hint={'center_x': 0.75, 'center_y': 0.2})
+    next_button = Button(text='Next Level', cls=[set_id, level_id], background_color=(0, 0.6, 0.1, 1),
+                         pos_hint={'center_x': 0.75, 'center_y': 0.2}, size_hint=[0.2, 0.2])
     next_button.bind(on_press=current_class.pop_up_next)
     current_class.relative_layout.add_widget(next_button)
