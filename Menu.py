@@ -20,7 +20,7 @@ class Menu(RelativeLayout):
     """
     Main menu class.
     """
-    FONT_MENU = './resources/menu/test19.ttf'
+    FONT_MENU = './resources/menu/menu.ttf'
 
     def __init__(self, event_dispatcher, music, **kwargs):
         """
@@ -35,7 +35,7 @@ class Menu(RelativeLayout):
 
         # Add fond and title.
         self.canvas.add(
-            Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
+            Rectangle(source='./resources/menu/fond_menu.png', size=Window.size)
         )
         self.canvas.add(
             Rectangle(source='./resources/other/logo.png', size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
@@ -94,7 +94,7 @@ class MenuLevel(FloatLayout):
     """
     Level Menu class.
     """
-    FONT_MENU_LEVEL = './resources/menu/test19.ttf'
+    FONT_MENU_LEVEL = './resources/menu/menu.ttf'
     color_1 = color['blue_color']
     color_2 = color['dark_blue_color']
 
@@ -112,7 +112,7 @@ class MenuLevel(FloatLayout):
 
         # Add fond.
         self.canvas.add(
-            Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
+            Rectangle(source='./resources/menu/fond_menu.png', size=Window.size)
         )
 
         # Add button
