@@ -8,7 +8,7 @@ import os
 class LevelService:
     TABLE_NAME = 'game_completion'
     DB_NAME = 'scapeMe.db'
-    MAP_PATH = './resources/maps/'
+    MAPS_PATH = './resources/maps/'
 
     def __init__(self):
         """
@@ -19,7 +19,7 @@ class LevelService:
         self.sqlite = sqlite
         self.connection = self.sqlite.connect(self.DB_NAME)
         self.cursor = self.connection.cursor()
-        self.set_number = len(os.listdir(self.MAP_PATH))
+        self.set_number = len(os.listdir(self.MAPS_PATH))
         self.ensure_completion_table()
 
     def ensure_completion_table(self):
