@@ -8,6 +8,7 @@ import os
 class LevelService:
     TABLE_NAME = 'game_completion'
     DB_NAME = 'scapeMe.db'
+    MAP_PATH = './resources/maps/'
 
     def __init__(self):
         """
@@ -18,7 +19,7 @@ class LevelService:
         self.sqlite = sqlite
         self.connection = self.sqlite.connect(self.DB_NAME)
         self.cursor = self.connection.cursor()
-        self.set_number = len(os.listdir('./resources/maps/'))
+        self.set_number = len(os.listdir(self.MAP_PATH))
         self.ensure_completion_table()
 
     def ensure_completion_table(self):
@@ -47,7 +48,7 @@ class LevelService:
         """
         Get levels completed in set.
 
-        :param set_id:
+        :param set_id: Id of the set.
         :return: Level completed.
         """
         self.cursor.execute(
@@ -61,9 +62,9 @@ class LevelService:
         """
         Get level completed in set.
 
-        :param set_id:
-        :param level_id_in_set:
-        :return: completion by level.
+        :param set_id: Id of the set.
+        :param level_id_in_set: Id of the level.
+        :return: Completion by level.
         """
         self.cursor.execute(
             'SELECT * FROM {} WHERE set_id = ? AND level_id_in_set = ?'.format(self.TABLE_NAME),
@@ -76,9 +77,9 @@ class LevelService:
         """
         Edit completion detail.
 
-        :param current_entry:
-        :param resolution_time:
-        :param failed_attempts:
+        :param current_entry: Best player stats.
+        :param resolution_time: Time for the good touch.
+        :param failed_attempts: Number of touchs to win.
         :rtype: void
         """
         self.cursor.execute("""
@@ -95,10 +96,10 @@ class LevelService:
         """
         Insert a completed level with details.
 
-        :param set_id:
-        :param level_id_in_set:
-        :param resolution_time:
-        :param failed_attempts:
+        :param set_id: Id of the set.
+        :param level_id_in_set: Id of the level.
+        :param resolution_time: Time for the good touch.
+        :param failed_attempts: Number of touchs to win.
         :rtype: void
         """
         self.cursor.execute("""
@@ -112,7 +113,7 @@ class LevelService:
         """
         Split up completion details and execute either a saving or an edition.
 
-        :param completion_details:
+        :param completion_details: Player stats.
         :rtype: void
         """
         set_id = completion_details['set_id']
@@ -149,7 +150,7 @@ class LevelService:
         """
         Check if set is unlocked.
 
-        :param set_id:
+        :param set_id: Id of the tested set.
         :rtype: boolean
         """
         last_set_unlocked = self.get_last_set_unlocked()
@@ -165,7 +166,7 @@ class LevelService:
         """
         Verify level exist.
 
-        :param set_id:
+        :param set_id: Id of the tested set.
         :rtype: Boolean.
         """
 
