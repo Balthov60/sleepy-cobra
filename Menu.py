@@ -49,22 +49,20 @@ class Menu(RelativeLayout):
 
         # Add buttons.
         self.add_widget(
-             Button(text="Play !", font_name=self.FONT_MENU_PATH, font_size='80sp',
-                    size_hint=(.45, .15), pos_hint={'center_x': 0.5, 'center_y': 0.5}, background_color=(0, 0, 0, 0),
+             Button(text="Play !", font_name=self.FONT_MENU_PATH, font_size='80sp', background_color=(0, 0, 0, 0),
+                    size_hint=(.45, .15), pos_hint={'center_x': 0.5, 'center_y': 0.5},
                     on_press=self.switch_to_menu_level_screen)
         )
 
         self.add_widget(
-            Button(text="Credits", font_name=self.FONT_MENU_PATH, font_size='40sp',
-                   pos_hint={'center_x': 0.5, 'center_y': 0.2},
-                   size_hint=(.2, .2), background_color=(0, 0, 0, 0),
+            Button(text="Credits", font_name=self.FONT_MENU_PATH, font_size='40sp', background_color=(0, 0, 0, 0),
+                   pos_hint={'center_x': 0.5, 'center_y': 0.2}, size_hint=(.2, .2),
                    on_press=self.credit_button_callback)
         )
 
         self.add_widget(
-            Button(text="Music", font_name=self.FONT_MENU_PATH, font_size='25sp',
+            Button(text="Music", font_name=self.FONT_MENU_PATH, font_size='25sp', background_color=(0, 0, 0, 0),
                    size_hint=(0.15, 0.12), pos_hint={'center_x': 0.92, 'center_y': 0.08},
-                   background_color=(0, 0, 0, 0),
                    on_press=self.music_callback)
         )
 
@@ -138,15 +136,15 @@ class MenuLevel(FloatLayout):
             if index % 2 == 0:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
-                    Button(text=button_title, font_name=self.FONT_MENU_PATH,
-                           background_color=self.color_1, on_press=self.launch_level, cls=[index])
+                    Button(text=button_title, font_name=self.FONT_MENU_PATH, background_color=self.color_1,
+                           on_press=self.launch_level, cls=[index])
                 )
 
             else:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
-                    Button(text=button_title, font_name=self.FONT_MENU_PATH,
-                           background_color=self.color_2, on_press=self.launch_level, cls=[index])
+                    Button(text=button_title, font_name=self.FONT_MENU_PATH, background_color=self.color_2,
+                           on_press=self.launch_level, cls=[index])
                 )
 
     def switch_to_menu_screen(self, *args):
