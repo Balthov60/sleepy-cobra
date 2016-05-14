@@ -109,7 +109,6 @@ class MenuLevel(FloatLayout):
         super(MenuLevel, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
         self.level_service = LevelService()
-        self.level_manager = LevelManager(event_dispatcher)
 
         # Add fond.
         self.canvas.add(
@@ -160,7 +159,7 @@ class MenuLevel(FloatLayout):
         :rtype: void
         """
         set_id = value.cls[0]
-        if self.level_manager.can_load_set(set_id):
+        if self.level_service.can_load_set(set_id):
             propagate_event('LevelManager', self, set_id)
         else:
             open_pop_up(self, 'not_unlocked', set_id)

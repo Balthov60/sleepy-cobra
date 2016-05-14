@@ -172,3 +172,19 @@ class LevelService:
         if set_id > self.set_number:
             return False
         return True
+
+    def can_load_set(self, set_id=None):
+        """
+        Test is player can play this set.
+
+        :param set_id:
+        :rtype: Boolean
+        """
+        if not self.does_set_exist(set_id):
+            raise Exception("Set does not exist.")
+
+        if not self.is_set_unlocked(set_id):
+            Logger.info("Level is not unlocked yet.")
+            return False
+
+        return True
