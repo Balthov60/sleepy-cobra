@@ -7,7 +7,6 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.logger import Logger
 
 from LevelService import LevelService
-from LevelManager import LevelManager
 from Configurations import color
 from EventDispatchers import propagate_event
 from PopUpProvider import open_pop_up
@@ -37,6 +36,7 @@ class Menu(FloatLayout):
         self.canvas.add(
             Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
         )
+
         self.canvas.add(
             Rectangle(source='./resources/other/logo.png', size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
         )

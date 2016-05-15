@@ -1,8 +1,10 @@
-from kivy.uix.widget import Widget
+from kivy.uix.floatlayout import FloatLayout
 from kivy.logger import Logger
-from kivy.uix.button import Button, Label
-from kivy.graphics import Color
 from kivy.core.window import Window
+from kivy.uix.actionbar import ActionBar
+from kivy.properties import StringProperty
+
+from kivy.lang import Builder
 
 from Level import Level
 from LevelService import LevelService
@@ -10,7 +12,7 @@ from EventDispatchers import LevelEventDispatcher, propagate_event
 from PopUpProvider import open_pop_up
 
 
-class LevelManager(Widget):
+class LevelManager(FloatLayout):
     popup = None
     grid_layout = None
 
@@ -20,7 +22,9 @@ class LevelManager(Widget):
     level = None
     current_level = None
     back_to_menu = None
-    music= None
+    music = None
+
+    action_bar = None
 
     def __init__(self, event_dispatcher, music_provider, **kwargs):
         """
@@ -30,6 +34,7 @@ class LevelManager(Widget):
         :param kwargs:
         """
         super(LevelManager, self).__init__(**kwargs)
+        self.size = Window.size
         self.event_dispatcher = event_dispatcher
         self.music_provider = music_provider
         self.level_service = LevelService()
@@ -76,13 +81,18 @@ class LevelManager(Widget):
         if not set_id or not self.level_service.does_set_exist(set_id):
             set_id = self.level_service.get_last_set_unlocked()
 
-        self.clear_widgets()
+        # self.clear_widgets()
 
         self.current_set_id = set_id
         self.current_level_id_in_set = level_id_in_set
 
-        # add map
-        self.level = self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
+        self.level = self.add_widget(
+            Level(
+                self.level_event_dispatcher,
+                set_id,
+                level_id_in_set
+            )
+        )
 
         self.update_menu_level_label()
 
@@ -145,41 +155,41 @@ class LevelManager(Widget):
         :rtype: void
         """
 
-        self.size = Window.size
-
         if not self.current_set_id or not self.current_level_id_in_set:
             return
 
-        self.remove_widget(self.current_level)
-        self.remove_widget(self.back_to_menu)
-
-        self.current_level = Label(
-            text="Set: {0} - Level: {1}".format(self.current_set_id, self.current_level_id_in_set),
-            size=(100, 20),
-            pos=((Window.size[0] - 100) / 2, Window.size[1] * 14 / 15)
-        )
-
-        self.back_to_menu = Button(
-            text="Menu",
-            background_color=(0, 0, 0, 1),
-            pos_hint=(0.1, 0.1),
-            on_press=self.switch_to_menu_screen
-        )
-
-        self.music = Button(
-            text="Music",
-            background_color=(0, 0, 0, 1),
-            pos=(0.9, 1),
-            on_press=self.music_provider.update_sound_state
-        )
-
-        self.add_widget(self.current_level)
-        self.add_widget(self.back_to_menu)
-        self.add_widget(self.music)
+        self.action_bar = Builder.load_string('''
+AppActionBar:
+    pos_hint: {'top': 1}
+    size_hint_x: 1
+    size_y: 100
+    ActionView:
+        use_separator: False
+        ActionPrevious:
+            title: 'Menu'
+            with_previous: False
+            on_press: root.parent.switch_to_menu_screen()
+            app_icon: 'resources/other/simplelogo.png'
+        ActionOverflow:
+        ActionGroup:
+            text: 'Group1'
+            ActionButton:
+                text: root.action_item_text
+            ActionButton:
+                text: 'Music'
+                icon: 'resources/other/music.png'
+                on_press: root.parent.music_provider.update_sound_state()
+                ''')
+        self.action_bar.action_item_text = 'Set: {0} - Level: {1}'.format(self.current_set_id, self.current_level_id_in_set)
+        # self.add_widget(self.action_bar)
 
     def switch_to_menu_screen(self, *args):
         """
         Required method.
         """
         Logger.info("Propagate Menu")
-        propagate_event('Menu', self)
+        propagate_event('MenuLevel', self)
+
+
+class AppActionBar(ActionBar):
+    action_item_text = StringProperty()

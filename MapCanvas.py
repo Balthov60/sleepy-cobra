@@ -129,7 +129,8 @@ class MapCanvas(Widget):
         """
         Logger.info("Adding drawing instructions")
         window_width, window_height = Window.size
-        min_window_size = min(Window.size)
+        window_height -= 50
+        min_window_size = min((window_width, window_height))
         size_needed_width = self.map_width * self.textures_size
         size_needed_height = self.map_height * self.textures_size
         size_needed_max = max(size_needed_width, size_needed_height)
