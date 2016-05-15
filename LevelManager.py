@@ -50,7 +50,7 @@ class LevelManager(FloatLayout):
         Save level up in the completed pool and open popup.
 
         :param instance:
-        :param completion_details:
+        :param completion_details: Player stats.
         :param args:
         :rtype: void
         """
@@ -73,8 +73,8 @@ class LevelManager(FloatLayout):
         """
         Load given level in given set with checking.
 
-        :param set_id:
-        :param level_id_in_set:
+        :param set_id: id of the set to load.
+        :param level_id_in_set: id of the level to load.
         :rtype: void
         """
 

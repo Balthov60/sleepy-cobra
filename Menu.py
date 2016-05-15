@@ -4,6 +4,7 @@ from kivy.graphics import Rectangle
 from kivy.core.window import Window
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.relativelayout import RelativeLayout
 from kivy.logger import Logger
 
 from LevelService import LevelService
@@ -14,16 +15,17 @@ from PopUpProvider import open_pop_up
 import os
 
 
-class Menu(FloatLayout):
+class Menu(RelativeLayout):
     """
     Main menu class.
     """
-    FONT_MENU = './resources/menu/test19.ttf'
+    FONT_MENU_PATH = './resources/menu/menu.ttf'
+    FOND_MENU_PATH = './resources/menu/fond_menu.png'
+    LOGO_PATH = './resources/other/logo.png'
 
     def __init__(self, event_dispatcher, music, **kwargs):
         """
         Initialize menu's button and textures.
-
         :param event_dispatcher: dispatcher
         :param kwargs: Args of Layout
         :rtype: void
@@ -34,33 +36,33 @@ class Menu(FloatLayout):
 
         # Add fond and title.
         self.canvas.add(
-            Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
+            Rectangle(source=self.FOND_MENU_PATH, size=Window.size)
         )
 
         self.canvas.add(
-            Rectangle(source='./resources/other/logo.png', size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
+            Rectangle(source=self.LOGO_PATH, size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
         )
         self.add_widget(
-            Label(text="'Scape me", font_name=self.FONT_MENU, font_size='90sp',
-                  size_hint=(0.25, 0.1), pos_hint={'x': 0.37, 'y': 0.75})
+            Label(text="'Scape me", font_name=self.FONT_MENU_PATH, font_size='90sp',
+                  size_hint=(0.25, 0.1), pos_hint={'center_x': 0.5, 'center_y': 0.8})
         )
 
         # Add buttons.
         self.add_widget(
-            Button(text="Play !", font_name=self.FONT_MENU, font_size='80sp',
-                   size_hint=(.45, .15), pos_hint={'x': .3, 'y': .4}, background_color=(0, 0, 0, 0),
-                   on_press=self.switch_to_menu_level_screen)
+             Button(text="Play !", font_name=self.FONT_MENU_PATH, font_size='80sp', background_color=(0, 0, 0, 0),
+                    size_hint=(.45, .15), pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                    on_press=self.switch_to_menu_level_screen)
         )
 
         self.add_widget(
-            Button(text="Credits", font_name=self.FONT_MENU, font_size='40sp',
-                   size_hint=(.25, .1), pos_hint={'x': 0.4, 'y': 0.2}, background_color=(0, 0, 0, 0),
+            Button(text="Credits", font_name=self.FONT_MENU_PATH, font_size='40sp', background_color=(0, 0, 0, 0),
+                   pos_hint={'center_x': 0.5, 'center_y': 0.2}, size_hint=(.2, .2),
                    on_press=self.credit_button_callback)
         )
 
         self.add_widget(
-            Button(text="Music", font_name=self.FONT_MENU, font_size='25sp',
-                   size_hint=(0.15, 0.12), pos_hint={'x': 0.85, 'y': 0}, background_color=(0, 0, 0, 0),
+            Button(text="Music", font_name=self.FONT_MENU_PATH, font_size='25sp', background_color=(0, 0, 0, 0),
+                   size_hint=(0.15, 0.12), pos_hint={'center_x': 0.92, 'center_y': 0.08},
                    on_press=self.music_callback)
         )
 
@@ -74,7 +76,6 @@ class Menu(FloatLayout):
     def credit_button_callback(self, instance):
         """
         When player click on credit button (Required method).
-
         :param instance:
         :rtype: void
         """
@@ -83,7 +84,6 @@ class Menu(FloatLayout):
     def music_callback(self, instance):
         """
         Start/Stop music.
-
         :param instance:
         :rtype: void
         """
@@ -94,14 +94,16 @@ class MenuLevel(FloatLayout):
     """
     Level Menu class.
     """
-    FONT_MENU_LEVEL = './resources/menu/test19.ttf'
+    FONT_MENU_PATH = './resources/menu/menu.ttf'
+    FOND_MENU_PATH = './resources/menu/fond_menu.png'
+    MAPS_PATH = './resources/maps/'
+
     color_1 = color['blue_color']
     color_2 = color['dark_blue_color']
 
     def __init__(self, event_dispatcher, **kwargs):
         """
         Initialize button and textures of MenuLevel.
-
         :param event_dispatcher: dispatcher
         :param kwargs: args of layout
         :rtype: void
@@ -112,12 +114,12 @@ class MenuLevel(FloatLayout):
 
         # Add fond.
         self.canvas.add(
-            Rectangle(source='./resources/menu/fondlogo.png', size=Window.size)
+            Rectangle(source=self.FOND_MENU_PATH, size=Window.size)
         )
 
         # Add button
         self.add_widget(
-            Button(text="Back to Menu", font_name=self.FONT_MENU_LEVEL, background_color=self.color_2,
+            Button(text="Back to Menu", font_name=self.FONT_MENU_PATH, background_color=self.color_2,
                    pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
                    on_press=self.switch_to_menu_screen)
         )
@@ -125,7 +127,7 @@ class MenuLevel(FloatLayout):
         menu_level_grid = GridLayout(size_hint=(0.7, 0.45), pos_hint={'x': 0.15, 'y': 0.3}, row=2)
         self.add_widget(menu_level_grid)
 
-        set_list = os.listdir('./resources/maps/')
+        set_list = os.listdir(self.MAPS_PATH)
         set_number = len(set_list)
         menu_level_grid.cols = set_number / 2
 
@@ -133,15 +135,15 @@ class MenuLevel(FloatLayout):
             if index % 2 == 0:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
-                    Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
-                           background_color=self.color_1, on_press=self.launch_level, cls=[index])
+                    Button(text=button_title, font_name=self.FONT_MENU_PATH, background_color=self.color_1,
+                           on_press=self.launch_level, cls=[index])
                 )
 
             else:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
-                    Button(text=button_title, font_name=self.FONT_MENU_LEVEL,
-                           background_color=self.color_2, on_press=self.launch_level, cls=[index])
+                    Button(text=button_title, font_name=self.FONT_MENU_PATH, background_color=self.color_2,
+                           on_press=self.launch_level, cls=[index])
                 )
 
     def switch_to_menu_screen(self, *args):
@@ -154,7 +156,6 @@ class MenuLevel(FloatLayout):
     def launch_level(self, value):
         """
         Load level.
-
         :param value:
         :rtype: void
         """

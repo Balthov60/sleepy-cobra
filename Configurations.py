@@ -20,8 +20,8 @@ sources = {
     'angle_left': './resources/blocks/angle_left.png',
     'double_wall_horizontal': './resources/blocks/double_wall_horizontal.png',
     'double_wall_vertical': './resources/blocks/double_wall_vertical.png',
+    'block': './resources/blocks/block.png',
     'point': './resources/other/point.png',
-    'block': './resources/other/block.png',
     'trace': './resources/other/trace.png'
 }
 
