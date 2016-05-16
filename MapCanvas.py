@@ -60,7 +60,6 @@ class MapCanvas(Widget):
 
         self.update_drawing_instructions()
 
-
         Window.bind(on_resize=self.update_drawing_instructions)
 
     def get_texture(self, token):
@@ -162,8 +161,8 @@ class MapCanvas(Widget):
                 x_position = (x_coord * self.tile_size) + self.vertical_padding
                 # y_coord + 1 because with y_pos == 0 it would not display
                 y_position = window_height - \
-                             ((y_coord + 1) * self.tile_size) - \
-                             self.horizontal_padding
+                            ((y_coord + 1) * self.tile_size) - \
+                            self.horizontal_padding
 
                 position = (x_position, y_position)
                 tile_size_tuple = [self.tile_size] * 2

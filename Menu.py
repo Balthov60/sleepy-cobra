@@ -54,7 +54,7 @@ class Menu(RelativeLayout):
                 text="'Scape me",
                 font_name=self.FONT_MENU_PATH,
                 font_blended=False,
-                font_size='90sp',
+                font_size='87sp',
                 size_hint=(0.25, 0.1),
                 pos_hint={'center_x': 0.5, 'center_y': 0.8}
             )
@@ -92,7 +92,7 @@ class Menu(RelativeLayout):
                 font_size='25sp',
                 background_color=(0, 0, 0, 0),
                 size_hint=(0.15, 0.12),
-                pos_hint={'center_x': 0.90, 'center_y': 0.07},
+                pos_hint={'center_x': 0.90, 'center_y': 0.06},
                 on_press=self.music_callback
             )
         )

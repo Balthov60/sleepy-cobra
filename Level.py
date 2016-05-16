@@ -6,23 +6,17 @@ from datetime import datetime
 from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Point
 
+from Configurations import TEXTURES
 from MapCanvas import MapCanvas
-from TouchUtils import \
-    get_tile_identifier, \
-    get_tile_properties, \
-    can_start_stop, \
-    is_authorised, \
-    get_touch_direction
-from Configurations import AUTHORIZATIONS, TEXTURES
+import TouchUtils
 
 
 class Level(FloatLayout):
     """
     Touch methods and map utilisation with tiles implementation.
     """
-    trace_texture = TEXTURES['trace']
-    touch_scaling_factor = 6.5
-    authorizations = AUTHORIZATIONS
+    TRACE_TEXTURE = TEXTURES['trace']
+    TOUCH_SCALING_FACTOR = 6.5
 
     def __init__(self, level_event_dispatcher, set_id, level_id_in_set, **kwargs):
         """
@@ -82,8 +76,8 @@ class Level(FloatLayout):
         self.player_path = []
 
         # get if player can draw here
-        self.tile_identifier = get_tile_identifier(self, touch.x, touch.y)
-        can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
+        self.tile_identifier = TouchUtils.get_tile_identifier(self, touch.x, touch.y)
+        can_draw = TouchUtils.can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if not can_draw:
             self.failed_attempts += 1
@@ -91,7 +85,7 @@ class Level(FloatLayout):
             return
 
         self.canvas.after.add(
-            Point(points=(touch.x, touch.y), texture=self.trace_texture, pointsize=self.touch_width)
+            Point(points=(touch.x, touch.y), texture=self.TRACE_TEXTURE, pointsize=self.touch_width)
         )
 
         # Save tile.
@@ -111,17 +105,18 @@ class Level(FloatLayout):
             return
 
         # get if player can draw (test if player is in a valid tile then test if tile change).
-        self.tile_identifier = get_tile_identifier(self, touch.x, touch.y)
+        self.tile_identifier = TouchUtils.get_tile_identifier(self, touch.x, touch.y)
         if self.tile_identifier is None:
             can_draw = False
 
+        # if player change tile
         elif self.tile_identifier != self.old_tile_identifier:
-            old_tile_properties = get_tile_properties(self.map_canvas.map_matrix, self.old_tile_identifier)
-            tile_properties = get_tile_properties(self.map_canvas.map_matrix, self.tile_identifier)
-            direction = get_touch_direction(self.tile_identifier, self.old_tile_identifier)
+            old_tile_properties = TouchUtils.get_tile_properties(self.map_canvas.map_matrix, self.old_tile_identifier)
+            tile_properties = TouchUtils.get_tile_properties(self.map_canvas.map_matrix, self.tile_identifier)
+            direction = TouchUtils.get_touch_direction(self.tile_identifier, self.old_tile_identifier)
 
-            can_draw = is_authorised(self.tile_identifier, self.player_path,
-                                     tile_properties, old_tile_properties, direction)
+            can_draw = TouchUtils.is_authorised(self.tile_identifier, self.player_path,
+                                                tile_properties, old_tile_properties, direction)
             if can_draw:
                 self.player_path.append((self.tile_identifier[0], self.tile_identifier[1]))
         else:
@@ -143,7 +138,7 @@ class Level(FloatLayout):
             x_coord = points_list[index][0]
             y_coord = points_list[index][1]
             self.canvas.after.add(
-                Point(points=(x_coord, y_coord), texture=self.trace_texture, pointsize=self.touch_width)
+                Point(points=(x_coord, y_coord), texture=self.TRACE_TEXTURE, pointsize=self.touch_width)
             )
 
         # Save tile.
@@ -160,11 +155,11 @@ class Level(FloatLayout):
             return
 
         # get if player can draw here
-        self.tile_identifier = get_tile_identifier(self, touch.x, touch.y)
+        self.tile_identifier = TouchUtils.get_tile_identifier(self, touch.x, touch.y)
         if self.tile_identifier is None:
             can_draw = False
         else:
-            can_draw = can_start_stop(self.tile_identifier, self.map_canvas.points)
+            can_draw = TouchUtils.can_start_stop(self.tile_identifier, self.map_canvas.points)
 
         if can_draw:
             if self.is_path_correct():
@@ -218,7 +213,7 @@ class Level(FloatLayout):
         :rtype: void
         """
 
-        self.touch_width = int(self.map_canvas.tile_size / self.touch_scaling_factor)
+        self.touch_width = int(self.map_canvas.tile_size / self.TOUCH_SCALING_FACTOR)
 
         # Define real tiles and level size.
         self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vertical_padding * 2,

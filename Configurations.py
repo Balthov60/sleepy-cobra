@@ -156,5 +156,12 @@ MESSAGES = dict([
            "\nwhat about you ?"
            "\n"
            "\nit's ok... it's ok move on..."),
-    ('63', "I said DO NOT CRY !!")
+    ('63', "I said DO NOT CRY !!"),
+    ('71', "So you finally arrive to this last set"
+           "\n Good luck ! Good luck..."),
+    ('72', "OK ok calm down the game will end to fast !"),
+    ('73', "I say STOP are you angry against me ?"),
+    ('74', "No please No..."),
+    ('75', "OK then... Il a few minutes I will be useless..."
+           "\n Thanks for player.... Pffff....")
 ])
