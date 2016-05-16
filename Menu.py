@@ -61,7 +61,7 @@ class Menu(RelativeLayout):
 
         self.add_widget(
             Button(text="Music", font_name=self.FONT_MENU, font_size='25sp',
-                   size_hint=(0.15, 0.12), pos_hint={'center_x': 0.92, 'center_y': 0.08},
+                   size_hint=(0.15, 0.12), pos_hint={'center_x': 0.90, 'center_y': 0.07},
                    background_color=(0, 0, 0, 0),
                    on_press=self.music_callback)
         )
@@ -117,7 +117,7 @@ class MenuLevel(FloatLayout):
 
         # Add button
         self.add_widget(
-            Button(text="Back to Menu", font_name=self.FONT_MENU_LEVEL, background_color=self.color_2,
+            Button(text="Menu", font_name=self.FONT_MENU_LEVEL, background_color=self.color_2,
                    pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
                    on_press=self.switch_to_menu_screen)
         )

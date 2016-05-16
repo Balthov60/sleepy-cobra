@@ -135,6 +135,7 @@ def add_popup_infos_labels(current_class, completion_details):
     """
     time = completion_details['resolution_time']
     time = time.microseconds * 10**-6
+    time = float(int(time*100))/100
     time_text = "Time : " + str(time) + " sec."
     current_class.relative_layout.add_widget(Label(text=time_text, font_size='20sp',
                                                    pos_hint={'center_x': 0.25, 'center_y': 0.5}))
