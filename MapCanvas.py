@@ -20,15 +20,15 @@ class MapCanvas(Widget):
     Interpret config for map and put the maps in a canvas
     """
 
-    textures = TEXTURES
-    textures_size = 256
+    TEXTURES = TEXTURES
+    TEXTURES_SIZE = 256
+    ACTION_BAR_SIZE = 50
 
     def __init__(self, map_file_path, **kwargs):
         """
         Charge et donne les instructions de constructions de la carte.
 
         :param map_file_path: {string} chemin vers le fichier de la carte
-        :param textures: {dict} dictionnaire des textures
         :param kwargs: Arguments du widget
         :rtype: void
         """
@@ -70,7 +70,7 @@ class MapCanvas(Widget):
         :return: {CoreImage.texture} texture
         """
         try:
-            texture = self.textures[token]
+            texture = self.TEXTURES[token]
         except KeyError as error:
             raise KeyError("Texture ", token, " doesn't exist :", error)
 
@@ -132,13 +132,13 @@ class MapCanvas(Widget):
         """
         Logger.info("Adding drawing instructions")
         window_width, window_height = self.window.size
-        window_height -= 50                 # It's needed to display the level bar correctly.
+        window_height -= self.ACTION_BAR_SIZE
         min_window_size = min((window_width, window_height))
-        size_needed_width = self.map_width * self.textures_size
-        size_needed_height = self.map_height * self.textures_size
+        size_needed_width = self.map_width * self.TEXTURES_SIZE
+        size_needed_height = self.map_height * self.TEXTURES_SIZE
         size_needed_max = max(size_needed_width, size_needed_height)
         scaling_factor = size_needed_max / min_window_size
-        self.tile_size = self.textures_size / scaling_factor
+        self.tile_size = self.TEXTURES_SIZE / scaling_factor
         self.vertical_padding = (window_width - size_needed_width / scaling_factor) / 2
         self.horizontal_padding = (window_height - size_needed_height / scaling_factor) / 2
 
@@ -150,11 +150,11 @@ class MapCanvas(Widget):
 
         self.canvas.add(Color(None))
         self.canvas.before.add(
-            Rectangle(size=self.window.size, texture=self.textures['background'])
+            Rectangle(size=self.window.size, texture=self.TEXTURES['background'])
         )
 
-        point_texture = self.textures['point']
-        block_texture = self.textures['block']
+        point_texture = self.TEXTURES['point']
+        block_texture = self.TEXTURES['block']
 
         for y_coord in range(0, len(self.map_matrix)):
             for x_coord in range(0, len(self.map_matrix[y_coord])):
