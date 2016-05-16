@@ -1,3 +1,7 @@
+"""
+EventDispatchers
+"""
+
 from kivy.event import EventDispatcher
 
 
@@ -13,7 +17,7 @@ class LevelEventDispatcher(EventDispatcher):
         :rtype: void
         """
         self.register_event_type('on_level_completed')
-        super(EventDispatcher, self).__init__(**kwargs)
+        super(LevelEventDispatcher, self).__init__(**kwargs)
 
     @staticmethod
     def on_level_completed(*args):
