@@ -59,7 +59,7 @@ class LevelManager(FloatLayout):
         set_id_to_load = completion_details['set_id']
         level_id_in_set_to_load = completion_details['level_id_in_set'] + 1
 
-        if level_id_in_set_to_load >= 5:
+        if level_id_in_set_to_load > 5:
             set_id_to_load = completion_details['set_id'] + 1
             level_id_in_set_to_load = 1
 
@@ -81,25 +81,24 @@ class LevelManager(FloatLayout):
         if not set_id or not self.level_service.does_set_exist(set_id):
             set_id = self.level_service.get_last_set_unlocked()
 
-        # self.clear_widgets()
+        self.clear_widgets()
 
         self.current_set_id = set_id
         self.current_level_id_in_set = level_id_in_set
 
-        self.level = self.add_widget(
-            Level(
-                self.level_event_dispatcher,
-                set_id,
-                level_id_in_set
-            )
-        )
-
-        self.update_menu_level_label()
-
         # display popup if level need popup
         open_pop_up(self, 'open_level', set_id, level_id_in_set)
 
-        Window.bind(on_resize=self.update_menu_level_label)
+        self.level = Level(
+            self.level_event_dispatcher,
+            set_id,
+            level_id_in_set
+        )
+        self.add_widget(self.level)
+
+        self.update_menu_level_bar()
+
+        Window.bind(on_resize=self.update_menu_level_bar)
 
     #####
     # Pop up
@@ -148,7 +147,7 @@ class LevelManager(FloatLayout):
     # Menu relatives
     #####
 
-    def update_menu_level_label(self, *args):
+    def update_menu_level_bar(self, *args):
         """
         Update the menu label of the level.
 
@@ -158,30 +157,11 @@ class LevelManager(FloatLayout):
         if not self.current_set_id or not self.current_level_id_in_set:
             return
 
-        self.action_bar = Builder.load_string('''
-AppActionBar:
-    pos_hint: {'top': 1}
-    size_hint_x: 1
-    size_y: 100
-    ActionView:
-        use_separator: False
-        ActionPrevious:
-            title: 'Menu'
-            with_previous: False
-            on_press: root.parent.switch_to_menu_screen()
-            app_icon: 'resources/other/simplelogo.png'
-        ActionOverflow:
-        ActionGroup:
-            text: 'Group1'
-            ActionButton:
-                text: root.action_item_text
-            ActionButton:
-                text: 'Music'
-                icon: 'resources/other/music.png'
-                on_press: root.parent.music_provider.update_sound_state()
-                ''')
-        self.action_bar.action_item_text = 'Set: {0} - Level: {1}'.format(self.current_set_id, self.current_level_id_in_set)
-        # self.add_widget(self.action_bar)
+        self.action_bar = Builder.load_file('LevelActionBar.kv')
+        self.action_bar.current_level = 'Set: {0} - Level: {1}'.format(
+            self.current_set_id, self.current_level_id_in_set
+        )
+        self.add_widget(self.action_bar)
 
     def switch_to_menu_screen(self, *args):
         """
@@ -191,5 +171,5 @@ AppActionBar:
         propagate_event('MenuLevel', self)
 
 
-class AppActionBar(ActionBar):
-    action_item_text = StringProperty()
+class LevelActionBar(ActionBar):
+    current_level = StringProperty()
