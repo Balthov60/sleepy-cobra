@@ -1,3 +1,8 @@
+"""
+Menu
+"""
+import os
+
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Rectangle
@@ -8,11 +13,9 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.logger import Logger
 
 from LevelService import LevelService
-from Configurations import color
+from Configurations import COLORS
 from EventDispatchers import propagate_event
 from PopUpProvider import open_pop_up
-
-import os
 
 
 class Menu(RelativeLayout):
@@ -20,7 +23,7 @@ class Menu(RelativeLayout):
     Main menu class.
     """
     FONT_MENU_PATH = './resources/menu/vanadine_bold.ttf'
-    FOND_MENU_PATH = './resources/menu/fond_menu.png'
+    FOND_MENU_PATH = './resources/menu/background_menu.png'
     LOGO_PATH = './resources/other/logo.png'
 
     def __init__(self, event_dispatcher, music, **kwargs):
@@ -40,51 +43,81 @@ class Menu(RelativeLayout):
         )
 
         self.canvas.add(
-            Rectangle(source=self.LOGO_PATH, size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
+            Rectangle(
+                source=self.LOGO_PATH,
+                size_hint=0.2,
+                pos_hint={'x': 0.4, 'y': 0.4}
+            )
         )
         self.add_widget(
-            Label(text="'Scape me", font_name=self.FONT_MENU_PATH, font_blended=False, font_size='90sp',
-                  size_hint=(0.25, 0.1), pos_hint={'center_x': 0.5, 'center_y': 0.8})
+            Label(
+                text="'Scape me",
+                font_name=self.FONT_MENU_PATH,
+                font_blended=False,
+                font_size='90sp',
+                size_hint=(0.25, 0.1),
+                pos_hint={'center_x': 0.5, 'center_y': 0.8}
+            )
         )
 
         # Add buttons.
         self.add_widget(
-             Button(text="Play !", font_name=self.FONT_MENU_PATH, font_size='80sp', background_color=(0, 0, 0, 0),
-                    size_hint=(.45, .15), pos_hint={'center_x': 0.5, 'center_y': 0.5},
-                    on_press=self.switch_to_menu_level_screen)
+            Button(
+                text="Play !",
+                font_name=self.FONT_MENU_PATH,
+                font_size='80sp',
+                background_color=(0, 0, 0, 0),
+                size_hint=(.45, .15),
+                pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                on_press=self.switch_to_menu_level_screen
+            )
         )
 
         self.add_widget(
-            Button(text="Credits", font_name=self.FONT_MENU_PATH, font_size='40sp', background_color=(0, 0, 0, 0),
-                   pos_hint={'center_x': 0.5, 'center_y': 0.2}, size_hint=(.2, .2),
-                   on_press=self.credit_button_callback)
+            Button(
+                text="Credits",
+                font_name=self.FONT_MENU_PATH,
+                font_size='40sp',
+                background_color=(0, 0, 0, 0),
+                pos_hint={'center_x': 0.5, 'center_y': 0.2},
+                size_hint=(.2, .2),
+                on_press=self.credit_button_callback
+            )
         )
 
         self.add_widget(
-            Button(text="Music", font_name=self.FONT_MENU_PATH, font_size='25sp', background_color=(0, 0, 0, 0),
-                   size_hint=(0.15, 0.12), pos_hint={'center_x': 0.90, 'center_y': 0.07},
-                   on_press=self.music_callback)
+            Button(
+                text="Music",
+                font_name=self.FONT_MENU_PATH,
+                font_size='25sp',
+                background_color=(0, 0, 0, 0),
+                size_hint=(0.15, 0.12),
+                pos_hint={'center_x': 0.90, 'center_y': 0.07},
+                on_press=self.music_callback
+            )
         )
 
-    def switch_to_menu_level_screen(self, *args):
+    def switch_to_menu_level_screen(self, *_):
         """
-        Required method.
+        Propagation method.
+        :param _:
+        :return:
         """
         Logger.info("Propagate MenuLevel")
         propagate_event('MenuLevel', self)
 
-    def credit_button_callback(self, instance):
+    def credit_button_callback(self, _):
         """
         When player click on credit button (Required method).
-        :param instance:
+        :param _:
         :rtype: void
         """
         open_pop_up(self, 'Credits')
 
-    def music_callback(self, instance):
+    def music_callback(self, _):
         """
         Start/Stop music.
-        :param instance:
+        :param _:
         :rtype: void
         """
         self.music.update_sound_state()
@@ -95,11 +128,11 @@ class MenuLevel(FloatLayout):
     Level Menu class.
     """
     FONT_MENU_PATH = './resources/menu/vanadine_bold.ttf'
-    FOND_MENU_PATH = './resources/menu/fond_menu.png'
+    FOND_MENU_PATH = './resources/menu/background_menu.png'
     MAPS_PATH = './resources/maps/'
 
-    color_1 = color['blue_color']
-    color_2 = color['dark_blue_color']
+    color_1 = COLORS['blue_color']
+    color_2 = COLORS['dark_blue_color']
 
     def __init__(self, event_dispatcher, **kwargs):
         """
@@ -135,18 +168,28 @@ class MenuLevel(FloatLayout):
             if index % 2 == 0:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
-                    Button(text=button_title, font_name=self.FONT_MENU_PATH, background_color=self.color_1,
-                           on_press=self.launch_level, cls=[index])
+                    Button(
+                        text=button_title,
+                        font_name=self.FONT_MENU_PATH,
+                        background_color=self.color_1,
+                        on_press=self.launch_level,
+                        cls=[index]
+                    )
                 )
 
             else:
                 button_title = "Level " + str(index)
                 menu_level_grid.add_widget(
-                    Button(text=button_title, font_name=self.FONT_MENU_PATH, background_color=self.color_2,
-                           on_press=self.launch_level, cls=[index])
+                    Button(
+                        text=button_title,
+                        font_name=self.FONT_MENU_PATH,
+                        background_color=self.color_2,
+                        on_press=self.launch_level,
+                        cls=[index]
+                    )
                 )
 
-    def switch_to_menu_screen(self, *args):
+    def switch_to_menu_screen(self, *_):
         """
         Required method.
         """

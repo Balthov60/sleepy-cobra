@@ -1,12 +1,18 @@
-from kivy.logger import Logger
-
-from sqlite3 import dbapi2 as sqlite
-
+"""
+LevelService
+"""
 import os
 from datetime import datetime
 
+from sqlite3 import dbapi2 as sqlite
 
-class LevelService:
+from kivy.logger import Logger
+
+
+class LevelService(object):
+    """
+    LevelService
+    """
     TABLE_NAME = 'game_completion'
     DB_NAME = 'scapeMe.db'
     MAPS_PATH = './resources/maps/'
@@ -85,21 +91,25 @@ class LevelService:
         """
         start_time = datetime.now()
 
-        self.cursor.execute("""
+        self.cursor.execute(
+            """
             UPDATE {} SET resolution_time = ?, failed_attempts = ?, successful_attempts = ? WHERE id = ?
-            """.format(self.TABLE_NAME), (str(resolution_time),
-                                          int(current_entry[4]) + failed_attempts,
-                                          int(current_entry[5]) + 1,
-                                          current_entry[0])
-                            )
+            """.format(self.TABLE_NAME), (
+                str(resolution_time),
+                int(current_entry[4]) + failed_attempts,
+                int(current_entry[5]) + 1,
+                current_entry[0]
+            )
+        )
         self.connection.commit()
 
         end_time = datetime.now()
         duration = end_time - start_time
         duration_seconds = duration.microseconds * 10 ** -6
-        Logger.info("Edited completion : set %i, level %i in %fs" %
-                    (duration_seconds, current_entry[1], current_entry[2])
-                    )
+        Logger.info(
+            "Edited completion : set %i, level %i in %fs" %
+            (duration_seconds, current_entry[1], current_entry[2])
+        )
 
     def insert_completion(self, set_id, level_id_in_set, resolution_time, failed_attempts):
         """

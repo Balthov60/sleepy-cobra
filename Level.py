@@ -1,20 +1,28 @@
+"""
+Level
+"""
+from datetime import datetime
+
 from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Point
 
 from MapCanvas import MapCanvas
-from TouchUtils import get_tile_identifier, get_tile_properties, can_start_stop, is_authorised, get_touch_direction
-from Configurations import authorizations, textures
-
-from datetime import datetime
+from TouchUtils import \
+    get_tile_identifier, \
+    get_tile_properties, \
+    can_start_stop, \
+    is_authorised, \
+    get_touch_direction
+from Configurations import AUTHORIZATIONS, TEXTURES
 
 
 class Level(FloatLayout):
     """
     Touch methods and map utilisation with tiles implementation.
     """
-    trace_texture = textures['trace']
+    trace_texture = TEXTURES['trace']
     touch_scaling_factor = 6.5
-    authorizations = authorizations
+    authorizations = AUTHORIZATIONS
 
     def __init__(self, level_event_dispatcher, set_id, level_id_in_set, **kwargs):
         """
@@ -36,8 +44,9 @@ class Level(FloatLayout):
         self.map_canvas = MapCanvas(map_file_path)
         self.add_widget(self.map_canvas)
 
-        # Initialize level variables.
-        self.touch_width = int()
+        self.start_time = datetime.now()
+
+        self.touch_width = int
 
         self.level_size = list()
         self.tile_size = list()
@@ -45,21 +54,19 @@ class Level(FloatLayout):
         self.player_path = list()
         self.win_path = list()
 
-        self.x_max = int()
-        self.y_max = int()
+        self.x_max = int
+        self.y_max = int
         self.touch_matrix = None
 
         self.old_point = list()
         self.tile_identifier = list()
         self.old_tile_identifier = list()
 
+        self.failed_attempts = 0
+
         # Define level settings.
         self.define_level_properties()
         self.define_win_conditions()
-
-        # Reset level stats.
-        self.start_time = datetime.now()
-        self.failed_attempts = 0
 
     ####
     # Touch methods.
@@ -133,10 +140,10 @@ class Level(FloatLayout):
             points_list = [(touch.x, touch.y)]
 
         for index in range(len(points_list)):
-            x = points_list[index][0]
-            y = points_list[index][1]
+            x_coord = points_list[index][0]
+            y_coord = points_list[index][1]
             self.canvas.after.add(
-                Point(points=(x, y), texture=self.trace_texture, pointsize=self.touch_width)
+                Point(points=(x_coord, y_coord), texture=self.trace_texture, pointsize=self.touch_width)
             )
 
         # Save tile.
@@ -224,16 +231,21 @@ class Level(FloatLayout):
         self.y_max = self.map_canvas.map_size[1]
         self.touch_matrix = []
 
-        x = self.map_canvas.vertical_padding
-        y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
+        start_x = self.map_canvas.vertical_padding
+        start_y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
 
         for index_y in range(self.y_max):
             self.touch_matrix.append([])
-            for index_x in range(self.x_max):
-                self.touch_matrix[index_y].append((x, y, x + self.tile_size[0], y - self.tile_size[1]))
-                x += self.tile_size[0]
-            y -= self.tile_size[1]
-            x = self.map_canvas.vertical_padding
+            for _ in range(self.x_max):
+                self.touch_matrix[index_y].append(
+                    (start_x,
+                     start_y,
+                     start_x + self.tile_size[0],
+                     start_y - self.tile_size[1])
+                )
+                start_x += self.tile_size[0]
+            start_y -= self.tile_size[1]
+            start_x = self.map_canvas.vertical_padding
 
     def propagate_level_up(self):
         """

@@ -1,9 +1,11 @@
+"""
+LevelManager
+"""
 from kivy.uix.floatlayout import FloatLayout
 from kivy.logger import Logger
 from kivy.core.window import Window
 from kivy.uix.actionbar import ActionBar
 from kivy.properties import StringProperty
-
 from kivy.lang import Builder
 
 from Level import Level
@@ -13,6 +15,9 @@ from PopUpProvider import open_pop_up
 
 
 class LevelManager(FloatLayout):
+    """
+    LevelManager children of FloatLayout.
+    """
 
     def __init__(self, event_dispatcher, music_provider, **kwargs):
         """
@@ -38,13 +43,13 @@ class LevelManager(FloatLayout):
     # Save and Level Up
     #####
 
-    def do_level_up(self, instance, completion_details, *args):
+    def do_level_up(self, _, completion_details, *unused):
         """
         Save level up in the completed pool and open popup.
 
-        :param instance:
+        :param _:
         :param completion_details: Player stats.
-        :param args:
+        :param unused:
         :rtype: void
         """
         self.level_service.save_completion(completion_details)
@@ -126,7 +131,7 @@ class LevelManager(FloatLayout):
 
         self.load_level_in_set(level_list[0], level_list[1])
 
-    def pop_up_menu(self, instance):
+    def pop_up_menu(self, _):
         """
         When player click on menu button in pop up.
 
@@ -140,7 +145,7 @@ class LevelManager(FloatLayout):
     # Menu relatives
     #####
 
-    def update_menu_level_bar(self, *args):
+    def update_menu_level_bar(self, *_):
         """
         Update the menu label of the level.
 

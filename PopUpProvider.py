@@ -1,9 +1,12 @@
+"""
+PopupProvider
+"""
 from kivy.uix.modalview import ModalView
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 
-from Configurations import messages
+from Configurations import MESSAGES
 
 
 def open_pop_up(current_class, state, set_id=None, level_id=None, completion_details=None):
@@ -38,7 +41,7 @@ def open_pop_up(current_class, state, set_id=None, level_id=None, completion_det
     elif state == 'open_level':
         index = str(set_id) + str(level_id)
 
-        if not messages.get(index) is None:
+        if not MESSAGES.get(index) is None:
             create_raw_popup(current_class)
             add_unique_popup_message(current_class, state, index)
             current_class.popup.open(current_class)
@@ -82,8 +85,9 @@ def add_popup_title(current_class, title_text=""):
     :param title_text: Title to display.
     :rtype: void
     """
-    current_class.relative_layout.add_widget(Label(text=title_text, font_size='40sp', color=(0, 0.6, 0.1, 1),
-                                                   pos_hint={'center_x': 0.5, 'center_y': 0.8}))
+    current_class.relative_layout.add_widget(
+        Label(text=title_text, font_size='40sp', color=(0, 0.6, 0.1, 1),
+              pos_hint={'center_x': 0.5, 'center_y': 0.8}))
 
 
 def add_popup_credits(current_class):
@@ -93,12 +97,14 @@ def add_popup_credits(current_class):
     :rtype: void
     """
     dev_text = "Devs : ISNABE corp'"
-    current_class.relative_layout.add_widget(Label(text=dev_text, font_size='20sp', color=(0.8, 0, 0, 1),
-                                                   pos_hint={'center_x': 0.5, 'center_y': 0.5}))
+    current_class.relative_layout.add_widget(
+        Label(text=dev_text, font_size='20sp', color=(0.8, 0, 0, 1),
+              pos_hint={'center_x': 0.5, 'center_y': 0.5}))
 
     music_text = "Music : M.Shvangiradze"
-    current_class.relative_layout.add_widget(Label(text=music_text, font_size='20sp', color=(1, 0.5, 0, 1),
-                                                   pos_hint={'center_x': 0.5, 'center_y': 0.2}))
+    current_class.relative_layout.add_widget(
+        Label(text=music_text, font_size='20sp', color=(1, 0.5, 0, 1),
+              pos_hint={'center_x': 0.5, 'center_y': 0.2}))
 
 
 def add_unique_popup_message(current_class, state, index=0):
@@ -111,11 +117,15 @@ def add_unique_popup_message(current_class, state, index=0):
     """
 
     if state == 'not_unlocked':
-        popup_label = Label(text="Level is not unlocked yet.", font_size='30sp', color=(0.8, 0.5, 0, 1),
-                            pos_hint={'center_x': 0.5, 'center_y': 0.5})
+        popup_label = Label(
+            text="Level is not unlocked yet.",
+            font_size='30sp',
+            color=(0.8, 0.5, 0, 1),
+            pos_hint={'center_x': 0.5, 'center_y': 0.5}
+        )
 
     elif state == 'open_level':
-        label_text = messages[index]
+        label_text = MESSAGES[index]
         popup_label = Label(text=label_text, font_size='15sp',
                             pos_hint={'center_x': 0.5, 'center_y': 0.5})
 
@@ -134,20 +144,21 @@ def add_popup_infos_labels(current_class, completion_details):
     :rtype: void
     """
     time = completion_details['resolution_time']
-    displayed_time = str
     time_minute = (time.seconds // 60) % 60
     if time_minute > 0:
         displayed_time = "{0} min {1}".format(str(time_minute), str(time.seconds))
     else:
         displayed_time = "{0} sec {1}".format(str(time.seconds), str(time.microseconds)[0:1])
     time_text = "Time : " + displayed_time
-    current_class.relative_layout.add_widget(Label(text=time_text, font_size='20sp',
-                                                   pos_hint={'center_x': 0.25, 'center_y': 0.5}))
+    current_class.relative_layout.add_widget(
+        Label(text=time_text, font_size='20sp',
+              pos_hint={'center_x': 0.25, 'center_y': 0.5}))
 
     attempts = completion_details['failed_attempts'] + 1
     attempts_text = "Attempts : " + str(attempts)
-    current_class.relative_layout.add_widget(Label(text=attempts_text, font_size='20sp',
-                                                   pos_hint={'center_x': 0.75, 'center_y': 0.5}))
+    current_class.relative_layout.add_widget(
+        Label(text=attempts_text, font_size='20sp',
+              pos_hint={'center_x': 0.75, 'center_y': 0.5}))
 
 
 def add_popup_buttons(current_class, set_id, level_id):
@@ -159,17 +170,20 @@ def add_popup_buttons(current_class, set_id, level_id):
     :param level_id
     :rtype: void
     """
-    again_button = Button(text='Play Again', cls=[set_id, level_id], background_color=(0.8, 0.5, 0, 1),
-                          pos_hint={'center_x': 0.25, 'center_y': 0.2}, size_hint=[0.2, 0.2])
+    again_button = Button(
+        text='Play Again', cls=[set_id, level_id], background_color=(0.8, 0.5, 0, 1),
+        pos_hint={'center_x': 0.25, 'center_y': 0.2}, size_hint=[0.2, 0.2])
     again_button.bind(on_press=current_class.pop_up_replay)
     current_class.relative_layout.add_widget(again_button)
 
-    menu_button = Button(text='Menu', background_color=(0, 0, 1, 1),
-                         pos_hint={'center_x': 0.5, 'center_y': 0.2}, size_hint=[0.2, 0.2])
+    menu_button = Button(
+        text='Menu', background_color=(0, 0, 1, 1),
+        pos_hint={'center_x': 0.5, 'center_y': 0.2}, size_hint=[0.2, 0.2])
     menu_button.bind(on_press=current_class.pop_up_menu)
     current_class.relative_layout.add_widget(menu_button)
 
-    next_button = Button(text='Next Level', cls=[set_id, level_id], background_color=(0, 0.6, 0.1, 1),
-                         pos_hint={'center_x': 0.75, 'center_y': 0.2}, size_hint=[0.2, 0.2])
+    next_button = Button(
+        text='Next Level', cls=[set_id, level_id], background_color=(0, 0.6, 0.1, 1),
+        pos_hint={'center_x': 0.75, 'center_y': 0.2}, size_hint=[0.2, 0.2])
     next_button.bind(on_press=current_class.pop_up_next)
     current_class.relative_layout.add_widget(next_button)
