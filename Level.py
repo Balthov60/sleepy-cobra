@@ -1,7 +1,10 @@
+"""
+Level
+"""
+from datetime import datetime
+
 from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Point
-
-from datetime import datetime
 
 from Configurations import AUTHORIZATIONS, TEXTURES
 from MapCanvas import MapCanvas
