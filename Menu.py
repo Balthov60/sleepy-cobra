@@ -19,7 +19,7 @@ class Menu(RelativeLayout):
     """
     Main menu class.
     """
-    FONT_MENU_PATH = './resources/menu/menu.ttf'
+    FONT_MENU_PATH = './resources/menu/vanadine_bold.ttf'
     FOND_MENU_PATH = './resources/menu/fond_menu.png'
     LOGO_PATH = './resources/other/logo.png'
 
@@ -43,7 +43,7 @@ class Menu(RelativeLayout):
             Rectangle(source=self.LOGO_PATH, size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
         )
         self.add_widget(
-            Label(text="'Scape me", font_name=self.FONT_MENU_PATH, font_size='90sp',
+            Label(text="'Scape me", font_name=self.FONT_MENU_PATH, font_blended=False, font_size='90sp',
                   size_hint=(0.25, 0.1), pos_hint={'center_x': 0.5, 'center_y': 0.8})
         )
 
@@ -94,7 +94,7 @@ class MenuLevel(FloatLayout):
     """
     Level Menu class.
     """
-    FONT_MENU_PATH = './resources/menu/menu.ttf'
+    FONT_MENU_PATH = './resources/menu/vanadine_bold.ttf'
     FOND_MENU_PATH = './resources/menu/fond_menu.png'
     MAPS_PATH = './resources/maps/'
 

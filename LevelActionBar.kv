@@ -6,6 +6,7 @@ LevelActionBar:
         use_separator: False
         ActionPrevious:
             title: 'Menu'
+            font_name: 'resources/menu/vanadine_bold.ttf'
             with_previous: False
             on_press: root.parent.switch_to_menu_screen()
             app_icon: 'resources/other/simplelogo.png'
@@ -14,7 +15,9 @@ LevelActionBar:
             text: 'Group1'
             ActionButton:
                 text: root.current_level
+                font_name: 'resources/menu/vanadine_bold.ttf'
             ActionButton:
                 text: 'Music'
+                font_name: 'resources/menu/vanadine_bold.ttf'
                 icon: 'resources/other/music.png'
                 on_press: root.parent.music_provider.update_sound_state()
