@@ -33,7 +33,7 @@ class Level(FloatLayout):
         # Load map in a canvas.
         self.set_id = set_id
         self.level_id_in_set = level_id_in_set
-        map_file_path = "./resources/maps/set{0}/level{0}_{1}.cfg".format(2, 5)
+        map_file_path = "./resources/maps/set{0}/level{0}_{1}.cfg".format(self.set_id, self.level_id_in_set)
 
         self.map_canvas = MapCanvas(map_file_path)
         self.add_widget(self.map_canvas)
