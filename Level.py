@@ -6,7 +6,7 @@ from datetime import datetime
 from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Point
 
-from Configurations import AUTHORIZATIONS, TEXTURES
+from Configurations import TEXTURES
 from MapCanvas import MapCanvas
 import TouchUtils
 
@@ -15,9 +15,8 @@ class Level(FloatLayout):
     """
     Touch methods and map utilisation with tiles implementation.
     """
-    trace_texture = TEXTURES['trace']
-    touch_scaling_factor = 6.5
-    authorizations = AUTHORIZATIONS
+    TRACE_TEXTURE = TEXTURES['trace']
+    TOUCH_SCALING_FACTOR = 6.5
 
     def __init__(self, level_event_dispatcher, set_id, level_id_in_set, **kwargs):
         """
@@ -86,7 +85,7 @@ class Level(FloatLayout):
             return
 
         self.canvas.after.add(
-            Point(points=(touch.x, touch.y), texture=self.trace_texture, pointsize=self.touch_width)
+            Point(points=(touch.x, touch.y), texture=self.TRACE_TEXTURE, pointsize=self.touch_width)
         )
 
         # Save tile.
@@ -110,6 +109,7 @@ class Level(FloatLayout):
         if self.tile_identifier is None:
             can_draw = False
 
+        # if player change tile
         elif self.tile_identifier != self.old_tile_identifier:
             old_tile_properties = TouchUtils.get_tile_properties(self.map_canvas.map_matrix, self.old_tile_identifier)
             tile_properties = TouchUtils.get_tile_properties(self.map_canvas.map_matrix, self.tile_identifier)
@@ -138,7 +138,7 @@ class Level(FloatLayout):
             x_coord = points_list[index][0]
             y_coord = points_list[index][1]
             self.canvas.after.add(
-                Point(points=(x_coord, y_coord), texture=self.trace_texture, pointsize=self.touch_width)
+                Point(points=(x_coord, y_coord), texture=self.TRACE_TEXTURE, pointsize=self.touch_width)
             )
 
         # Save tile.
@@ -213,7 +213,7 @@ class Level(FloatLayout):
         :rtype: void
         """
 
-        self.touch_width = int(self.map_canvas.tile_size / self.touch_scaling_factor)
+        self.touch_width = int(self.map_canvas.tile_size / self.TOUCH_SCALING_FACTOR)
 
         # Define real tiles and level size.
         self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vertical_padding * 2,

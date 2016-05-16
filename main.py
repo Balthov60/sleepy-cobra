@@ -11,7 +11,7 @@ from EventDispatchers import MenusEventDispatcher
 from LevelManager import LevelManager
 
 
-class MusicProvider(object):
+class MusicProvider:
     """
     Music provider.
     """
@@ -60,10 +60,6 @@ class GameApp(App):
     screen_manager = ScreenManager()
     music_provider = MusicProvider()
 
-    menu_screen = Screen(name="Menu")
-    menu_level_screen = Screen(name="MenuLevel")
-    game_screen = Screen(name="LevelManager")
-
     def __init__(self, **kwargs):
         """
 
@@ -71,6 +67,10 @@ class GameApp(App):
         :rtype: void
         """
         super(GameApp, self).__init__(**kwargs)
+
+        self.menu_screen = Screen(name="Menu")
+        self.menu_level_screen = Screen(name="MenuLevel")
+        self.game_screen = Screen(name="LevelManager")
 
         self.menu_widget = Menu(self.menus_event_dispatcher, self.music_provider)
         self.menu_screen.add_widget(self.menu_widget)
