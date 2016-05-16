@@ -13,18 +13,6 @@ from PopUpProvider import open_pop_up
 
 
 class LevelManager(FloatLayout):
-    popup = None
-    grid_layout = None
-
-    current_set_id = int
-    current_level_id_in_set = int
-
-    level = None
-    current_level = None
-    back_to_menu = None
-    music = None
-
-    action_bar = None
 
     def __init__(self, event_dispatcher, music_provider, **kwargs):
         """
@@ -39,6 +27,11 @@ class LevelManager(FloatLayout):
         self.music_provider = music_provider
         self.level_service = LevelService()
         self.level_event_dispatcher = LevelEventDispatcher()
+        self.popup = None
+        self.current_set_id = int
+        self.current_level_id_in_set = int
+        self.level = None
+        self.action_bar = None
         self.level_event_dispatcher.bind(on_level_completed=self.do_level_up)
 
     #####
