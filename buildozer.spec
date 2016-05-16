@@ -7,7 +7,7 @@ title = 'Scape Me
 package.name = scapeme
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.scapeme
+package.domain = org.scapeme.corp
 
 # (str) Source code where the main.py live
 source.dir = .
@@ -25,7 +25,7 @@ source.include_exts = py,png,kv,atlas,cfg,wav,ttf
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.5
+version = 0.6
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]

@@ -1,4 +1,7 @@
-from Configurations import authorizations
+"""
+TouchUtils
+"""
+from Configurations import AUTHORIZATIONS
 
 
 def get_tile_identifier(level, x, y):
@@ -37,7 +40,7 @@ def get_tile_properties(matrix, tile_identifier):
     if tile_type is None:
         raise Exception("Tile didn't get properties")
 
-    return authorizations[tile_type]
+    return AUTHORIZATIONS[tile_type]
 
 
 def get_touch_direction(tile_identifier, old_tile_identifier):

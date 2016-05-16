@@ -1,6 +1,12 @@
-from kivy.uix.widget import Widget
+"""
+LevelManager
+"""
+from kivy.uix.floatlayout import FloatLayout
 from kivy.logger import Logger
-from kivy.uix.button import Button
+from kivy.core.window import Window
+from kivy.uix.actionbar import ActionBar
+from kivy.properties import StringProperty
+from kivy.lang import Builder
 
 from Level import Level
 from LevelService import LevelService
@@ -8,11 +14,12 @@ from EventDispatchers import LevelEventDispatcher, propagate_event
 from PopUpProvider import open_pop_up
 
 
-class LevelManager(Widget):
-    popup = None
-    grid_layout = None
+class LevelManager(FloatLayout):
+    """
+    LevelManager children of FloatLayout.
+    """
 
-    def __init__(self, event_dispatcher, **kwargs):
+    def __init__(self, event_dispatcher, music_provider, **kwargs):
         """
         Instantiate the LevelManager with event listener.
 
@@ -20,32 +27,29 @@ class LevelManager(Widget):
         :param kwargs:
         """
         super(LevelManager, self).__init__(**kwargs)
+        self.size = Window.size
         self.event_dispatcher = event_dispatcher
+        self.music_provider = music_provider
         self.level_service = LevelService()
         self.level_event_dispatcher = LevelEventDispatcher()
+        self.popup = None
+        self.current_set_id = int
+        self.current_level_id_in_set = int
+        self.level = None
+        self.action_bar = None
         self.level_event_dispatcher.bind(on_level_completed=self.do_level_up)
-
-    def add_widget(self, widget, index=0):
-        """
-        Add widget only after removing any widget previously present.
-
-        :param widget:
-        :param index:
-        :rtype: void
-        """
-        super(LevelManager, self).add_widget(widget, index)
 
     #####
     # Save and Level Up
     #####
 
-    def do_level_up(self, instance, completion_details, *args):
+    def do_level_up(self, _, completion_details, *unused):
         """
         Save level up in the completed pool and open popup.
 
-        :param instance:
+        :param _:
         :param completion_details: Player stats.
-        :param args:
+        :param unused:
         :rtype: void
         """
         self.level_service.save_completion(completion_details)
@@ -53,7 +57,7 @@ class LevelManager(Widget):
         set_id_to_load = completion_details['set_id']
         level_id_in_set_to_load = completion_details['level_id_in_set'] + 1
 
-        if level_id_in_set_to_load >= 5:
+        if level_id_in_set_to_load > 5:
             set_id_to_load = completion_details['set_id'] + 1
             level_id_in_set_to_load = 1
 
@@ -62,22 +66,6 @@ class LevelManager(Widget):
     #####
     # Set loading
     ####
-
-    def can_load_set(self, set_id=None):
-        """
-        Test is player can play this set.
-
-        :param set_id: Id of the set.
-        :rtype: Boolean
-        """
-        if not self.level_service.does_set_exist(set_id):
-            raise Exception("Set does not exist.")
-
-        if not self.level_service.is_set_unlocked(set_id):
-            Logger.info("Level is not unlocked yet.")
-            return False
-
-        return True
 
     def load_level_in_set(self, set_id=None, level_id_in_set=1):
         """
@@ -93,14 +81,22 @@ class LevelManager(Widget):
 
         self.clear_widgets()
 
-        # add map
-        self.add_widget(Level(self.level_event_dispatcher, set_id, level_id_in_set))
-
-        # add menu level
-        self.update_menu_level_label(set_id, level_id_in_set)
+        self.current_set_id = set_id
+        self.current_level_id_in_set = level_id_in_set
 
         # display popup if level need popup
         open_pop_up(self, 'open_level', set_id, level_id_in_set)
+
+        self.level = Level(
+            self.level_event_dispatcher,
+            set_id,
+            level_id_in_set
+        )
+        self.add_widget(self.level)
+
+        self.update_menu_level_bar()
+
+        Window.bind(on_resize=self.update_menu_level_bar)
 
     #####
     # Pop up
@@ -135,7 +131,7 @@ class LevelManager(Widget):
 
         self.load_level_in_set(level_list[0], level_list[1])
 
-    def pop_up_menu(self, instance):
+    def pop_up_menu(self, _):
         """
         When player click on menu button in pop up.
 
@@ -149,21 +145,29 @@ class LevelManager(Widget):
     # Menu relatives
     #####
 
-    def update_menu_level_label(self, set_id, level_id):
+    def update_menu_level_bar(self, *_):
         """
         Update the menu label of the level.
 
-        :param set_id:
-        :param level_id:
         :rtype: void
         """
-        self.add_widget(
-            Button(text="Menu", background_color=(0, 0, 0, 1), on_press=self.switch_to_menu_screen)
+
+        if not self.current_set_id or not self.current_level_id_in_set:
+            return
+
+        self.action_bar = Builder.load_file('LevelActionBar.kv')
+        self.action_bar.current_level = 'Set: {0} - Level: {1}'.format(
+            self.current_set_id, self.current_level_id_in_set
         )
+        self.add_widget(self.action_bar)
 
     def switch_to_menu_screen(self, *args):
         """
         Required method.
         """
         Logger.info("Propagate Menu")
-        propagate_event('Menu', self)
+        propagate_event('MenuLevel', self)
+
+
+class LevelActionBar(ActionBar):
+    current_level = StringProperty()
