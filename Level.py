@@ -33,7 +33,7 @@ class Level(FloatLayout):
         # Load map in a canvas.
         self.set_id = set_id
         self.level_id_in_set = level_id_in_set
-        map_file_path = "./resources/maps/set{0}/level{0}_{1}.cfg".format(self.set_id, self.level_id_in_set)
+        map_file_path = "./resources/maps/set{0}/level{0}_{1}.cfg".format(2, 5)
 
         self.map_canvas = MapCanvas(map_file_path)
         self.add_widget(self.map_canvas)
@@ -216,10 +216,9 @@ class Level(FloatLayout):
         self.touch_width = int(self.map_canvas.tile_size / self.TOUCH_SCALING_FACTOR)
 
         # Define real tiles and level size.
-        self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vertical_padding * 2,
+        self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vertical_padding * 2 -
+                                                            self.map_canvas.ACTION_BAR_SIZE,
                            self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding * 2]
-        self.tile_size = [self.level_size[0] / self.map_canvas.map_size[0],
-                          self.level_size[1] / self.map_canvas.map_size[1]]
 
         # Initialise then fill matrix.
         self.x_max = self.map_canvas.map_size[0]
@@ -227,19 +226,18 @@ class Level(FloatLayout):
         self.touch_matrix = []
 
         start_x = self.map_canvas.vertical_padding
-        start_y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding
-
+        start_y = self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding - self.map_canvas.ACTION_BAR_SIZE
         for index_y in range(self.y_max):
             self.touch_matrix.append([])
             for _ in range(self.x_max):
                 self.touch_matrix[index_y].append(
                     (start_x,
                      start_y,
-                     start_x + self.tile_size[0],
-                     start_y - self.tile_size[1])
+                     start_x + self.map_canvas.tile_size,
+                     start_y - self.map_canvas.tile_size)
                 )
-                start_x += self.tile_size[0]
-            start_y -= self.tile_size[1]
+                start_x += self.map_canvas.tile_size
+            start_y -= self.map_canvas.tile_size
             start_x = self.map_canvas.vertical_padding
 
     def propagate_level_up(self):
