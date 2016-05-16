@@ -134,8 +134,13 @@ def add_popup_infos_labels(current_class, completion_details):
     :rtype: void
     """
     time = completion_details['resolution_time']
-    time = time.microseconds * 10**-6
-    time_text = "Time : " + str(time) + " sec."
+    displayed_time = str
+    time_minute = (time.seconds // 60) % 60
+    if time_minute > 0:
+        displayed_time = "{0} min {1}".format(str(time_minute), str(time.seconds))
+    else:
+        displayed_time = "{0} sec {1}".format(str(time.seconds), str(time.microseconds)[0:1])
+    time_text = "Time : " + displayed_time
     current_class.relative_layout.add_widget(Label(text=time_text, font_size='20sp',
                                                    pos_hint={'center_x': 0.25, 'center_y': 0.5}))
 

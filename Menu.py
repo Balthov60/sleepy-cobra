@@ -8,7 +8,6 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.logger import Logger
 
 from LevelService import LevelService
-from LevelManager import LevelManager
 from Configurations import color
 from EventDispatchers import propagate_event
 from PopUpProvider import open_pop_up
@@ -20,7 +19,7 @@ class Menu(RelativeLayout):
     """
     Main menu class.
     """
-    FONT_MENU_PATH = './resources/menu/menu.ttf'
+    FONT_MENU_PATH = './resources/menu/vanadine_bold.ttf'
     FOND_MENU_PATH = './resources/menu/fond_menu.png'
     LOGO_PATH = './resources/other/logo.png'
 
@@ -39,11 +38,12 @@ class Menu(RelativeLayout):
         self.canvas.add(
             Rectangle(source=self.FOND_MENU_PATH, size=Window.size)
         )
+
         self.canvas.add(
             Rectangle(source=self.LOGO_PATH, size_hint=0.2, pos_hint={'x': 0.4, 'y': 0.4})
         )
         self.add_widget(
-            Label(text="'Scape me", font_name=self.FONT_MENU_PATH, font_size='90sp',
+            Label(text="'Scape me", font_name=self.FONT_MENU_PATH, font_blended=False, font_size='90sp',
                   size_hint=(0.25, 0.1), pos_hint={'center_x': 0.5, 'center_y': 0.8})
         )
 
@@ -62,7 +62,7 @@ class Menu(RelativeLayout):
 
         self.add_widget(
             Button(text="Music", font_name=self.FONT_MENU_PATH, font_size='25sp', background_color=(0, 0, 0, 0),
-                   size_hint=(0.15, 0.12), pos_hint={'center_x': 0.92, 'center_y': 0.08},
+                   size_hint=(0.15, 0.12), pos_hint={'center_x': 0.90, 'center_y': 0.07},
                    on_press=self.music_callback)
         )
 
@@ -94,7 +94,7 @@ class MenuLevel(FloatLayout):
     """
     Level Menu class.
     """
-    FONT_MENU_PATH = './resources/menu/menu.ttf'
+    FONT_MENU_PATH = './resources/menu/vanadine_bold.ttf'
     FOND_MENU_PATH = './resources/menu/fond_menu.png'
     MAPS_PATH = './resources/maps/'
 
@@ -111,7 +111,6 @@ class MenuLevel(FloatLayout):
         super(MenuLevel, self).__init__(**kwargs)
         self.event_dispatcher = event_dispatcher
         self.level_service = LevelService()
-        self.level_manager = LevelManager(event_dispatcher)
 
         # Add fond.
         self.canvas.add(
@@ -120,7 +119,7 @@ class MenuLevel(FloatLayout):
 
         # Add button
         self.add_widget(
-            Button(text="Back to Menu", font_name=self.FONT_MENU_PATH, background_color=self.color_2,
+            Button(text="Menu", font_name=self.FONT_MENU_PATH, background_color=self.color_2,
                    pos_hint={'x': 0.82, 'y': 0}, size_hint=(0.18, 0.15),
                    on_press=self.switch_to_menu_screen)
         )
@@ -161,7 +160,7 @@ class MenuLevel(FloatLayout):
         :rtype: void
         """
         set_id = value.cls[0]
-        if self.level_manager.can_load_set(set_id):
+        if self.level_service.can_load_set(set_id):
             propagate_event('LevelManager', self, set_id)
         else:
             open_pop_up(self, 'not_unlocked', set_id)

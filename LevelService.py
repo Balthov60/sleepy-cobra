@@ -3,6 +3,7 @@ from kivy.logger import Logger
 from sqlite3 import dbapi2 as sqlite
 
 import os
+from datetime import datetime
 
 
 class LevelService:
@@ -82,6 +83,8 @@ class LevelService:
         :param failed_attempts: Number of touchs to win.
         :rtype: void
         """
+        start_time = datetime.now()
+
         self.cursor.execute("""
             UPDATE {} SET resolution_time = ?, failed_attempts = ?, successful_attempts = ? WHERE id = ?
             """.format(self.TABLE_NAME), (str(resolution_time),
@@ -90,7 +93,13 @@ class LevelService:
                                           current_entry[0])
                             )
         self.connection.commit()
-        Logger.info('Edited completion')
+
+        end_time = datetime.now()
+        duration = end_time - start_time
+        duration_seconds = duration.microseconds * 10 ** -6
+        Logger.info("Edited completion : set %i, level %i in %fs" %
+                    (duration_seconds, current_entry[1], current_entry[2])
+                    )
 
     def insert_completion(self, set_id, level_id_in_set, resolution_time, failed_attempts):
         """
@@ -102,12 +111,18 @@ class LevelService:
         :param failed_attempts: Number of touchs to win.
         :rtype: void
         """
+        start_time = datetime.now()
+
         self.cursor.execute("""
             INSERT INTO {} (set_id, level_id_in_set, resolution_time, failed_attempts, successful_attempts)
             VALUES (?, ?, ?, ?, ?)
             """.format(self.TABLE_NAME), (set_id, level_id_in_set, str(resolution_time), failed_attempts, 1))
         self.connection.commit()
-        Logger.info('Inserted completion')
+
+        end_time = datetime.now()
+        duration = end_time - start_time
+        duration_seconds = duration.microseconds * 10 ** -6
+        Logger.info("Inserted completion: set %i, level %i in %fs" % (duration_seconds, set_id, level_id_in_set))
 
     def save_completion(self, completion_details):
         """
@@ -141,8 +156,11 @@ class LevelService:
         completions = self.get_completions()
         higher_set = 1
         for completion in completions:
-            if completion[1] > higher_set:
-                higher_set = completion[1]
+            possible_higher_set = completion[1]
+            if completion[2] >= 5:
+                possible_higher_set += 1
+            if possible_higher_set > higher_set:
+                higher_set = possible_higher_set
 
         return higher_set
 
@@ -172,4 +190,20 @@ class LevelService:
 
         if set_id > self.set_number:
             return False
+        return True
+
+    def can_load_set(self, set_id=None):
+        """
+        Test is player can play this set.
+
+        :param set_id:
+        :rtype: Boolean
+        """
+        if not self.does_set_exist(set_id):
+            raise Exception("Set does not exist.")
+
+        if not self.is_set_unlocked(set_id):
+            Logger.info("Level is not unlocked yet.")
+            return False
+
         return True

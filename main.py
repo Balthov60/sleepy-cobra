@@ -9,7 +9,6 @@ from LevelManager import LevelManager
 
 
 class GameApp(App):
-    sound = None
 
     LOGO_PATH = './resources/other/logo.png'
 
@@ -22,16 +21,18 @@ class GameApp(App):
         :rtype: void
         """
         super(GameApp, self).__init__(**kwargs)
-        self.menus_event_dispatcher = MenusEventDispatcher()
         self.screen_manager = ScreenManager()
-        self.music = Music()
 
-        self.menu_widget = Menu(self.menus_event_dispatcher, self.music)
+        self.menus_event_dispatcher = MenusEventDispatcher()
+
+        self.music_provider = MusicProvider()
+
+        self.menu_widget = Menu(self.menus_event_dispatcher, self.music_provider)
         self.menu_screen = Screen(name="Menu")
         self.menu_screen.add_widget(self.menu_widget)
         self.screen_manager.add_widget(self.menu_screen)
 
-        self.game_widget = LevelManager(self.menus_event_dispatcher)
+        self.game_widget = LevelManager(self.menus_event_dispatcher, self.music_provider)
         self.game_screen = Screen(name="LevelManager")
         self.game_screen.add_widget(self.game_widget)
         self.screen_manager.add_widget(self.game_screen)
@@ -49,7 +50,7 @@ class GameApp(App):
 
         :rtype: void
         """
-        self.music.start_sound()
+        self.music_provider.start_sound()
         self.icon = self.LOGO_PATH
         self.title = self.GAME_TITLE
         self.screen_manager.current = 'Menu'
@@ -78,7 +79,7 @@ class GameApp(App):
         return True
 
 
-class Music:
+class MusicProvider:
     sound = None
 
     def __init__(self):
@@ -97,7 +98,7 @@ class Music:
             self.sound.play()
             self.sound.loop = True
 
-    def update_sound_state(self):
+    def update_sound_state(self, *args):
         """
         Update sound status when player click on music button.
 
@@ -105,10 +106,10 @@ class Music:
         """
         if self.sound.state == 'play':
             self.sound.stop()
-            Logger.info("Music stop.")
+            Logger.info("Music stopped.")
         else:
             self.sound.play()
-            Logger.info("Music start.")
+            Logger.info("Music started.")
 
 if __name__ == '__main__':
     GameApp().run()
