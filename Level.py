@@ -215,7 +215,7 @@ class Level(FloatLayout):
 
         self.touch_width = int(self.map_canvas.tile_size / self.TOUCH_SCALING_FACTOR)
 
-        # Define real tiles and level size.
+        # Define level size.
         self.level_size = [self.map_canvas.window.size[0] - self.map_canvas.vertical_padding * 2 -
                                                             self.map_canvas.ACTION_BAR_SIZE,
                            self.map_canvas.window.size[1] - self.map_canvas.horizontal_padding * 2]
