@@ -1,9 +1,13 @@
-from kivy.uix.image import Image as CoreImage
-
+"""
+Configuration
+"""
 import os.path
 
-# Sources for maps textures.
-sources = {
+from kivy.uix.image import Image as CoreImage
+
+
+# SOURCES for maps textures.
+SOURCES = {
     'wall': './resources/blocks/wall.png',
     'air': './resources/blocks/air.png',
     'wall_left': './resources/blocks/wall_left.png',
@@ -20,40 +24,42 @@ sources = {
     'angle_left': './resources/blocks/angle_left.png',
     'double_wall_horizontal': './resources/blocks/double_wall_horizontal.png',
     'double_wall_vertical': './resources/blocks/double_wall_vertical.png',
+    'block': './resources/blocks/block.png',
     'point': './resources/other/point.png',
-    'block': './resources/other/block.png',
-    'trace': './resources/other/trace.png'
+    'trace': './resources/other/trace.png',
+    'background': './resources/other/background_map_canvas.png'
 }
 
-for source_name in sorted(sources):
-    if not os.path.isfile(sources[source_name]):
-        raise ValueError("File %s does not exist." % sources[source_name])
+for source_name in sorted(SOURCES):
+    if not os.path.isfile(SOURCES[source_name]):
+        raise ValueError("File %s does not exist." % SOURCES[source_name])
 
 # Textures dictionary, format : (key, texture).
-textures = dict([
-    ('trace', CoreImage(source=sources['trace']).texture),
-    ('block', CoreImage(source=sources['block']).texture),
-    ('point', CoreImage(source=sources['point']).texture),
-    ('W', CoreImage(source=sources['wall']).texture),
-    ('A', CoreImage(source=sources['air']).texture),
-    ('L', CoreImage(source=sources['wall_left']).texture),
-    ('R', CoreImage(source=sources['wall_right']).texture),
-    ('T', CoreImage(source=sources['wall_top']).texture),
-    ('B', CoreImage(source=sources['wall_bottom']).texture),
-    ('LB', CoreImage(source=sources['angle_left_bottom']).texture),
-    ('LT', CoreImage(source=sources['angle_left_top']).texture),
-    ('RB', CoreImage(source=sources['angle_right_bottom']).texture),
-    ('RT', CoreImage(source=sources['angle_right_top']).texture),
-    ('AT', CoreImage(source=sources['angle_top']).texture),
-    ('AB', CoreImage(source=sources['angle_bottom']).texture),
-    ('AR', CoreImage(source=sources['angle_right']).texture),
-    ('AL', CoreImage(source=sources['angle_left']).texture),
-    ('H', CoreImage(source=sources['double_wall_horizontal']).texture),
-    ('V', CoreImage(source=sources['double_wall_vertical']).texture)
+TEXTURES = dict([
+    ('background', CoreImage(source=SOURCES['background']).texture),
+    ('trace', CoreImage(source=SOURCES['trace']).texture),
+    ('block', CoreImage(source=SOURCES['block']).texture),
+    ('point', CoreImage(source=SOURCES['point']).texture),
+    ('W', CoreImage(source=SOURCES['wall']).texture),
+    ('A', CoreImage(source=SOURCES['air']).texture),
+    ('L', CoreImage(source=SOURCES['wall_left']).texture),
+    ('R', CoreImage(source=SOURCES['wall_right']).texture),
+    ('T', CoreImage(source=SOURCES['wall_top']).texture),
+    ('B', CoreImage(source=SOURCES['wall_bottom']).texture),
+    ('LB', CoreImage(source=SOURCES['angle_left_bottom']).texture),
+    ('LT', CoreImage(source=SOURCES['angle_left_top']).texture),
+    ('RB', CoreImage(source=SOURCES['angle_right_bottom']).texture),
+    ('RT', CoreImage(source=SOURCES['angle_right_top']).texture),
+    ('AT', CoreImage(source=SOURCES['angle_top']).texture),
+    ('AB', CoreImage(source=SOURCES['angle_bottom']).texture),
+    ('AR', CoreImage(source=SOURCES['angle_right']).texture),
+    ('AL', CoreImage(source=SOURCES['angle_left']).texture),
+    ('H', CoreImage(source=SOURCES['double_wall_horizontal']).texture),
+    ('V', CoreImage(source=SOURCES['double_wall_vertical']).texture)
 ])
 
 # Authorization dictionary, format : boolean list {left, right, top, bot}
-authorizations = dict([
+AUTHORIZATIONS = dict([
     ('W', [False, False, False, False]),
     ('A', [True, True, True, True]),
     ('L', [False, True, True, True]),
@@ -72,14 +78,14 @@ authorizations = dict([
     ('V', [False, False, True, True]),
 ])
 
-# Color dictionary, format : (index, color). Color is R G B A / 360.
-color = dict([
+# Colors dictionary, format : (index, color). Color is R G B A / 360.
+COLORS = dict([
     ('blue_color', [0.37, 0.69, 0.73, 0.9]),
     ('dark_blue_color', [0.19, 0.19, 0.19, 0.9])
 ])
 
 # Messages dictionary, format : (index (level), string).
-messages = dict([
+MESSAGES = dict([
     ('11', "Welcome on 'Scape me !"
            "\n"
            "\nThe rules are really simple,"
@@ -150,5 +156,12 @@ messages = dict([
            "\nwhat about you ?"
            "\n"
            "\nit's ok... it's ok move on..."),
-    ('63', "I said DO NOT CRY !!")
+    ('63', "I said DO NOT CRY !!"),
+    ('71', "So you finally arrive to this last set"
+           "\n Good luck ! Good luck..."),
+    ('72', "OK ok calm down the game will end to fast !"),
+    ('73', "I say STOP are you angry against me ?"),
+    ('74', "No please No..."),
+    ('75', "OK then... Il a few minutes I will be useless..."
+           "\n Thanks for player.... Pffff....")
 ])
